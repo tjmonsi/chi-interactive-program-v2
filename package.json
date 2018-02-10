@@ -1,0 +1,76 @@
+{
+  "name": "chi-interactive-program-v2",
+  "version": "0.0.1",
+  "description": "This is the interactive schedule program for CHI 2018",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "size": "./node_modules/.bin/size-limit",
+    "check-size": "./node_modules/.bin/gzip-size",
+    "dev": "./dev.bash",
+    "serve": "node server",
+    "prod": "NODE_ENV=production && ./node_modules/.bin/webpack --mode=production --env.BROWSERS=module && ./node_modules/.bin/webpack --mode=production && node compiler"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjmonsi/chi-interactive-program-v2.git"
+  },
+  "author": "TJ Monserrat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjmonsi/chi-interactive-program-v2/issues"
+  },
+  "homepage": "https://github.com/tjmonsi/chi-interactive-program-v2#readme",
+  "flat": true,
+  "sideEffects": false,
+  "size-limit": [
+    {
+      "limit": "20 KB",
+      "webpack": false,
+      "path": "public/bundle.js"
+    }
+  ],
+  "devDependencies": {
+    "autoprefixer": "^7.2.5",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "clean-webpack-plugin": "^0.1.17",
+    "connect": "^3.6.5",
+    "css-loader": "^0.28.7",
+    "ejs": "^2.5.7",
+    "eslint": "^4.10.0",
+    "eslint-config-semistandard": "^11.0.0",
+    "eslint-plugin-html": "^3.2.2",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "file-loader": "^1.1.5",
+    "globby": "^7.1.1",
+    "gzip-size-cli": "^2.1.0",
+    "html-minifier": "^3.5.8",
+    "is-glob": "^4.0.0",
+    "postcss-loader": "^2.0.8",
+    "semistandard": "^11.0.0",
+    "size-limit": "^0.14.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "superstatic": "^5.0.1",
+    "text-loader": "0.0.1",
+    "webpack": "^4.0.0-beta.0",
+    "webpack-cli": "^2.0.4",
+    "webpack-merge": "^4.1.1"
+  },
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0-pre.6",
+    "@webcomponents/shadycss": "^1.1.1",
+    "@webcomponents/webcomponentsjs": "^1.1.0",
+    "es5-shim": "^4.5.10",
+    "es6-promise": "^4.2.4",
+    "es6-shim": "^0.35.3",
+    "global": "^4.3.2",
+    "intersection-observer": "^0.5.0",
+    "path-to-regexp": "^2.1.0",
+    "redux": "^3.7.2",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

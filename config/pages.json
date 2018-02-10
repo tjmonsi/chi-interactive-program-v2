@@ -1,0 +1,28 @@
+{
+  "not-found": "page-not-found",
+  "not-authorized": "page-not-authorized",
+  "routes": [
+    {
+      "route": "/",
+      "page": "page-home"
+    },
+    {
+      "route": "/login",
+      "page": "page-login"
+    },
+    {
+      "route": "/authorized",
+      "page": "page-authorized"
+    },
+    {
+      "route": "/test",
+      "page": "page-test",
+      "routes": [
+        {
+          "route": "/:id",
+          "page": "page-test-two"
+        }
+      ]
+    }
+  ]
+}
