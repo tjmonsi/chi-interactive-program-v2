@@ -1,0 +1,9 @@
+<h1>
+  [[scheduleObj.dayString]]
+</h1>
+<p>
+  [[scheduleObj.dateString]]
+</p>
+<template is="dom-repeat" items="[[timeslots]]">
+  <chi-timeslot timeslot-id="[[item]]"></chi-timeslot>
+</template>

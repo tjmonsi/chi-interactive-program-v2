@@ -1,1 +1,16 @@
-Page home
+<header>
+  <div class="container">
+    <a href="https://chi2018.acm.org">
+      <img class="logo" src="/assets/logo-bigengage-blackbg.png">
+    </a>
+    <p>
+      Montréal, Canada • April 21-26
+    </p>
+  </div>
+</header>
+
+<section>
+  <template is="dom-repeat" items="[[schedule]]">
+    <chi-day schedule-obj="[[item]]"></chi-day>
+  </template>
+</section>

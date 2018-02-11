@@ -245,6 +245,13 @@
           }
         }
       })();
+
+      const link = document.createElement('link');
+      link.href = 'https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed:700';
+      link.rel = 'stylesheet';
+      var refScript = document.body.getElementsByTagName('script')[0];
+      refScript.parentNode.insertBefore(link, refScript);
+
     </script>
   </body>
 </html>
