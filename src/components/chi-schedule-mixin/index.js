@@ -51,7 +51,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
     _setSchedule (snapshot) {
       const schedule = [];
       snapshot.forEach(sched => {
-        schedule.splice(sched.val().index, 0, sched.val());
+        schedule.splice(sched.val().index, 0, { ...sched.val(), $key: sched.key });
       });
       this.set('schedule', schedule);
     }

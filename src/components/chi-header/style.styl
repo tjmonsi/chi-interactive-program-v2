@@ -1,0 +1,88 @@
+@import '~settings/_variables.styl';
+@import '~objects/_container.styl';
+
+:host
+  display: block
+
+header
+  background-image: url('/assets/cropped-cropped-header_9-3.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  margin-bottom: 20px;
+  position: relative;
+
+  .logo
+    width: 320px;
+    padding-top: 22px;
+
+  .container
+    padding-top: 30px;
+
+  p
+    color: $menu-light-green;
+    font-size: 16.7pt;
+    margin: 0;
+
+.nav-container
+  margin-top: 50px;
+  background: $menu-light-green;
+
+  .container
+    padding: 0;
+
+.desktop-nav
+  @media screen and (max-width: 660px)
+    display: none;
+
+  .container
+    display: flex;
+
+    .nav-item
+      flex: 1
+
+.phone-nav
+  display: none;
+  @media screen and (max-width: 660px)
+    display: block
+
+  .container
+    display: none;
+
+  .container.open
+    display: block;
+
+.icon
+  width: 25px;
+  height: 25px;
+
+.nav-button
+  margin: 10px 20px;
+  background: none;
+  fill: $dark;
+  color: $dark;
+  border: none;
+  cursor: pointer;
+
+  &.hidden
+    display: none;
+
+  &:hover
+    background: $dark;
+    color: $light;
+    fill: $light;
+
+.nav-item
+  text-align: center;
+  padding: 10px 20px;
+  display: block;
+  color: $dark;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  letter-spacing: 0.75px;
+
+  &:hover
+    background: $dark;
+    color: $light;
+
