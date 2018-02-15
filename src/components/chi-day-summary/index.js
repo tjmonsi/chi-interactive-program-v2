@@ -2,14 +2,14 @@
 import { Element } from '@polymer/polymer/polymer-element';
 import { customElements } from 'global/window';
 import '@polymer/polymer/lib/elements/dom-repeat';
-import 'chi-timeslot';
+import 'chi-timeslot-summary';
 
 // define style and template
 import style from './style.styl';
 import template from './template.html';
 
 class Component extends Element {
-  static get is () { return 'chi-day'; }
+  static get is () { return 'chi-day-summary'; }
   static get template () { return `<style>${style}</style>${template}`; }
   static get properties () {
     return {

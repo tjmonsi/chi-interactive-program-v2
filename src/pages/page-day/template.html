@@ -1,0 +1,10 @@
+<section>
+  <div class="container">
+    <template is="dom-if" if="[[schedule]]">
+      <chi-day schedule-obj="[[schedule]]"></chi-day>
+    </template>
+    <template is="dom-if" if="[[!schedule]]">
+      ...Loading
+    </template>
+  </div>
+</section>

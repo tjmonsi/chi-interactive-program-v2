@@ -11,7 +11,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
   class ElementMixin extends base {
     static get properties () {
       return {
-        schedule: {
+        scheduleArray: {
           type: Array,
           value: []
         }
@@ -53,7 +53,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
       snapshot.forEach(sched => {
         schedule.splice(sched.val().index, 0, { ...sched.val(), $key: sched.key });
       });
-      this.set('schedule', schedule);
+      this.set('scheduleArray', schedule);
     }
   }
   return ElementMixin;

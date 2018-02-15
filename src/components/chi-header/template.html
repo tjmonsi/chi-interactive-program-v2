@@ -9,7 +9,8 @@
   </div>
   <div class="nav-container desktop-nav">
     <nav class="container">
-      <template is="dom-repeat" items="[[schedule]]">
+      <a href="/" class="nav-item">Schedule at Glance</a>
+      <template is="dom-repeat" items="[[scheduleArray]]">
         <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
       </template>
     </nav>
@@ -24,11 +25,12 @@
     </button>
     <button type="button" class="nav-button close hidden" on-click="closeNavigation">
       <svg class="icon">
-        <title>Open Navigation</title>
+        <title>Close Navigation</title>
         <use xlink:href="/assets/icons.svg#close"></use>
       </svg>
     </button>
     <nav class="container phone">
+      <a href="/" class="nav-item">Schedule at Glance</a>
       <template is="dom-repeat" items="[[schedule]]">
         <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
       </template>

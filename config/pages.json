@@ -7,6 +7,10 @@
       "page": "page-home"
     },
     {
+      "route": "/day/:id",
+      "page": "page-day"
+    },
+    {
       "route": "/login",
       "page": "page-login"
     },

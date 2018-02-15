@@ -1,17 +1,16 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { LittleqPageMixin } from '@littleq/small-page-viewer/mixin';
-import { ChiScheduleMixin } from 'chi-schedule-mixin';
+import { ChiTimeslotMixin } from 'chi-timeslot-mixin';
 import { customElements } from 'global/window';
 import '@polymer/polymer/lib/elements/dom-repeat';
-import 'chi-day-summary';
+import 'chi-session-summary';
 
 // define style and template
 import style from './style.styl';
 import template from './template.html';
 
-class Component extends ChiScheduleMixin(LittleqPageMixin(Element)) {
-  static get is () { return 'page-home'; }
+class Component extends ChiTimeslotMixin(Element) {
+  static get is () { return 'chi-timeslot-summary'; }
   static get template () { return `<style>${style}</style>${template}`; }
 }
 
