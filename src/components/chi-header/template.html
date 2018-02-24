@@ -9,10 +9,11 @@
   </div>
   <div class="nav-container desktop-nav">
     <nav class="container">
-      <a href="/" class="nav-item">Schedule at Glance</a>
+      <a href="/" class="nav-item schedule-at-a-glance">Schedule at Glance</a>
       <template is="dom-repeat" items="[[scheduleArray]]">
         <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
       </template>
+      <a href="/search" class="nav-item">Search</a>
     </nav>
   </div>
 
@@ -30,8 +31,9 @@
       </svg>
     </button>
     <nav class="container phone">
+      <a href="/search" class="nav-item">Search</a>
       <a href="/" class="nav-item">Schedule at Glance</a>
-      <template is="dom-repeat" items="[[schedule]]">
+      <template is="dom-repeat" items="[[scheduleArray]]">
         <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
       </template>
     </nav>

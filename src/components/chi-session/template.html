@@ -1,7 +1,17 @@
 
 <h3>
-  [[session.title]]
+  <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
+    <a href="/day/[[session.scheduleId]]">[[session.title]]</a>
+  </template>
+  <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
+    <a href="/day/[[session.scheduleId]]/session/[[sessionId]]">[[session.title]]</a>
+  </template>
 </h3>
-<template is="dom-repeat" items="[[publications]]">
-  <chi-publication publication-id="[[item]]"></chi-publication>
+<p class="venue">
+  [[getVenue(session.venue)]]
+</p>
+<template is="dom-if" if="[[showPublications]]">
+  <template is="dom-repeat" items="[[publications]]">
+    <chi-publication publication-id="[[item]]"></chi-publication>
+  </template>
 </template>

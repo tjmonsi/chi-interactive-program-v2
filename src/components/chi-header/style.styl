@@ -37,9 +37,7 @@ header
 
   .container
     display: flex;
-
-    .nav-item
-      flex: 1
+    align-items: center;
 
 .phone-nav
   display: none;
@@ -86,3 +84,8 @@ header
     background: $dark;
     color: $light;
 
+  @media screen and (max-width: 799px)
+    padding: 10px;
+
+.schedule-at-a-glance
+  min-width: 170px;

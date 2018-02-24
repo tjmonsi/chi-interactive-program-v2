@@ -8,7 +8,13 @@
     },
     {
       "route": "/day/:id",
-      "page": "page-day"
+      "page": "page-day",
+      "routes": [
+        {
+          "route": "/session/:sessionId",
+          "page": "page-day"
+        }
+      ]
     },
     {
       "route": "/login",

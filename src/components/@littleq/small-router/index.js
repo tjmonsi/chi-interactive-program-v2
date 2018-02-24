@@ -76,23 +76,24 @@ class Component extends LittleQStoreMixin(Element) {
   _checkPathRoute (path) {
     if (path) {
       let exec = null;
-      let keys = [];
+      let currentKeys = [];
       let currentRoute = null;
       let currentPage = null;
       let currentMiddlewares = [];
       this.routes.forEach(({ route, page, middlewares }) => {
-        keys = [];
+        const keys = [];
         const re = pathToRegexp(route, keys);
         const currentExec = re.exec(path);
         exec = exec || currentExec;
         currentRoute = currentExec ? route : currentRoute;
         currentPage = currentExec ? page : currentPage;
+        currentKeys = currentExec ? keys : currentKeys;
         currentMiddlewares = currentExec ? middlewares : currentMiddlewares;
       });
       this._routeCheck(
         exec ? (currentRoute || 'not-found') : 'not-found',
         exec || [],
-        keys,
+        currentKeys || [],
         exec ? (currentPage || this.notFoundPage) : this.notFoundPage
       );
     }
@@ -108,8 +109,7 @@ class Component extends LittleQStoreMixin(Element) {
 
   _routeCheck (route, exec, keys, page) {
     const params = {};
-    keys.forEach((key, index) => {
-      const { name } = key;
+    keys.forEach(({ name }, index) => {
       params[name] = exec[index + 1] || null;
     });
 

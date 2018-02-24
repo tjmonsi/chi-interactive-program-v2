@@ -1,7 +1,11 @@
 
-<h2>
-  [[timeslot.time]]
-</h2>
-<template is="dom-repeat" items="[[sessions]]">
-  <chi-session session-id="[[item]]"></chi-session>
+<template is="dom-if" if="[[sessions.length]]">
+  <h2>
+    [[timeslot.time]]
+  </h2>
 </template>
+<section>
+  <template is="dom-repeat" items="[[sessions]]">
+    <chi-session session-id="[[item]]"></chi-session>
+  </template>
+</section>

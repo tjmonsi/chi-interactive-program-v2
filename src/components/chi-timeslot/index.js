@@ -3,6 +3,7 @@ import { Element } from '@polymer/polymer/polymer-element';
 import { ChiTimeslotMixin } from 'chi-timeslot-mixin';
 import { customElements } from 'global/window';
 import '@polymer/polymer/lib/elements/dom-repeat';
+import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-session';
 
 // define style and template

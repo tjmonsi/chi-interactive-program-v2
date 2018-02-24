@@ -1,2 +1,25 @@
 :host
   display: block
+
+section
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr
+  grid-template-areas:
+    "page page page page"
+
+  @media screen and (max-width: 849px)
+    grid-template-columns: 1fr 1fr 1fr
+
+  @media screen and (max-width: 599px)
+    grid-template-columns: 1fr 1fr
+
+  @media screen and (max-width: 449px)
+    display: block
+
+  chi-session
+    padding: 10px;
+    border: 1px solid black;
+    min-height: 150px
+
+  chi-session[show-publications]
+    grid-area: page;
