@@ -1,7 +1,47 @@
-
 <h4>
-  [[publication.title]]
+  <template is="dom-if" if="[[_isEqual(params.publicationId, publicationId)]]">
+    <a href="/day/[[scheduleId]]/session/[[publication.sessionId]]">[[publication.title]]</a>
+    <template is="dom-if" if="[[publication.hm]]">
+      <img src="/assets/honorable.png">
+    </template>
+    <template is="dom-if" if="[[publication.award]]">
+      <img src="/assets/best.png">
+    </template>
+  </template>
+  <template is="dom-if" if="[[!_isEqual(params.publicationId, publicationId)]]">
+    <a href="/day/[[scheduleId]]/session/[[publication.sessionId]]/publication/[[publicationId]]">[[publication.title]]</a>
+    <template is="dom-if" if="[[publication.hm]]">
+      <img src="/assets/honorable.png">
+    </template>
+    <template is="dom-if" if="[[publication.award]]">
+      <img src="/assets/best.png">
+    </template>
+  </template>
 </h4>
-<p>
-  [[publication.abstract]]
-</p>
+<section>
+  <template is="dom-if" if="[[!showInformation]]">
+    <p>
+      <template is="dom-repeat" items="[[authors]]">
+        <chi-author-summary author-id="[[item]]"></chi-author-summary>
+      </template>
+    </p>
+    <p>
+      [[publication.shortText]]
+    </p>
+  </template>
+  <template is="dom-if" if="[[showInformation]]">
+    <h5>
+      Authors
+    </h5>
+    <ul class="authors">
+      <template is="dom-repeat" items="[[authors]]">
+        <li>
+          <chi-author author-id="[[item]]"></chi-author>
+        </li>
+      </template>
+    </ul>
+    <p>
+      [[publication.abstract]]
+    </p>
+  </template>
+</section>

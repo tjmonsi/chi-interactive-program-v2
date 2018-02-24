@@ -9,9 +9,20 @@
 </h3>
 <p class="venue">
   [[getVenue(session.venue)]]
-</p>
-<template is="dom-if" if="[[showPublications]]">
-  <template is="dom-repeat" items="[[publications]]">
-    <chi-publication publication-id="[[item]]"></chi-publication>
+  <template is="dom-if" if="[[!showPublications]]">
+    <template is="dom-if" if="[[session.hasAward]]">
+      <img src="/assets/best.png">
+    </template>
+    <template is="dom-if" if="[[session.hasHonorableMention]]">
+      <img src="/assets/honorable.png">
+    </template>
   </template>
-</template>
+</p>
+<chi-room room-id="[[session.roomId]]"></chi-room>
+<section>
+  <template is="dom-if" if="[[showPublications]]">
+    <template is="dom-repeat" items="[[publications]]">
+      <chi-publication publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
+    </template>
+  </template>
+</section>

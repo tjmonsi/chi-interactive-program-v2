@@ -1,0 +1,11 @@
+<span class="bold">[[author.displayName]]</span>,
+<template is="dom-if" if="[[author.primary.dept]]">
+  [[author.primary.dept]],
+</template>
+<template is="dom-if" if="[[author.primary.institution]]">
+  [[author.primary.institution]],
+</template>
+<template is="dom-if" if="[[author.primary.city]]">
+  [[author.primary.city]],
+</template>
+[[author.primary.country]]

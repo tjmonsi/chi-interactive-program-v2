@@ -1,7 +1,12 @@
+@import '~settings/_variables.styl';
+
 :host
   display: block
 
 section
+  display: flex;
+  flex-wrap: wrap
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr
   grid-template-areas:
@@ -23,9 +28,49 @@ section
       "page"
 
   chi-session
-    padding: 10px;
+    float: left;
     border: 1px solid black;
-    min-height: 150px
+    min-height: 150px;
+    // for flex when grid is not supported
+    width: 250px;
+
+    // when grid is supported
+    @supports (display: grid)
+      width: auto;
+
+    @supports not (display: grid)
+      @media screen and (max-width: 449px)
+        width: 100%;
+
 
   chi-session[show-publications]
     grid-area: page;
+    width: 100%;
+
+    @supports (display: grid)
+      width: auto;
+
+.paper
+  background: $brand-green
+  color: $grey
+
+.keynote
+  background: $brand-pink
+  color: $light
+
+.casestudy
+  background: $brand-grey
+  color: $light
+
+.course
+  background: $brand-blue
+  color: $light
+
+.sig
+  background: $brand-orange
+
+.panel
+  background: $brand-orange
+
+.altchi
+  background: $brand-yellow

@@ -3,3 +3,31 @@
 
 h4
   margin: 0
+
+  a
+    color: inherit;
+    text-decoration: none;
+
+  a:hover
+    text-decoration: underline;
+
+  img
+    vertical-align: middle;
+    height: 32px;
+
+h5
+  margin: 20px 0 0 0
+
+section
+  padding: 0 20px;
+
+chi-author-summary
+  &:after
+    content: ', '
+
+  &:last-of-type
+    &:after
+      content: ''
+
+.authors
+  margin: 0;

@@ -12,7 +12,13 @@
       "routes": [
         {
           "route": "/session/:sessionId",
-          "page": "page-day"
+          "page": "page-day",
+          "routes": [
+            {
+              "route": "/publication/:publicationId",
+              "page": "page-day"
+            }
+          ]
         }
       ]
     },

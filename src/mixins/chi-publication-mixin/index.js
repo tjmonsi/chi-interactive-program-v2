@@ -17,8 +17,18 @@ export const ChiPublicationMixin = dedupingMixin(base => {
         publicationId: {
           type: String,
           observer: '_getPublication'
+        },
+        authors: {
+          type: Array,
+          value: []
         }
       };
+    }
+
+    static get observers () {
+      return [
+        '_getAuthors(publication.authors, publication.authors.*)'
+      ];
     }
 
     constructor () {
@@ -46,6 +56,14 @@ export const ChiPublicationMixin = dedupingMixin(base => {
 
     _setPublication (snapshot) {
       this.set('publication', snapshot.val());
+    }
+
+    _getAuthors (authors) {
+      const array = [];
+      let min = 10000;
+      if (authors) Object.entries(authors).forEach(([key, item]) => { min = min >= item.value ? item.value : min; });
+      if (authors) Object.entries(authors).forEach(([key, item]) => { array.splice(item.value - min, 0, key); });
+      this.set('authors', array);
     }
   }
   return ElementMixin;

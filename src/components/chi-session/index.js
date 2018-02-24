@@ -6,6 +6,7 @@ import { LittleQStoreMixin } from '@littleq/state-manager';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-publication';
+import 'chi-room';
 
 // define style and template
 import style from './style.styl';
@@ -31,7 +32,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   static get observers () {
     return [
-      '_showPublication(params.sessionId, sessionId)'
+      '_showPublication(params.sessionId, sessionId)',
+      '_setClass(session.venue)'
     ];
   }
 
@@ -40,11 +42,9 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     if (this.showPublications) scrollTo(0, scrollY + this.parentNode.parentNode.querySelector('h2').getBoundingClientRect().top);
   }
 
+  _setClass (venue) { this.classList.add(venue.toLowerCase()); }
+
   _isEqual (a, b) { return a === b; }
-
-  toggle () { this.showPublications = !this.showPublications; }
-
-  off () { this.showPublications = false; }
 
   getVenue (venue) {
     switch (venue) {
