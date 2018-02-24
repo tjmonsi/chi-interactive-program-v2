@@ -9,12 +9,18 @@ section
 
   @media screen and (max-width: 849px)
     grid-template-columns: 1fr 1fr 1fr
+    grid-template-areas:
+      "page page page"
 
   @media screen and (max-width: 599px)
     grid-template-columns: 1fr 1fr
+    grid-template-areas:
+      "page page"
 
   @media screen and (max-width: 449px)
-    display: block
+    grid-template-columns: 1fr
+    grid-template-areas:
+      "page"
 
   chi-session
     padding: 10px;

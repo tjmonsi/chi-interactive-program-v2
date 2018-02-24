@@ -9,11 +9,11 @@
   </div>
   <div class="nav-container desktop-nav">
     <nav class="container">
-      <a href="/" class="nav-item schedule-at-a-glance">Schedule at Glance</a>
+      <a href="/" class$="nav-item schedule-at-a-glance [[_isScheduleAtAGlance(route)]]">Schedule at Glance</a>
       <template is="dom-repeat" items="[[scheduleArray]]">
-        <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
+        <a href="/day/[[item.$key]]" class$="nav-item [[_isSelected(params.id, item.$key)]]">[[item.dayString]]</a>
       </template>
-      <a href="/search" class="nav-item">Search</a>
+      <a href="/search" class$="nav-item [[_isSearch(route)]]">Search</a>
     </nav>
   </div>
 

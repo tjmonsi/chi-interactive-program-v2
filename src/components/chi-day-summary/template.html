@@ -1,9 +1,7 @@
 <h1>
-  [[scheduleObj.dayString]]
+  <a href="/day/[[scheduleObj.$key]]">[[scheduleObj.dayString]] - [[scheduleObj.dateString]]</a>
 </h1>
-<p>
-  [[scheduleObj.dateString]]
-</p>
+<hr>
 <template is="dom-repeat" items="[[timeslots]]">
   <chi-timeslot-summary timeslot-id="[[item]]"></chi-timeslot-summary>
 </template>
