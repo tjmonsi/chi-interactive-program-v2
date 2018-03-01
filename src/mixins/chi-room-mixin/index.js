@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'room';
 
 export const ChiRoomMixin = dedupingMixin(base => {
@@ -33,7 +34,6 @@ export const ChiRoomMixin = dedupingMixin(base => {
 
     async _getRoom (roomId) {
       if (roomId) {
-        const { firebase, version } = await import('firebase-obj');
         this._closeRoom();
         this._roomRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${roomId}`);
         this._roomRef.on('value', this._boundSetRoom);

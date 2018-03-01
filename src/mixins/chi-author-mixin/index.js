@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'author';
 
 export const ChiAuthorMixin = dedupingMixin(base => {
@@ -31,9 +32,8 @@ export const ChiAuthorMixin = dedupingMixin(base => {
       this._closeAuthor();
     }
 
-    async _getAuthor (authorId) {
+    _getAuthor (authorId) {
       if (authorId) {
-        const { firebase, version } = await import('firebase-obj');
         this._closeAuthor();
         this._authorRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${authorId}`);
         this._authorRef.on('value', this._boundSetAuthor);

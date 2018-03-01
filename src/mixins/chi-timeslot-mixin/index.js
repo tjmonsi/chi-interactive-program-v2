@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'timeslot';
 
 export const ChiTimeslotMixin = dedupingMixin(base => {
@@ -43,7 +44,6 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
 
     async _getTimeslot (timeslotId) {
       if (timeslotId) {
-        const { firebase, version } = await import('firebase-obj');
         this._closeTimeslot();
         this._timeslotRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${timeslotId}`);
         this._timeslotRef.on('value', this._boundSetTimeslot);

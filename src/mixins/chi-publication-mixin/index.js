@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'publication';
 
 export const ChiPublicationMixin = dedupingMixin(base => {
@@ -41,9 +42,8 @@ export const ChiPublicationMixin = dedupingMixin(base => {
       this._closePublication();
     }
 
-    async _getPublication (publicationId) {
+    _getPublication (publicationId) {
       if (publicationId) {
-        const { firebase, version } = await import('firebase-obj');
         this._closePublication();
         this._publicationRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${publicationId}`);
         this._publicationRef.on('value', this._boundSetPublication);

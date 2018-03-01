@@ -25,7 +25,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       },
       params: {
         type: Object,
-        statePath: 'littleqSmallRouter.params'
+        statePath: 'littleqQueryParams.params'
       }
     };
   }
@@ -39,7 +39,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   _showPublication (paramsSessionId, sessionId) {
     this.showPublications = this._isEqual(paramsSessionId, sessionId);
-    if (this.showPublications) scrollTo(0, scrollY + this.parentNode.parentNode.querySelector('h2').getBoundingClientRect().top);
+    if (this.showPublications) scrollTo(0, scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top);
   }
 
   _setClass (venue) { this.classList.add(venue.toLowerCase()); }

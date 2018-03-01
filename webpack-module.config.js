@@ -1,9 +1,5 @@
 'use strict';
-
-const {resolve} = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-const outputPath = resolve('dist');
 
 module.exports = (IS_DEV_SERVER) => {
   return {

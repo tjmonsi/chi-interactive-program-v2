@@ -1,21 +1,25 @@
 <h4>
   <template is="dom-if" if="[[_isEqual(params.publicationId, publicationId)]]">
     <a href="/day/[[scheduleId]]/session/[[publication.sessionId]]">[[publication.title]]</a>
-    <template is="dom-if" if="[[publication.hm]]">
-      <img src="/assets/honorable.png">
-    </template>
-    <template is="dom-if" if="[[publication.award]]">
-      <img src="/assets/best.png">
-    </template>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.publicationId, publicationId)]]">
     <a href="/day/[[scheduleId]]/session/[[publication.sessionId]]/publication/[[publicationId]]">[[publication.title]]</a>
-    <template is="dom-if" if="[[publication.hm]]">
-      <img src="/assets/honorable.png">
-    </template>
-    <template is="dom-if" if="[[publication.award]]">
-      <img src="/assets/best.png">
-    </template>
+  </template>
+
+  <template is="dom-if" if="[[publication.acmLink]]">
+    <a href="[[publication.acmLink]]" target="_blank" rel="noopener noreferrer">
+      <svg class="icon">
+        <title>Download Paper</title>
+        <use xlink:href="/assets/icons.svg#link"></use>
+      </svg>
+    </a>
+  </template>
+
+  <template is="dom-if" if="[[publication.hm]]">
+    <img title="Honorable Mention" alt="Honorable Mention" src="/assets/honorable.png">
+  </template>
+  <template is="dom-if" if="[[publication.award]]">
+    <img title="Best Paper" alt="Best Paper" src="/assets/best.png">
   </template>
 </h4>
 <section>

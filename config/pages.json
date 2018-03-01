@@ -23,8 +23,8 @@
       ]
     },
     {
-      "route": "/login",
-      "page": "page-login"
+      "route": "/search",
+      "page": "page-search"
     },
     {
       "route": "/authorized",

@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, conferenceId, version } from 'firebase-obj';
 const collection = 'schedule';
 
 export const ChiScheduleMixin = dedupingMixin(base => {
@@ -33,8 +34,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
       this._closeSchedule();
     }
 
-    async _getSchedule () {
-      const { firebase, conferenceId, version } = await import('firebase-obj');
+    _getSchedule () {
       this._closeSchedule();
       this._scheduleRef = firebase
         .database()

@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'session';
 
 export const ChiSessionMixin = dedupingMixin(base => {
@@ -43,7 +44,6 @@ export const ChiSessionMixin = dedupingMixin(base => {
 
     async _getSession (sessionId) {
       if (sessionId) {
-        const { firebase, version } = await import('firebase-obj');
         this._closeSession();
         this._sessionRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${sessionId}`);
         this._sessionRef.on('value', this._boundSetSession);

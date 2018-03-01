@@ -1,9 +1,6 @@
 <h1>
-  [[scheduleObj.dayString]]
+  [[scheduleObj.dayString]] - [[_getDateString(scheduleObj.dateString)]]
 </h1>
-<p>
-  [[scheduleObj.dateString]]
-</p>
 <template is="dom-repeat" items="[[timeslots]]">
-  <chi-timeslot timeslot-id="[[item]]"></chi-timeslot>
+  <chi-timeslot timeslot-id="[[item]]" schedule-index="[[scheduleIndex]]"></chi-timeslot>
 </template>

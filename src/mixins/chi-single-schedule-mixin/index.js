@@ -1,4 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
+import { firebase, version } from 'firebase-obj';
 const collection = 'schedule';
 
 export const ChiSingleScheduleMixin = dedupingMixin(base => {
@@ -33,7 +34,6 @@ export const ChiSingleScheduleMixin = dedupingMixin(base => {
 
     async _getSchedule (scheduleId) {
       if (scheduleId) {
-        const { firebase, version } = await import('firebase-obj'); // eslint-disable-line
         this._closeSchedule();
         this._scheduleRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${scheduleId}`);
         this._scheduleRef.on('value', this._boundSetSchedule);

@@ -13,6 +13,33 @@ import template from './template.html';
 class Component extends ChiTimeslotMixin(Element) {
   static get is () { return 'chi-timeslot'; }
   static get template () { return `<style>${style}</style>${template}`; }
+
+  static get properties () {
+    return {
+      scheduleIndex: {
+        type: Number
+      }
+    };
+  }
+
+  _timeslotColorClass (index) {
+    switch (index) {
+      case 0:
+        return 'grey';
+      case 1:
+        return 'blue';
+      case 2:
+        return 'green';
+      case 3:
+        return 'yellow';
+      case 4:
+        return 'orange';
+      case 5:
+        return 'pink';
+      default:
+        return 'pink';
+    }
+  }
 }
 
 !customElements.get(Component.is)

@@ -1,6 +1,7 @@
 {
   "page-home": "page-home",
   "page-day": "page-day",
+  "page-search": "page-search",
   "page-not-found": "page-not-found",
   "page-not-authorized": "page-not-authorized",
   "page-login": "page-login",

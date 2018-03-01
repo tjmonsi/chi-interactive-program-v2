@@ -8,6 +8,14 @@ import 'chi-timeslot';
 import style from './style.styl';
 import template from './template.html';
 
+const monthNames = [
+  'January', 'February', 'March',
+  'April', 'May', 'June', 'July',
+  'August', 'September', 'October',
+  'November', 'December'
+];
+const formatDate = (date) => `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+
 class Component extends Element {
   static get is () { return 'chi-day'; }
   static get template () { return `<style>${style}</style>${template}`; }
@@ -19,6 +27,9 @@ class Component extends Element {
       timeslots: {
         type: Array,
         value: []
+      },
+      scheduleIndex: {
+        type: Number
       }
     };
   }
@@ -36,6 +47,10 @@ class Component extends Element {
       Object.entries(timeslots).forEach(([key, item]) => { array.splice(item.value, 0, key); });
       this.set('timeslots', array);
     }, 100);
+  }
+
+  _getDateString (dateString) {
+    return formatDate(new Date(dateString));
   }
 }
 
