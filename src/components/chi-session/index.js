@@ -3,6 +3,7 @@ import { Element } from '@polymer/polymer/polymer-element';
 import { ChiSessionMixin } from 'chi-session-mixin';
 import { customElements, scrollTo, scrollY, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
+import { CHI_STATE } from 'chi-interactive-schedule/reducer';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-publication';
@@ -27,6 +28,11 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         type: Object,
         value: {},
         statePath: 'littleqQueryParams.params'
+      },
+      venues: {
+        type: Array,
+        value: [],
+        statePath: 'chiState.venues'
       }
     };
   }
@@ -34,7 +40,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
   static get observers () {
     return [
       '_showPublication(params.sessionId, sessionId)',
-      '_setClass(session.venue)'
+      '_setClass(session.venue)',
+      '_addVenue(session.venue, venues)'
     ];
   }
 
@@ -57,6 +64,13 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   _setClass (venue) { this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
 
+  _addVenue (venue, oldVenues) {
+    if (venue && oldVenues.indexOf(venue.toLowerCase()) < 0) {
+      const venues = [ ...oldVenues, venue.toLowerCase() ];
+      this.dispatch({ type: CHI_STATE.VENUE, venues });
+    }
+  }
+
   _isEqual (a, b) { return a === b; }
 
   getVenue (venue) {
@@ -65,6 +79,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         return 'alt.chi';
       case 'casestudy':
         return 'Case Study';
+      case 'docconsortium':
+        return 'Doctoral Consortium';
       default:
         return venue.charAt(0).toUpperCase() + venue.slice(1);
     }

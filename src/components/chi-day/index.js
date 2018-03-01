@@ -64,7 +64,7 @@ class Component extends LittleQStoreMixin(Element) {
 
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (showDay) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h1').getBoundingClientRect().top) - 82);
+        if (showDay) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h1').getBoundingClientRect().top) - 102);
       }, 100);
     });
   }

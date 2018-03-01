@@ -5,13 +5,13 @@
   <nav class="on-top">
     <ul class="desktop">
       <li class="phone">
-        <button type="button" class="nav-button menu" on-click="openNavigation">
+        <button type="button" class="nav-button menu" on-tap="openNavigation">
           <svg class="icon">
             <title>Open Navigation</title>
             <use xlink:href="/assets/icons.svg#menu"></use>
           </svg>
         </button>
-        <button type="button" class="nav-button close hidden" on-click="closeNavigation">
+        <button type="button" class="nav-button close hidden" on-tap="closeNavigation">
           <svg class="icon">
             <title>Close Navigation</title>
             <use xlink:href="/assets/icons.svg#close"></use>
@@ -32,9 +32,24 @@
       </template>
       <li class="search-item">
         <form>
-          <div class="input-container">
+          <div class="input-container search-container">
             <input class="search" name="search" id="search">
-            <button type="button" on-click="search">Search</button>
+            <button class="search-button" type="button" on-tap="search">Search</button>
+            <button class="search-button" type="button" on-tap="filter">Filter</button>
+
+            <button class="search-button-icon" type="button" on-tap="search">
+              <svg class="icon">
+                <title>Search</title>
+                <use xlink:href="/assets/icons.svg#search"></use>
+              </svg>
+            </button>
+
+            <button class="search-button-icon" type="button" on-tap="filter">
+              <svg class="icon">
+                <title>Filter</title>
+                <use xlink:href="/assets/icons.svg#filter"></use>
+              </svg>
+            </button>
           </div>
         </form>
       </li>
@@ -44,13 +59,13 @@
   <nav class="fixed">
     <ul class="container desktop">
       <li class="phone">
-        <button type="button" class="nav-button menu" on-click="openNavigation">
+        <button type="button" class="nav-button menu" on-tap="openNavigation">
           <svg class="icon">
             <title>Open Navigation</title>
             <use xlink:href="/assets/icons.svg#menu"></use>
           </svg>
         </button>
-        <button type="button" class="nav-button close hidden" on-click="closeNavigation">
+        <button type="button" class="nav-button close hidden" on-tap="closeNavigation">
           <svg class="icon">
             <title>Close Navigation</title>
             <use xlink:href="/assets/icons.svg#close"></use>
@@ -72,9 +87,23 @@
 
       <li class="search-item">
         <form>
-          <div class="input-container">
+          <div class="input-container search-container">
             <input class="search" name="search" id="search">
-            <button type="button" on-click="search">Search</button>
+            <button class="search-button" type="button" on-tap="search">Search</button>
+            <button class="search-button" type="button" on-tap="filter">Filter</button>
+            <button class="search-button-icon" type="button" on-tap="search">
+              <svg class="icon">
+                <title>Search</title>
+                <use xlink:href="/assets/icons.svg#search"></use>
+              </svg>
+            </button>
+
+            <button class="search-button-icon" type="button" on-tap="filter">
+              <svg class="icon">
+                <title>Filter</title>
+                <use xlink:href="/assets/icons.svg#filter"></use>
+              </svg>
+            </button>
           </div>
         </form>
       </li>
@@ -97,6 +126,25 @@
       </template>
     </ul>
   </nav>
+
+  <div class="filter-container">
+    <h3>Filter Schedule</h3>
+    <form>
+    <div class="filter-grid">
+      <div class="checkbox-container">
+        <input type="checkbox" value="all" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
+        <label>All</label>
+      </div>
+      <template is="dom-repeat" items="[[venues]]">
+        <div class="checkbox-container">
+          <input type="checkbox" value="[[item]]" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
+          <label>[[getVenue(item)]]</label>
+        </div>
+      </template>
+
+      </div>
+    </form>
+  </div>
 
   <template is="dom-if" if="[[!params.scheduleAtAGlance]]">
     <chi-full-schedule></chi-full-schedule>

@@ -1,4 +1,5 @@
 @import '~objects/_container.styl';
+@import '~settings/_variables.styl';
 
 :host
   display: block
@@ -13,14 +14,16 @@ nav
     left: 0;
     right: 0;
     background: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     display: none;
 
   &.fixed-phone
     position: fixed;
-    top: 62px;
+    top: 72px;
     left: 0;
     right: 0;
     background: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     display: none;
 
   ul
@@ -52,14 +55,17 @@ nav
       border: none;
       border-bottom: 1px solid black;
 
+    @media screen and (max-width: 600px)
+      margin: 0;
+
   li.schedule
-    @media screen and (max-width: 1180px)
+    @media screen and (max-width: 1200px)
       display: none;
 
   li.phone
     display: none
 
-    @media screen and (max-width: 1180px)
+    @media screen and (max-width: 1200px)
       display: block
 
     @media screen and (max-width: 600px)
@@ -90,3 +96,94 @@ nav
     background: $dark;
     color: $light;
     fill: $light;
+
+.search-container
+  @media screen and (max-width: 450px)
+    input
+      width: 170px
+
+  @media screen and (max-width: 420px)
+    input
+      width: 150px
+
+.search-button
+  background: none;
+  border: 1px solid black;
+  background: $brand-green;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 1rem;
+  @media screen and (max-width: 390px)
+    display: none
+
+.search-container
+  @media screen and (max-width: 390px)
+    display: flex;
+    align-items: center;
+
+    input
+      flex: 1
+      margin-left: 20px
+
+  @media screen and (max-width: 320px)
+    input
+      width: 80px
+
+  @media screen and (max-width: 260px)
+    input
+      width: 60px
+
+  @media screen and (max-width: 240px)
+    input
+      width: 40px
+
+.search-button-icon
+  background: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: none
+
+  .icon
+    fill: $brand-green;
+
+  @media screen and (max-width: 390px)
+    display: inline-block
+
+.filter-container
+  padding: 20px
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  display: none;
+
+  h3
+    margin: 0
+
+  .filter-grid
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr
+
+    @media screen and (max-width: 1000px)
+      grid-template-columns: 1fr 1fr 1fr
+
+    @media screen and (max-width: 770px)
+      grid-template-columns: 1fr 1fr
+
+    @media screen and (max-width: 550px)
+      grid-template-columns: 1fr
+
+    .checkbox-container
+      padding: 10px 20px;
+
+      @media screen and (max-width: 550px)
+        padding: 5px 20px
+
+      @media screen and (max-height: 500px)
+        padding: 0px 20px
