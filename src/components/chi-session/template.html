@@ -11,10 +11,10 @@
   [[getVenue(session.venue)]]
   <template is="dom-if" if="[[!showPublications]]">
     <template is="dom-if" if="[[session.hasAward]]">
-      <img title="Session has Best Paper Award" alt="Session has Best Paper Award" src="/assets/best.png">
+      <img title="Session has Best Paper Award" alt="Session has Best Paper Award" src="[[_baseUrl]]assets/best.png">
     </template>
     <template is="dom-if" if="[[session.hasHonorableMention]]">
-      <img title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award"src="/assets/honorable.png">
+      <img title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award"src="[[_baseUrl]]assets/honorable.png">
     </template>
   </template>
 </p>

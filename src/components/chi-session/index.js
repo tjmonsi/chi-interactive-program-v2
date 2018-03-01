@@ -46,6 +46,10 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         type: Boolean,
         reflectToAttribute: true,
         value: false
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }

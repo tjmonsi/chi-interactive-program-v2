@@ -43,6 +43,10 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
         type: Boolean,
         reflectToAttribute: true,
         value: false
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }

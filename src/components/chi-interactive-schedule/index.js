@@ -38,6 +38,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }

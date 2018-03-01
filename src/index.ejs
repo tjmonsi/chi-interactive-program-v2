@@ -70,6 +70,9 @@
     <chi-interactive-schedule></chi-interactive-schedule>
 
     <script>
+      window.baseURL = '/';
+    </script>
+    <script>
       // polyfill detector
       /*! modernizr 3.5.0 (Custom Build) | MIT *
       * https://modernizr.com/download/?-es5array-es5date-es5function-es5object-es5string-es6array-es6collections-es6math-es6number-es6object-es6string-promises !*/
@@ -80,9 +83,9 @@
         // es5 array, date, functions, object, and string methods
         if (!Modernizr.es5array || !Modernizr.es5date || !Modernizr.es5function || !Modernizr.es5object || !Modernizr.es5string) {
           var es5shim = document.createElement('script');
-          es5shim.src = '/vendor/es5-shim.js';
+          es5shim.src = window.baseURL + 'vendor/es5-shim.js';
           var es5sham = document.createElement('script');
-          es5sham.src = '/vendor/es5-sham.js';
+          es5sham.src = window.baseURL + 'vendor/es5-sham.js';
           refScript.parentNode.insertBefore(es5shim, refScript);
           refScript.parentNode.insertBefore(es5sham, refScript);
         }
@@ -91,9 +94,9 @@
         // es6 set and collections, math, number, object, and string methods
         if (!Modernizr.es6collections || !Modernizr.es6math || !Modernizr.es6number || !Modernizr.es6object || !Modernizr.es6string) {
           var es6shim = document.createElement('script');
-          es6shim.src = '/vendor/es6-shim.js';
+          es6shim.src = window.baseURL + 'vendor/es6-shim.js';
           var es6sham = document.createElement('script');
-          es6sham.src = '/vendor/es6-sham.js';
+          es6sham.src = window.baseURL + 'vendor/es6-sham.js';
           refScript.parentNode.insertBefore(es6shim, refScript);
           refScript.parentNode.insertBefore(es6sham, refScript);
         }
@@ -101,14 +104,14 @@
         // loads promise polyfil if it doesn't have the native promise
         if (!Modernizr.promises) {
           var promise = document.createElement('script');
-          promise.src = '/vendor/es6-promise.js';
+          promise.src = window.baseURL + 'vendor/es6-promise.js';
           refScript.parentNode.insertBefore(promise, refScript);
         }
 
         // loads intersection observer polyfil if it doesn't have the native intersection observer
         if (!window.IntersectionObserver) {
           var io = document.createElement('script');
-          io.src = '/vendor/intersection-observer.js';
+          io.src = window.baseURL + 'vendor/intersection-observer.js';
           refScript.parentNode.insertBefore(io, refScript);
         }
 
@@ -116,13 +119,13 @@
         if (!('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype) ||
           (window.ShadyDOM && window.ShadyDOM.force)) {
           var shady = document.createElement('script');
-          shady.src = '/vendor/scoping-shim.js';
+          shady.src = window.baseURL + 'vendor/scoping-shim.js';
           refScript.parentNode.insertBefore(shady, refScript);
         }
 
         if (!window.fetch || !window.Headers) {
           var fetchPoly = document.createElement('script')
-          fetchPoly.src = '/vendor/fetch.js'
+          fetchPoly.src = window.baseURL + 'vendor/fetch.js'
           refScript.parentNode.insertBefore(fetchPoly, refScript)
         }
         window.onerror = function(err, url, line) {
@@ -147,16 +150,16 @@
       our project code has been transpiled from ES2015 to ES5 and native Custom
       Elements expect elements will be registered as classes.
     -->
-    <div id="ce-es5-shim">
-      <script type="text/javascript">
-        if (!window.customElements) {
-          var ceShimContainer = document.querySelector('#ce-es5-shim');
-          ceShimContainer.parentElement.removeChild(ceShimContainer);
-        }
-      </script>
-      <script type="text/javascript" src="vendor/custom-elements-es5-adapter.js" async nomodule></script>
-    </div>
-
+    <script>
+      var refScript = document.body.getElementsByTagName('script')[0];
+      if (window.customElements) {
+        var ce = document.createElement('script');
+        ce.src = window.baseURL + 'vendor/custom-elements-es5-adapter.js';
+        ce.setAttribute('nomodule', true);
+        ce.setAttribute('async', true);
+        refScript.parentNode.insertBefore(ce, refScript);
+      }
+    </script>
     <!--
       Use the webcomponents-loader script which will feature detect which Web
       Components features are missing and lazy load the appropriate polyfills.
@@ -169,12 +172,12 @@
           document.removeEventListener('WebComponentsReady', componentsReady, false);
           var script = document.createElement('script');
           script.async = true
-          script.src = '/bundle.js';
+          script.src = window.baseURL + 'bundle.js';
           script.setAttribute('nomodule', true);
           var scriptModule = document.createElement('script');
 
           scriptModule.async = true
-          scriptModule.src = '/module.bundle.js';
+          scriptModule.src = window.baseURL + 'module.bundle.js';
           scriptModule.setAttribute('type', 'module');
           var refScript = document.body.getElementsByTagName('script')[0];
           refScript.parentNode.insertBefore(script, refScript);
@@ -191,16 +194,9 @@
         var name = 'webcomponents-loader.js';
         // Feature detect which polyfill needs to be imported.
         var polyfills = [];
-        if (!('import' in document.createElement('link'))) {
-          polyfills.push('hi');
-        }
-        if (!('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype) ||
-          (window.ShadyDOM && window.ShadyDOM.force)) {
-          polyfills.push('sd');
-        }
-        if (!window.customElements || window.customElements.forcePolyfill) {
-          polyfills.push('ce');
-        }
+        if (!('import' in document.createElement('link'))) polyfills.push('hi');
+        if (!('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype) || (window.ShadyDOM && window.ShadyDOM.force)) polyfills.push('sd');
+        if (!window.customElements || window.customElements.forcePolyfill) polyfills.push('ce');
         // NOTE: any browser that does not have template or ES6 features
         // must load the full suite (called `lite` for legacy reasons) of polyfills.
         if (!('content' in document.createElement('template')) || !window.Promise || !Array.from ||
@@ -211,7 +207,7 @@
 
         if (polyfills.length) {
           var script = document.createElement('script');
-          script.src = '/vendor/webcomponents-loader.js';
+          script.src = window.baseURL + 'vendor/webcomponents-loader.js';
           var newScript = document.createElement('script');
           // Load it from the right place.
           var replacement = 'webcomponents-' + polyfills.join('-') + '.js';
@@ -249,7 +245,7 @@
         }
       })();
 
-      const link = document.createElement('link');
+      var link = document.createElement('link');
       link.href = 'https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed:700';
       link.rel = 'stylesheet';
       var refScript = document.body.getElementsByTagName('script')[0];
