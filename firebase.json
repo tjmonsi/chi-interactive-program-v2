@@ -5,6 +5,26 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source" : "**/*.js",
+        "headers" : [
+          {
+          "key" : "Access-Control-Allow-Origin",
+          "value" : "*"
+          }
+        ]
+      },
+      {
+        "source" : "**/*.@(jpg|jpeg|gif|png|svg)",
+        "headers" : [
+          {
+            "key" : "Cache-Control",
+            "value" : "max-age=7200"
+          }
+        ]
+      }
     ]
   }
 }

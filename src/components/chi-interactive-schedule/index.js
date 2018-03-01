@@ -50,6 +50,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     return [
       'closeNavigation(params.scheduleId, params.sessionId, params.publicationId)',
       '_queryChanged(params.search)',
+      '_updateParent(params, params.*)',
       '_goToTop(params.sessionId)'
     ];
   }
@@ -78,6 +79,13 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   disconnectedCallback () {
     super.disconnectedCallback();
     if (this._observer) this._observer.disconnect();
+  }
+
+  _updateParent (params) {
+    const queryParams = [];
+    for (let q in params) { if (params[q]) queryParams.push(q + '=' + params[q]); }
+    if (window.top && window.top.history) window.top.history.pushState({}, '', '?' + queryParams.join('&'));
+    else if (window.top && window.top.updateURL && typeof window.top.updateURL === 'function') window.parent.updateURL(params);
   }
 
   _goToTop (sessionId) {

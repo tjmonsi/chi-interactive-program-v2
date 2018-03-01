@@ -73,6 +73,14 @@
       window.baseURL = '/';
     </script>
     <script>
+      window.updateURL = function (params) {
+        var queryParams = [];
+        for (let q in params) { if (params[q]) queryParams.push(q + '=' + params[q]); }
+        window.history.pushState({}, '', '?' + queryParams.join('&'));
+        window.dispatchEvent(new window.CustomEvent('location-changed'));
+      };
+    </script>
+    <script>
       // polyfill detector
       /*! modernizr 3.5.0 (Custom Build) | MIT *
       * https://modernizr.com/download/?-es5array-es5date-es5function-es5object-es5string-es6array-es6collections-es6math-es6number-es6object-es6string-promises !*/
