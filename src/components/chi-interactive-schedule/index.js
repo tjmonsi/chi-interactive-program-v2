@@ -1,12 +1,13 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners';
-import { customElements, IntersectionObserver, scrollTo } from 'global/window';
+import { customElements, IntersectionObserver, scrollTo, history, dispatchEvent, CustomEvent } from 'global/window';
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-// import 'utils/pages';
-// import 'utils/fragments';
+import { conf } from 'chi-conference-config';
 import { CHI_STATE } from './reducer';
+import { debounce } from './debounce';
+import algoliasearch from 'algoliasearch/lite';
 import '@littleq/path-fetcher';
 import '@littleq/query-params-fetcher';
 import 'chi-full-schedule';
@@ -16,6 +17,9 @@ import '@polymer/polymer/lib/elements/dom-if';
 // define style and template
 import style from './style.styl';
 import template from './template.html';
+
+const client = algoliasearch('3QB5G30QFN', '67be59962960c0eb7aec182885ef1b3f');
+const index = client.initIndex(`chi-index-${conf}`);
 
 class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin(Element))) {
   static get is () { return 'chi-interactive-schedule'; }
@@ -41,8 +45,14 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   static get observers () {
     return [
       'closeNavigation(params.scheduleId, params.sessionId, params.publicationId)',
+      '_queryChanged(params.search)',
       '_goToTop(params.sessionId)'
     ];
+  }
+
+  constructor () {
+    super();
+    this._debouncedSearch = debounce(this.search.bind(this), 500);
   }
 
   connectedCallback () {
@@ -87,9 +97,51 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   }
 
   filter () {
-    this.closeNavigation();
+    this.shadowRoot.querySelectorAll('.nav-button.menu').forEach(node => (node.style.display = 'block'));
+    this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'none'));
+    this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
     this._filterContainer = !this._filterContainer;
     this.shadowRoot.querySelector('.filter-container').style.display = this._filterContainer ? 'block' : 'none';
+  }
+
+  _onChangeQuery ({ target: el }) {
+    this.shadowRoot.querySelectorAll('[name=search]').forEach(node => {
+      if (node !== el) node.value = el.value;
+    });
+    this._debouncedSearch();
+  }
+
+  search () {
+    let query = '';
+    this.shadowRoot.querySelectorAll('[name=search]').forEach(node => {
+      query = node.value || query;
+    });
+    history.pushState({}, '', query ? `?search=${query}` : '?sessionId=all');
+    dispatchEvent(new CustomEvent('location-changed'));
+  }
+
+  clear () {
+    const queryParams = [];
+    for (let q in this.params) {
+      if (q !== 'search') queryParams.push(`${q}=${this.params[q]}`);
+    }
+    history.pushState({}, '', `?${queryParams.join('&')}`);
+    dispatchEvent(new CustomEvent('location-changed'));
+  }
+
+  async _queryChanged (query) {
+    this.shadowRoot.querySelectorAll('[name=search]').forEach(node => {
+      node.value = query || '';
+    });
+    const { hits: queryResults } = query
+      ? await index.search(query, {
+        hitsPerPage: 300,
+        attributesToRetrieve: [
+          'authors', 'conferenceId', 'searchType', 'sessionId', 'timeslots', 'publications', 'scheduleId', 'timeslotId'
+        ]
+      })
+      : { hits: [] };
+    this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
   }
 
   addFilter ({ target: el }) {
@@ -107,12 +159,14 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     }, 10);
   }
 
+  _setFilterId (venue) { this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
+
   _checkIfFiltered (venue, filteredVenues) {
     return filteredVenues.indexOf(venue) >= 0;
   }
 
   getVenue (venue) {
-    switch (venue) {
+    switch (venue.toLowerCase()) {
       case 'altchi':
         return 'alt.chi';
       case 'casestudy':

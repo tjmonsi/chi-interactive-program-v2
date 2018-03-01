@@ -30,32 +30,31 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
         type: Object,
         value: {},
         statePath: 'littleqQueryParams.params'
+      },
+      filteredVenues: {
+        type: Array,
+        statePath: 'chiState.filteredVenues'
+      },
+      queryResults: {
+        type: Array,
+        statePath: 'chiState.queryResults'
+      },
+      hidden: {
+        type: Boolean,
+        reflectToAttribute: true,
+        value: false
       }
     };
   }
 
   static get observers () {
     return [
-      '_showInformation(params.publicationId, publicationId, publication)'
+      '_showInformation(params.publicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)'
     ];
   }
 
-  // constructor () {
-  //   super();
-  //   this._boundShowInformation = this._showInformation.bind(this, this.params.publicationId, this.publicationId);
-  // }
-
-  // connectedCallback () {
-  //   super.connectedCallback();
-  //   addEventListener('chi-layout-reflow', this._boundShowInformation);
-  // }
-
-  // disconnectedCallback () {
-  //   super.disconnectedCallback();
-  //   removeEventListener('chi-layout-reflow', this._boundShowInformation);
-  // }
-
   _showInformation (paramsPublicationId, publicationId) {
+    // console.log(this.publication)
     this.showInformation = this._isEqual(paramsPublicationId, publicationId);
     requestAnimationFrame(() => {
       setTimeout(() => {

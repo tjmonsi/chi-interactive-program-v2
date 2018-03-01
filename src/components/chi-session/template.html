@@ -1,10 +1,10 @@
 
 <h3>
   <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=all">[[_cleanText(session.title)]]</a>
+    <a href="?timeslotId=[[session.timeslotId]]&search=[[params.search]]">[[_cleanText(session.title)]]</a>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=[[sessionId]]">[[_cleanText(session.title)]]</a>
+    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]</a>
   </template>
 </h3>
 <p class="venue">
@@ -22,7 +22,7 @@
 <section>
   <template is="dom-if" if="[[showPublications]]">
     <template is="dom-repeat" items="[[publications]]">
-      <chi-publication publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
+      <chi-publication show-publication-id$="[[item]]" publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
     </template>
   </template>
 </section>

@@ -36,10 +36,21 @@ section
       @media screen and (max-width: 449px)
         width: 100%;
 
+  chi-session[hidden]
+    display: none;
 
   chi-session[show-publications]
     grid-column: 1 / 5;
     width: 100%;
+
+    @media screen and (max-width: 849px)
+      grid-column: 1 / 4;
+
+    @media screen and (max-width: 599px)
+      grid-column: 1 / 3;
+
+    @media screen and (max-width: 449px)
+      grid-column: 1 / 2;
 
     @supports (display: grid)
       width: auto;

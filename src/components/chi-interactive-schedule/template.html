@@ -19,13 +19,13 @@
         </button>
       </li>
       <li class="schedule">
-        <a href="?sessionId=all">
+        <a href="?sessionId=all&search=[[params.search]]">
           Full Schedule
         </a>
       </li>
       <template is="dom-repeat" items="[[scheduleArray]]">
         <li class="schedule">
-          <a href="?scheduleId=[[item.$key]]">
+          <a href="?scheduleId=[[item.$key]]&search=[[params.search]]">
             [[item.dayString]]
           </a>
         </li>
@@ -33,14 +33,22 @@
       <li class="search-item">
         <form>
           <div class="input-container search-container">
-            <input class="search" name="search" id="search">
+            <input class="search" name="search" on-keyup="_onChangeQuery" on-change="_onChangeQuery">
             <button class="search-button" type="button" on-tap="search">Search</button>
+            <button class="search-button" type="button" on-tap="clear">Clear</button>
             <button class="search-button" type="button" on-tap="filter">Filter</button>
 
             <button class="search-button-icon" type="button" on-tap="search">
               <svg class="icon">
                 <title>Search</title>
                 <use xlink:href="/assets/icons.svg#search"></use>
+              </svg>
+            </button>
+
+            <button class="search-button-icon" type="button" on-tap="clear">
+              <svg class="icon">
+                <title>Search</title>
+                <use xlink:href="/assets/icons.svg#close"></use>
               </svg>
             </button>
 
@@ -88,13 +96,21 @@
       <li class="search-item">
         <form>
           <div class="input-container search-container">
-            <input class="search" name="search" id="search">
+            <input class="search" name="search" on-keyup="_onChangeQuery" on-change="_onChangeQuery">
             <button class="search-button" type="button" on-tap="search">Search</button>
+            <button class="search-button" type="button" on-tap="clear">Clear</button>
             <button class="search-button" type="button" on-tap="filter">Filter</button>
             <button class="search-button-icon" type="button" on-tap="search">
               <svg class="icon">
                 <title>Search</title>
                 <use xlink:href="/assets/icons.svg#search"></use>
+              </svg>
+            </button>
+
+            <button class="search-button-icon" type="button" on-tap="clear">
+              <svg class="icon">
+                <title>Search</title>
+                <use xlink:href="/assets/icons.svg#close"></use>
               </svg>
             </button>
 
@@ -132,13 +148,19 @@
     <form>
     <div class="filter-grid">
       <div class="checkbox-container">
-        <input type="checkbox" value="all" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
-        <label>All</label>
+        <label>
+          <input type="checkbox" value="all" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
+          All
+
+        </label>
       </div>
       <template is="dom-repeat" items="[[venues]]">
         <div class="checkbox-container">
-          <input type="checkbox" value="[[item]]" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
-          <label>[[getVenue(item)]]</label>
+
+          <label>
+            <input type="checkbox" value="[[item]]" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
+            [[getVenue(item)]]
+          </label>
         </div>
       </template>
 

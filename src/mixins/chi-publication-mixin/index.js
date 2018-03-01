@@ -1,6 +1,5 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { firebase, version } from 'firebase-obj';
-import { dispatchEvent, CustomEvent } from 'global/window';
 const collection = 'publication';
 
 export const ChiPublicationMixin = dedupingMixin(base => {

@@ -1,9 +1,9 @@
 <h4>
   <template is="dom-if" if="[[_isEqual(params.publicationId, publicationId)]]">
-    <a href="?sessionId=[[publication.sessionId]]">[[publication.title]]</a>
+    <a href="?sessionId=[[publication.sessionId]]&search=[[params.search]]">[[publication.title]]</a>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.publicationId, publicationId)]]">
-    <a href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]">[[publication.title]]</a>
+    <a href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]&search=[[params.search]]">[[publication.title]]</a>
   </template>
 
   <template is="dom-if" if="[[publication.acmLink]]">

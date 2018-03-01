@@ -1,7 +1,9 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiTimeslotMixin } from 'chi-timeslot-mixin';
-import { customElements } from 'global/window';
+import { customElements, requestAnimationFrame, CustomEvent } from 'global/window';
+import { LittleQStoreMixin } from '@littleq/state-manager';
+import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-session';
@@ -10,7 +12,7 @@ import 'chi-session';
 import style from './style.styl';
 import template from './template.html';
 
-class Component extends ChiTimeslotMixin(Element) {
+class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
   static get is () { return 'chi-timeslot'; }
   static get template () { return `<style>${style}</style>${template}`; }
 
@@ -18,8 +20,32 @@ class Component extends ChiTimeslotMixin(Element) {
     return {
       scheduleIndex: {
         type: Number
+      },
+      filteredVenues: {
+        type: Array,
+        statePath: 'chiState.filteredVenues'
       }
     };
+  }
+
+  static get observers () {
+    return [
+      '_checkTimeslot(sessions, filteredVenues, filteredVenues.splices)'
+    ];
+  }
+
+  constructor () {
+    super();
+    this._debouncedCheckTimeslot = debounce(this._checkTimeslot.bind(this), 500);
+  }
+
+  _checkTimeslot () {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.hidden = this.sessions.length === this.shadowRoot.querySelectorAll('chi-session[hidden]').length;
+        this.dispatchEvent(new CustomEvent('chi-timeslot-hidden'));
+      }, 150);
+    });
   }
 
   _timeslotColorClass (index) {

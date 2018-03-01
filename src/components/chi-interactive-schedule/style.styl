@@ -38,7 +38,7 @@ nav
 
 
   li
-    margin: 0 20px;
+    margin: 0 15px;
 
     a
       color: inherit
@@ -98,9 +98,21 @@ nav
     fill: $light;
 
 .search-container
-  @media screen and (max-width: 450px)
+  @media screen and (max-width: 1200px)
     input
-      width: 170px
+      width: 300px
+
+  @media screen and (max-width: 700px)
+    input
+      width: 200px
+
+  @media screen and (max-width: 550px)
+    input
+      width: auto
+
+  @media screen and (max-width: 490px)
+    input
+      width: 150px
 
   @media screen and (max-width: 420px)
     input
@@ -115,11 +127,11 @@ nav
   cursor: pointer;
   padding: 5px 10px;
   font-size: 1rem;
-  @media screen and (max-width: 390px)
+  @media screen and (max-width: 480px)
     display: none
 
 .search-container
-  @media screen and (max-width: 390px)
+  @media screen and (max-width: 480px)
     display: flex;
     align-items: center;
 
@@ -127,15 +139,15 @@ nav
       flex: 1
       margin-left: 20px
 
-  @media screen and (max-width: 320px)
+  @media screen and (max-width: 350px)
     input
       width: 80px
 
-  @media screen and (max-width: 260px)
+  @media screen and (max-width: 310px)
     input
       width: 60px
 
-  @media screen and (max-width: 240px)
+  @media screen and (max-width: 300px)
     input
       width: 40px
 
@@ -150,7 +162,7 @@ nav
   .icon
     fill: $brand-green;
 
-  @media screen and (max-width: 390px)
+  @media screen and (max-width: 480px)
     display: inline-block
 
 .filter-container

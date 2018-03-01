@@ -2,5 +2,5 @@
   [[scheduleObj.dayString]] - [[_getDateString(scheduleObj.dateString)]]
 </h1>
 <template is="dom-repeat" items="[[timeslots]]">
-  <chi-timeslot timeslot-id="[[item]]" schedule-index="[[scheduleIndex]]"></chi-timeslot>
+  <chi-timeslot timeslot-id="[[item]]" schedule-index="[[scheduleIndex]]" on-chi-timeslot-hidden="_debouncedCheckDay"></chi-timeslot>
 </template>

@@ -2,6 +2,7 @@
 import { Element } from '@polymer/polymer/polymer-element';
 import { customElements, scrollY, scrollTo, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
+import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import 'chi-timeslot';
 
@@ -35,6 +36,15 @@ class Component extends LittleQStoreMixin(Element) {
       params: {
         type: Object,
         statePath: 'littleqQueryParams.params'
+      },
+      filteredVenues: {
+        type: Array,
+        statePath: 'chiState.filteredVenues'
+      },
+      hidden: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
       }
     };
   }
@@ -42,8 +52,14 @@ class Component extends LittleQStoreMixin(Element) {
   static get observers () {
     return [
       '_getTimeslots(scheduleObj.timeslots, scheduleObj.timeslots.*)',
-      '_showDay(params.scheduleId, scheduleObj.$key)'
+      '_showDay(params.scheduleId, scheduleObj.$key)',
+      '_checkDay(timeslots, filteredVenues, filteredVenues.splices)'
     ];
+  }
+
+  constructor () {
+    super();
+    this._debouncedCheckDay = debounce(this._checkDay.bind(this), 500);
   }
 
   _getTimeslots (timeslots) {
@@ -66,6 +82,14 @@ class Component extends LittleQStoreMixin(Element) {
       setTimeout(() => {
         if (showDay) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h1').getBoundingClientRect().top) - 102);
       }, 100);
+    });
+  }
+
+  _checkDay () {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.hidden = this.timeslots.length === this.shadowRoot.querySelectorAll('chi-timeslot[hidden]').length;
+      }, 200);
     });
   }
 

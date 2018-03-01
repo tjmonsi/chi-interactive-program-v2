@@ -6,7 +6,7 @@
       </h2>
     </div>
     <template is="dom-repeat" items="[[sessions]]">
-      <chi-session session-id="[[item]]"></chi-session>
+      <chi-session session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot"></chi-session>
     </template>
   </section>
 </template>
