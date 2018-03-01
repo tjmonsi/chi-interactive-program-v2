@@ -52,6 +52,10 @@ const copyStatics = {
     {
       from: resolve(__dirname, './src/assets'),
       to: 'assets'
+    },
+    {
+      from: resolve(__dirname, './src/assets'),
+      to: 'program'
     }
   ]
 };

@@ -75,7 +75,7 @@
     <script>
       window.updateURL = function (params) {
         var queryParams = [];
-        for (let q in params) { if (params[q]) queryParams.push(q + '=' + params[q]); }
+        for (var q in params) { if (params[q]) queryParams.push(q + '=' + params[q]); }
         window.history.pushState({}, '', '?' + queryParams.join('&'));
         window.dispatchEvent(new window.CustomEvent('location-changed'));
       };
