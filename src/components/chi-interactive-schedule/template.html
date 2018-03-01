@@ -1,3 +1,104 @@
 <path-fetcher></path-fetcher>
 <query-params-fetcher></query-params-fetcher>
-<chi-full-schedule></chi-full-schedule>
+
+<section class="container">
+  <nav class="on-top">
+    <ul class="desktop">
+      <li class="phone">
+        <button type="button" class="nav-button menu" on-click="openNavigation">
+          <svg class="icon">
+            <title>Open Navigation</title>
+            <use xlink:href="/assets/icons.svg#menu"></use>
+          </svg>
+        </button>
+        <button type="button" class="nav-button close hidden" on-click="closeNavigation">
+          <svg class="icon">
+            <title>Close Navigation</title>
+            <use xlink:href="/assets/icons.svg#close"></use>
+          </svg>
+        </button>
+      </li>
+      <li class="schedule">
+        <a href="?sessionId=all">
+          Full Schedule
+        </a>
+      </li>
+      <template is="dom-repeat" items="[[scheduleArray]]">
+        <li class="schedule">
+          <a href="?scheduleId=[[item.$key]]">
+            [[item.dayString]]
+          </a>
+        </li>
+      </template>
+      <li class="search-item">
+        <form>
+          <div class="input-container">
+            <input class="search" name="search" id="search">
+            <button type="button" on-click="search">Search</button>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+  <nav class="fixed">
+    <ul class="container desktop">
+      <li class="phone">
+        <button type="button" class="nav-button menu" on-click="openNavigation">
+          <svg class="icon">
+            <title>Open Navigation</title>
+            <use xlink:href="/assets/icons.svg#menu"></use>
+          </svg>
+        </button>
+        <button type="button" class="nav-button close hidden" on-click="closeNavigation">
+          <svg class="icon">
+            <title>Close Navigation</title>
+            <use xlink:href="/assets/icons.svg#close"></use>
+          </svg>
+        </button>
+      </li>
+      <li class="schedule">
+        <a href="?sessionId=all">
+          Full Schedule
+        </a>
+      </li>
+      <template is="dom-repeat" items="[[scheduleArray]]">
+        <li class="schedule">
+          <a href="?scheduleId=[[item.$key]]">
+            [[item.dayString]]
+          </a>
+        </li>
+      </template>
+
+      <li class="search-item">
+        <form>
+          <div class="input-container">
+            <input class="search" name="search" id="search">
+            <button type="button" on-click="search">Search</button>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+  <nav class="fixed-phone">
+    <ul class="container">
+      <li class="schedule-phone">
+        <a href="?sessionId=all">
+          Full Schedule
+        </a>
+      </li>
+      <template is="dom-repeat" items="[[scheduleArray]]">
+        <li class="schedule-phone">
+          <a href="?scheduleId=[[item.$key]]">
+            [[item.dayString]]
+          </a>
+        </li>
+      </template>
+    </ul>
+  </nav>
+
+  <template is="dom-if" if="[[!params.scheduleAtAGlance]]">
+    <chi-full-schedule></chi-full-schedule>
+  </template>
+</section>

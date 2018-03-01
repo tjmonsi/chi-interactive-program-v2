@@ -1,10 +1,10 @@
 
 <h3>
   <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=all">[[session.title]]</a>
+    <a href="?sessionId=all">[[_cleanText(session.title)]]</a>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=[[sessionId]]">[[session.title]]</a>
+    <a href="?sessionId=[[sessionId]]">[[_cleanText(session.title)]]</a>
   </template>
 </h3>
 <p class="venue">

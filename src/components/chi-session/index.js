@@ -1,7 +1,7 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiSessionMixin } from 'chi-session-mixin';
-import { customElements, scrollTo, scrollY } from 'global/window';
+import { customElements, scrollTo, scrollY, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
@@ -25,6 +25,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       },
       params: {
         type: Object,
+        value: {},
         statePath: 'littleqQueryParams.params'
       }
     };
@@ -39,10 +40,22 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   _showPublication (paramsSessionId, sessionId) {
     this.showPublications = this._isEqual(paramsSessionId, sessionId);
-    if (this.showPublications) scrollTo(0, scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (this.showPublications) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 82);
+      }, 200);
+    });
   }
 
-  _setClass (venue) { this.classList.add(venue.toLowerCase()); }
+  _showPublicationClass (showPublications) {
+    return showPublications ? 'show-publications' : '';
+  }
+
+  _cleanText (title) {
+    return title.replace(/&nbsp;/, ' ').replace(/&amp;/, '&');
+  }
+
+  _setClass (venue) { this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
 
   _isEqual (a, b) { return a === b; }
 

@@ -56,6 +56,7 @@ export const ChiSessionMixin = dedupingMixin(base => {
 
     _setSession (snapshot) {
       this.set('session', snapshot.val());
+      // dispatchEvent(new CustomEvent('chi-layout-reflow'));
     }
 
     _getPublications (publications) {

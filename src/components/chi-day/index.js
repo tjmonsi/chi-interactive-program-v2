@@ -1,6 +1,7 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements } from 'global/window';
+import { customElements, scrollY, scrollTo, requestAnimationFrame } from 'global/window';
+import { LittleQStoreMixin } from '@littleq/state-manager';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import 'chi-timeslot';
 
@@ -16,7 +17,7 @@ const monthNames = [
 ];
 const formatDate = (date) => `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
-class Component extends Element {
+class Component extends LittleQStoreMixin(Element) {
   static get is () { return 'chi-day'; }
   static get template () { return `<style>${style}</style>${template}`; }
   static get properties () {
@@ -30,13 +31,18 @@ class Component extends Element {
       },
       scheduleIndex: {
         type: Number
+      },
+      params: {
+        type: Object,
+        statePath: 'littleqQueryParams.params'
       }
     };
   }
 
   static get observers () {
     return [
-      '_getTimeslots(scheduleObj.timeslots, scheduleObj.timeslots.*)'
+      '_getTimeslots(scheduleObj.timeslots, scheduleObj.timeslots.*)',
+      '_showDay(params.scheduleId, scheduleObj.$key)'
     ];
   }
 
@@ -52,6 +58,18 @@ class Component extends Element {
   _getDateString (dateString) {
     return formatDate(new Date(dateString));
   }
+
+  _showDay (paramsScheduleId, scheduleId) {
+    const showDay = this._isEqual(paramsScheduleId, scheduleId);
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (showDay) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h1').getBoundingClientRect().top) - 82);
+      }, 100);
+    });
+  }
+
+  _isEqual (a, b) { return a === b; }
 }
 
 !customElements.get(Component.is)

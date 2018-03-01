@@ -1,2 +1,92 @@
+@import '~objects/_container.styl';
+
 :host
   display: block
+
+nav
+  &.on-top
+    position: relative;
+
+  &.fixed
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    display: none;
+
+  &.fixed-phone
+    position: fixed;
+    top: 62px;
+    left: 0;
+    right: 0;
+    background: white;
+    display: none;
+
+  ul
+    list-style-type none
+    margin: 0;
+    padding: 0;
+
+  ul.desktop
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+
+  li
+    margin: 0 20px;
+
+    a
+      color: inherit
+      text-decoration: none;
+
+    a:hover
+      text-decoration: underline;
+
+  li.search-item
+    flex: 1
+    text-align: right
+
+    input
+      border: none;
+      border-bottom: 1px solid black;
+
+  li.schedule
+    @media screen and (max-width: 1180px)
+      display: none;
+
+  li.phone
+    display: none
+
+    @media screen and (max-width: 1180px)
+      display: block
+
+    @media screen and (max-width: 600px)
+      margin: 0;
+
+  li.schedule-phone
+    padding: 10px 0;
+
+.icon
+  width: 25px;
+  height: 25px;
+
+.nav-button
+  margin: 10px 20px;
+  background: none;
+  fill: $dark;
+  color: $dark;
+  border: none;
+  cursor: pointer;
+
+  @media screen and (max-width: 600px)
+    margin: 10px 0;
+
+  &.hidden
+    display: none;
+
+  &:hover
+    background: $dark;
+    color: $light;
+    fill: $light;

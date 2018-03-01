@@ -10,7 +10,6 @@ section
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr
-  transition: all 1s;
 
   @media screen and (max-width: 849px)
     grid-template-columns: 1fr 1fr 1fr
@@ -25,7 +24,7 @@ section
     float: left;
     border: 1px solid black;
     // border-top: none;
-    min-height: 150px;
+    min-height: 250px;
     // for flex when grid is not supported
     width: 250px;
 
@@ -71,6 +70,20 @@ section
 
   .yellow-timeslot
     background: $brand-yellow;
+
+  &.orange-border
+    border-top: 4px solid $brand-orange
+
+  .orange-timeslot
+    background: $brand-orange;
+    color: $light;
+
+  &.pink-border
+    border-top: 4px solid $brand-pink
+
+  .pink-timeslot
+    background: $brand-pink;
+    color: $light;
 
   .timeslot
     padding: 20px;

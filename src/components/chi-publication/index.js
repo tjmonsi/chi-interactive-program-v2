@@ -28,7 +28,8 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
       },
       params: {
         type: Object,
-        statePath: 'littleqSmallRouter.params'
+        value: {},
+        statePath: 'littleqQueryParams.params'
       }
     };
   }
@@ -39,12 +40,27 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     ];
   }
 
+  // constructor () {
+  //   super();
+  //   this._boundShowInformation = this._showInformation.bind(this, this.params.publicationId, this.publicationId);
+  // }
+
+  // connectedCallback () {
+  //   super.connectedCallback();
+  //   addEventListener('chi-layout-reflow', this._boundShowInformation);
+  // }
+
+  // disconnectedCallback () {
+  //   super.disconnectedCallback();
+  //   removeEventListener('chi-layout-reflow', this._boundShowInformation);
+  // }
+
   _showInformation (paramsPublicationId, publicationId) {
     this.showInformation = this._isEqual(paramsPublicationId, publicationId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 20); }
-      }, 100);
+        if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
+      }, 200);
     });
   }
 

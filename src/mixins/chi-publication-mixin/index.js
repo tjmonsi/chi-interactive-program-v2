@@ -1,5 +1,6 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { firebase, version } from 'firebase-obj';
+import { dispatchEvent, CustomEvent } from 'global/window';
 const collection = 'publication';
 
 export const ChiPublicationMixin = dedupingMixin(base => {
@@ -56,6 +57,7 @@ export const ChiPublicationMixin = dedupingMixin(base => {
 
     _setPublication (snapshot) {
       this.set('publication', snapshot.val());
+      // dispatchEvent(new CustomEvent('chi-layout-reflow'));
     }
 
     _getAuthors (authors) {

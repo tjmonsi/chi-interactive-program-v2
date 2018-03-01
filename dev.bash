@@ -9,7 +9,7 @@ killgroup () {
 }
 
 node compiler --dev --watch &
-./node_modules/.bin/superstatic public &
+./node_modules/.bin/superstatic public -c superstatic.json &
 ./node_modules/.bin/webpack --env.BROWSERS=module --mode=development --watch
 
 

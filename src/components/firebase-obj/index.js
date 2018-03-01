@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
-const conferenceId = '-L51u_LgX5gCtsDRXWc-';
-const version = 'v0';
+const conferenceId = '-L6UuuMqtIizEXWrUZhD';
+const version = 'v1';
 const config = {
   apiKey: 'AIzaSyD9nU_bxcZQdAN0eGtbGqrZ099_wlbPAKY',
   authDomain: 'chi-conference-data.firebaseapp.com',
