@@ -2,7 +2,7 @@
 import { Element } from '@polymer/polymer/polymer-element';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners';
 import { ChiPublicationMixin } from 'chi-publication-mixin';
-import { customElements, scrollTo, scrollY, requestAnimationFrame } from 'global/window';
+import { customElements, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
@@ -53,16 +53,23 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
 
   static get observers () {
     return [
-      '_showInformation(params.publicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)'
+      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)'
     ];
   }
 
-  _showInformation (paramsPublicationId, publicationId) {
+  _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId) {
     // console.log(this.publication)
     this.showInformation = this._isEqual(paramsPublicationId, publicationId);
+    this._focusInformation = this._isEqual(paramsOldPublicationId, publicationId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
+        // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
+        if (this.showInformation || this._focusInformation) {
+          this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+        }
       }, 200);
     });
   }

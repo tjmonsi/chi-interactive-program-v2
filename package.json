@@ -79,6 +79,7 @@
     "intersection-observer": "^0.5.0",
     "path-to-regexp": "^2.1.0",
     "redux": "^3.7.2",
+    "smoothscroll-polyfill": "^0.4.3",
     "whatwg-fetch": "^2.0.3"
   }
 }

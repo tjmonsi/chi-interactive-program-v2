@@ -50,6 +50,10 @@ const copyStatics = {
       to: 'vendor/fetch.js'
     },
     {
+      from: resolve(__dirname, './src/core.js'),
+      to: 'core.js'
+    },
+    {
       from: resolve(__dirname, './src/assets'),
       to: 'assets'
     },

@@ -1,41 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="generator" content="CHI 2018 Interactive Program">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>CHI 2018 Interactive Program</title>
-<meta name="description" content="This is the interactive schedule program for CHI 2018">
-<meta property="og:title" content="CHI 2018 Interactive Program">
-<meta property="og:type" content="website">
-<meta property="og:image" content="">
-<meta property="og:description" content="This is the interactive schedule program for CHI 2018">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="">
-<meta name="twitter:creator" content="">
-<meta name="twitter:title" content="CHI 2018 Interactive Program">
-<meta name="twitter:description" content="This is the interactive schedule program for CHI 2018">
-<meta name="twitter:image" content="">
-<base href="">
-<link rel="icon" href="images/favicon.ico">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="">
-<meta name="mobile-web-app-capable" content="">
-<meta name="application-name" content="CHI 2018 Interactive Program">
-<meta name="apple-mobile-web-app-capable" content="">
-<meta name="apple-mobile-web-app-status-bar-style" content="">
-<meta name="apple-mobile-web-app-title" content="CHI 2018 Interactive Program">
-<meta name="msapplication-TileColor" content="">
-<meta name="msapplication-tap-highlight" content="">
-<style>*{-webkit-box-sizing:border-box;box-sizing:border-box}body{margin:0;padding:0}*{font-family:'Open Sans',sans-serif;letter-spacing:.25px}h1,h2,h3,h4,h5,h6{font-family:'Roboto Condensed',sans-serif;letter-spacing:.4px}h1{letter-spacing:1px}</style>
-</head>
-<body>
-<chi-interactive-schedule></chi-interactive-schedule>
-<script>window.baseURL="/"</script>
-<script>window.updateURL=function(n){var o=[];for(var i in n)n[i]&&o.push(i+"="+n[i]);window.history.pushState({},"","?"+o.join("&")),window.dispatchEvent(new window.CustomEvent("location-changed"))}</script>
-<script>!function(e,t,r){var o=[],n={_version:"3.5.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,t){var r=this;setTimeout(function(){t(r[e])},0)},addTest:function(e,t,r){o.push({name:e,fn:t,options:r})},addAsyncTest:function(e){o.push({name:null,fn:e})}},s=function(){};s.prototype=n,(s=new s).addTest("es5array",function(){return!!(Array.prototype&&Array.prototype.every&&Array.prototype.filter&&Array.prototype.forEach&&Array.prototype.indexOf&&Array.prototype.lastIndexOf&&Array.prototype.map&&Array.prototype.some&&Array.prototype.reduce&&Array.prototype.reduceRight&&Array.isArray)}),s.addTest("es5date",function(){var e=!1;try{e=!!Date.parse("2013-04-12T06:06:37.307Z")}catch(e){}return!!(Date.now&&Date.prototype&&Date.prototype.toISOString&&Date.prototype.toJSON&&e)}),s.addTest("es5function",function(){return!(!Function.prototype||!Function.prototype.bind)}),s.addTest("es5object",function(){return!!(Object.keys&&Object.create&&Object.getPrototypeOf&&Object.getOwnPropertyNames&&Object.isSealed&&Object.isFrozen&&Object.isExtensible&&Object.getOwnPropertyDescriptor&&Object.defineProperty&&Object.defineProperties&&Object.seal&&Object.freeze&&Object.preventExtensions)}),s.addTest("es5string",function(){return!(!String.prototype||!String.prototype.trim)}),s.addTest("es6array",!!(Array.prototype&&Array.prototype.copyWithin&&Array.prototype.fill&&Array.prototype.find&&Array.prototype.findIndex&&Array.prototype.keys&&Array.prototype.entries&&Array.prototype.values&&Array.from&&Array.of)),s.addTest("es6collections",!!(e.Map&&e.Set&&e.WeakMap&&e.WeakSet)),s.addTest("es6math",!!(Math&&Math.clz32&&Math.cbrt&&Math.imul&&Math.sign&&Math.log10&&Math.log2&&Math.log1p&&Math.expm1&&Math.cosh&&Math.sinh&&Math.tanh&&Math.acosh&&Math.asinh&&Math.atanh&&Math.hypot&&Math.trunc&&Math.fround)),s.addTest("es6number",!!(Number.isFinite&&Number.isInteger&&Number.isSafeInteger&&Number.isNaN&&Number.parseInt&&Number.parseFloat&&Number.isInteger(Number.MAX_SAFE_INTEGER)&&Number.isInteger(Number.MIN_SAFE_INTEGER)&&Number.isFinite(Number.EPSILON))),s.addTest("es6object",!!(Object.assign&&Object.is&&Object.setPrototypeOf)),s.addTest("promises",function(){return"Promise"in e&&"resolve"in e.Promise&&"reject"in e.Promise&&"all"in e.Promise&&"race"in e.Promise&&(new e.Promise(function(e){t=e}),"function"==typeof t);var t}),s.addTest("es6string",!!(String.fromCodePoint&&String.raw&&String.prototype.codePointAt&&String.prototype.repeat&&String.prototype.startsWith&&String.prototype.endsWith&&String.prototype.includes));var a=[];(function(){var e,t,r,n,i,p;for(var c in o)if(o.hasOwnProperty(c)){if(e=[],(t=o[c]).name&&(e.push(t.name.toLowerCase()),t.options&&t.options.aliases&&t.options.aliases.length))for(r=0;r<t.options.aliases.length;r++)e.push(t.options.aliases[r].toLowerCase());for(n="function"==typeof t.fn?t.fn():t.fn,i=0;i<e.length;i++)1===(p=e[i].split(".")).length?s[p[0]]=n:(!s[p[0]]||s[p[0]]instanceof Boolean||(s[p[0]]=new Boolean(s[p[0]])),s[p[0]][p[1]]=n),a.push((n?"":"no-")+p.join("-"))}})(),delete n.addTest,delete n.addAsyncTest;for(var i=0;i<s._q.length;i++)s._q[i]();e.Modernizr=s}(window,document),function(){var e=document.body.getElementsByTagName("script")[0];if(!(Modernizr.es5array&&Modernizr.es5date&&Modernizr.es5function&&Modernizr.es5object&&Modernizr.es5string)){var t=document.createElement("script");t.src=window.baseURL+"vendor/es5-shim.js";var r=document.createElement("script");r.src=window.baseURL+"vendor/es5-sham.js",e.parentNode.insertBefore(t,e),e.parentNode.insertBefore(r,e)}if(!(Modernizr.es6collections&&Modernizr.es6math&&Modernizr.es6number&&Modernizr.es6object&&Modernizr.es6string)){var o=document.createElement("script");o.src=window.baseURL+"vendor/es6-shim.js";var n=document.createElement("script");n.src=window.baseURL+"vendor/es6-sham.js",e.parentNode.insertBefore(o,e),e.parentNode.insertBefore(n,e)}if(!Modernizr.promises){var s=document.createElement("script");s.src=window.baseURL+"vendor/es6-promise.js",e.parentNode.insertBefore(s,e)}if(!window.IntersectionObserver){var a=document.createElement("script");a.src=window.baseURL+"vendor/intersection-observer.js",e.parentNode.insertBefore(a,e)}if(!("attachShadow"in Element.prototype&&"getRootNode"in Element.prototype)||window.ShadyDOM&&window.ShadyDOM.force){var i=document.createElement("script");i.src=window.baseURL+"vendor/scoping-shim.js",e.parentNode.insertBefore(i,e)}if(!window.fetch||!window.Headers){var p=document.createElement("script");p.src=window.baseURL+"vendor/fetch.js",e.parentNode.insertBefore(p,e)}window.onerror=function(e,t,r){try{window.ga&&ga("send","exception",{exDescription:e.message,exFatal:!0})}catch(t){console.error(e),console.error(t)}}}()</script>
-<script>var refScript=document.body.getElementsByTagName("script")[0];if(window.customElements){var ce=document.createElement("script");ce.src=window.baseURL+"vendor/custom-elements-es5-adapter.js",ce.setAttribute("nomodule",!0),ce.setAttribute("async",!0),refScript.parentNode.insertBefore(ce,refScript)}</script>
-<script>document.addEventListener("WebComponentsReady",function e(){document.removeEventListener("WebComponentsReady",e,!1);var t=document.createElement("script");t.async=!0,t.src=window.baseURL+"bundle.js",t.setAttribute("nomodule",!0);var n=document.createElement("script");n.async=!0,n.src=window.baseURL+"module.bundle.js",n.setAttribute("type","module");var o=document.body.getElementsByTagName("script")[0];o.parentNode.insertBefore(t,o),o.parentNode.insertBefore(n,o)},!1)</script>
-<script>!function(){"use strict";window.WebComponents=window.WebComponents||{};var e=[];if("import"in document.createElement("link")||e.push("hi"),(!("attachShadow"in Element.prototype&&"getRootNode"in Element.prototype)||window.ShadyDOM&&window.ShadyDOM.force)&&e.push("sd"),window.customElements&&!window.customElements.forcePolyfill||e.push("ce"),"content"in document.createElement("template")&&window.Promise&&Array.from&&document.createDocumentFragment().cloneNode()instanceof DocumentFragment||(e=["lite"]),e.length){var t=document.createElement("script");t.src=window.baseURL+"vendor/webcomponents-loader.js";var n=document.createElement("script"),o="webcomponents-"+e.join("-")+".js",r=t.src.replace("webcomponents-loader.js",o);n.src=r,"loading"===document.readyState&&"import"in document.createElement("link")?document.write(n.outerHTML):document.head.appendChild(n)}else{var c=function(){requestAnimationFrame(function(){window.WebComponents.ready=!0,document.dispatchEvent(new CustomEvent("WebComponentsReady",{bubbles:!0}))})};"loading"!==document.readyState?c():document.addEventListener("readystatechange",function e(){c(),document.removeEventListener("readystatechange",e)})}}();var link=document.createElement("link");link.href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed:700",link.rel="stylesheet";var refScript=document.body.getElementsByTagName("script")[0];refScript.parentNode.insertBefore(link,refScript)</script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CHI 2018 Interactive Program">
+    <meta name="viewport" content="width=device-width, minimum-scale = 1.0, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no">
+
+    <title>CHI 2018 Interactive Program</title>
+    <meta name="description" content="This is the interactive schedule program for CHI 2018">
+
+    <meta property="og:title" content="CHI 2018 Interactive Program" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="This is the interactive schedule program for CHI 2018" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="" />
+    <meta name="twitter:creator" content="" />
+    <meta name="twitter:title" content="CHI 2018 Interactive Program" />
+    <meta name="twitter:description" content="This is the interactive schedule program for CHI 2018" />
+    <meta name="twitter:image" content="" />
+
+    <!--
+      If deploying to a non-root path, replace href="/" with the full path to the project root.
+      For example: href="/polymer-starter-kit/relative-path-example/"
+    -->
+    <base href="">
+
+    <link rel="icon" href="images/favicon.ico">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- See https://goo.gl/qRE0vM -->
+    <meta name="theme-color" content="">
+
+    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="">
+    <meta name="application-name" content="CHI 2018 Interactive Program">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="">
+    <meta name="apple-mobile-web-app-status-bar-style" content="">
+    <meta name="apple-mobile-web-app-title" content="CHI 2018 Interactive Program">
+
+    <!-- Homescreen icons -->
+    
+
+    
+    <meta name="msapplication-TileColor" content="">
+    <meta name="msapplication-tap-highlight" content="">
+
+    <style>
+      * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+* {
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 0.25px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto Condensed', sans-serif;
+  letter-spacing: 0.4px;
+}
+h1 {
+  letter-spacing: 1px;
+}
+
+    </style>
+  </head>
+  <body>
+    <div style="height: 300px"></div>
+
+    <chi-interactive-schedule></chi-interactive-schedule>
+
+    <script>
+      window.baseURL = '/';
+      (function() {
+        var refScript = document.body.getElementsByTagName('script')[0];
+        var core = document.createElement('script');
+        core.src = window.baseURL + 'core.js';
+        refScript.parentNode.insertBefore(core, refScript);
+      })();
+    </script>
+  </body>
 </html>

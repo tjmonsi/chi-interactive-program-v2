@@ -1,10 +1,20 @@
-
+<div class$="invi-anchor invi-anchor-session-[[sessionId]]"></div>
 <h3>
   <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
-    <a href="?timeslotId=[[session.timeslotId]]&search=[[params.search]]">[[_cleanText(session.title)]]</a>
+    <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]
+      <!-- <svg class="icon" viewBox="0 0 24 24">
+        <title>Hide...</title>
+        <path d="M19,13H5V11H19V13Z" />
+      </svg> -->
+    </a>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]</a>
+    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]
+      <!-- <svg class="icon" viewBox="0 0 24 24">
+        <title>More...</title>
+        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+      </svg> -->
+    </a>
   </template>
 </h3>
 <p class="venue">

@@ -1,7 +1,7 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiSessionMixin } from 'chi-session-mixin';
-import { customElements, scrollTo, scrollY, requestAnimationFrame, CustomEvent } from 'global/window';
+import { customElements, requestAnimationFrame, CustomEvent } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { CHI_STATE } from 'chi-interactive-schedule/reducer';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -12,6 +12,8 @@ import 'chi-room';
 // define style and template
 import style from './style.styl';
 import template from './template.html';
+
+let time = 500; // haxx
 
 class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
   static get is () { return 'chi-session'; }
@@ -56,7 +58,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   static get observers () {
     return [
-      '_showPublication(params.sessionId, sessionId)',
+      '_showPublication(params.sessionId, params.oldSessionId, sessionId)',
       '_setClass(session.venue)',
       '_addVenue(session.venue, venues)',
       '_filterSessions(filteredVenues, session.venue, queryResults, filteredVenues.splices, queryResults.splices, sessionId, session)'
@@ -111,13 +113,20 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     this.dispatchEvent(new CustomEvent('chi-session-hidden'));
   }
 
-  _showPublication (paramsSessionId, sessionId) {
+  _showPublication (paramsSessionId, paramsOldSessionId, sessionId) {
     this.showPublications = this._isEqual(paramsSessionId, sessionId);
-    this._focusPublications = this._isEqual(paramsSessionId, sessionId);
+    this._focusPublications = this._isEqual(paramsSessionId, sessionId) || this._isEqual(paramsOldSessionId, sessionId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (this._focusPublications) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
-      }, 200);
+        // if (this._focusPublications) scroll(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
+        if (this._focusPublications) {
+          this.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+          time = 100;
+        }
+      }, time);
     });
   }
 
