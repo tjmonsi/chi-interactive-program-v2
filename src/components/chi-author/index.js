@@ -3,6 +3,7 @@ import { Element } from '@polymer/polymer/polymer-element';
 import { ChiAuthorMixin } from 'chi-author-mixin';
 import { customElements } from 'global/window';
 import '@polymer/polymer/lib/elements/dom-if';
+import 'marked-element';
 
 // define style and template
 import style from './style.styl';

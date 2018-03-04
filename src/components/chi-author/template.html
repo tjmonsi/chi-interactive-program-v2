@@ -1,11 +1,13 @@
-<span class="bold">[[author.displayName]]</span>,
+<span class="bold">
+  <marked-element marked="[[author.displayName]]"></marked-element>
+</span>,
 <template is="dom-if" if="[[author.primary.dept]]">
-  [[author.primary.dept]],
+  <marked-element marked="[[author.primary.dept]]"></marked-element>,
 </template>
 <template is="dom-if" if="[[author.primary.institution]]">
-  [[author.primary.institution]],
+  <marked-element marked="[[author.primary.institution]]"></marked-element>,
 </template>
 <template is="dom-if" if="[[author.primary.city]]">
-  [[author.primary.city]],
+  <marked-element marked="[[author.primary.city]]"></marked-element>,
 </template>
-[[author.primary.country]]
+<marked-element marked="[[author.primary.country]]"></marked-element>

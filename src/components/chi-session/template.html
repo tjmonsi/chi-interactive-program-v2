@@ -1,7 +1,12 @@
 <div class$="invi-anchor invi-anchor-session-[[sessionId]]"></div>
-<h3>
+<template is="dom-if" if="[[loading]]">
+  Loading...
+</template>
+<h3 class="title">
   <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
-    <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]
+    <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">
+      <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
+
       <!-- <svg class="icon" viewBox="0 0 24 24">
         <title>Hide...</title>
         <path d="M19,13H5V11H19V13Z" />
@@ -9,7 +14,8 @@
     </a>
   </template>
   <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">[[_cleanText(session.title)]]
+    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">
+      <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
       <!-- <svg class="icon" viewBox="0 0 24 24">
         <title>More...</title>
         <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
@@ -28,11 +34,11 @@
     </template>
   </template>
 </p>
-<chi-room room-id="[[session.roomId]]"></chi-room>
-<section>
+<chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
+<section class="publications">
   <template is="dom-if" if="[[showPublications]]">
     <template is="dom-repeat" items="[[publications]]">
-      <chi-publication show-publication-id$="[[item]]" publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
+      <chi-publication class="chi-publication-item" show-publication-id$="[[item]]" publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
     </template>
   </template>
 </section>

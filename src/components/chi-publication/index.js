@@ -4,10 +4,12 @@ import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event
 import { ChiPublicationMixin } from 'chi-publication-mixin';
 import { customElements, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
+import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-author-summary';
 import 'chi-author';
+import 'marked-element';
 
 // define style and template
 import style from './style.styl';
@@ -51,20 +53,56 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     };
   }
 
+  constructor () {
+    super();
+    this._debouncedFilterPublicationsOnce = debounce(this._filterPublicationsOnce.bind(this), 500);
+  }
+
   static get observers () {
     return [
-      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)'
+      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)',
+      '_filterPublications(filteredVenues, publication.venue, queryResults)'
     ];
+  }
+
+  _filterPublications (filteredVenues, venue, queryResults) {
+    this._debouncedFilterPublicationsOnce(filteredVenues, venue, queryResults);
+  }
+
+  _filterPublicationsOnce (filteredVenues, venue) {
+    const queryResults = this.queryResults;
+    this.hidden = queryResults ? queryResults.length > 0 : false;
+
+    if (this.publication && queryResults) {
+      for (let result of queryResults) {
+        if (result.searchType === 'publication' && result.objectID === this.publicationId) {
+          this.showInformation = true;
+          this.hidden = false;
+        }
+        if (result.publications) {
+          for (let publicationId in result.publications) {
+            if (this.publicationId === publicationId) {
+              this.showInformation = true;
+              this.hidden = false;
+            }
+          }
+        }
+        if (!this.hidden) break;
+      }
+    }
+    // console.log('publications-call')
+    this.hidden = this.hidden || (filteredVenues && filteredVenues.indexOf(venue ? venue.toLowerCase() : null) < 0);
+    // this.dispatchEvent(new CustomEvent('chi-publication-hidden'));
   }
 
   _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId) {
     // console.log(this.publication)
     this.showInformation = this._isEqual(paramsPublicationId, publicationId);
-    this._focusInformation = this._isEqual(paramsOldPublicationId, publicationId);
+    this._focusInformation = this._isEqual(paramsPublicationId, publicationId) || this._isEqual(paramsOldPublicationId, publicationId);
     requestAnimationFrame(() => {
       setTimeout(() => {
         // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
-        if (this.showInformation || this._focusInformation) {
+        if (this._focusInformation) {
           this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
             block: 'start',
             behavior: 'smooth'

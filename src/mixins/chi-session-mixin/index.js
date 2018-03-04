@@ -1,5 +1,6 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { firebase, version } from 'firebase-obj';
+import { requestAnimationFrame } from 'global/window';
 const collection = 'session';
 
 export const ChiSessionMixin = dedupingMixin(base => {
@@ -22,6 +23,11 @@ export const ChiSessionMixin = dedupingMixin(base => {
         publications: {
           type: Array,
           value: []
+        },
+        loading: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: true
         }
       };
     }
@@ -42,9 +48,11 @@ export const ChiSessionMixin = dedupingMixin(base => {
       this._closeSession();
     }
 
-    async _getSession (sessionId) {
+    _getSession (sessionId) {
       if (sessionId) {
         this._closeSession();
+        this.loading = true;
+
         this._sessionRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${sessionId}`);
         this._sessionRef.on('value', this._boundSetSession);
       }
@@ -55,7 +63,12 @@ export const ChiSessionMixin = dedupingMixin(base => {
     }
 
     _setSession (snapshot) {
-      this.set('session', snapshot.val());
+      requestAnimationFrame(() => {
+        setTimeout(async () => {
+          this.set('session', snapshot.val());
+          this.loading = false;
+        }, 200);
+      });
       // dispatchEvent(new CustomEvent('chi-layout-reflow'));
     }
 

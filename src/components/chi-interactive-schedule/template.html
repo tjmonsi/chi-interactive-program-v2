@@ -2,9 +2,9 @@
 <query-params-fetcher></query-params-fetcher>
 
 <section class="container">
-  <nav class="on-top">
-    <ul class="desktop">
-      <li class="phone">
+  <nav class="navigation on-top">
+    <ul class="desktop nav-list">
+      <li class="phone list-item">
         <button type="button" class="nav-button menu" on-tap="openNavigation">
           <svg class="icon">
             <title>Open Navigation</title>
@@ -18,19 +18,19 @@
           </svg>
         </button>
       </li>
-      <li class="schedule">
-        <a href="?sessionId=all&search=[[params.search]]">
+      <li class="schedule list-item">
+        <a class="anchor" href="?sessionId=all&search=[[params.search]]">
           Full Schedule
         </a>
       </li>
       <template is="dom-repeat" items="[[scheduleArray]]">
-        <li class="schedule">
-          <a href="?scheduleId=[[item.$key]]&search=[[params.search]]">
+        <li class="schedule list-item">
+          <a class="anchor" href="?scheduleId=[[item.$key]]&search=[[params.search]]">
             [[item.dayString]]
           </a>
         </li>
       </template>
-      <li class="search-item">
+      <li class="search-item list-item">
         <form on-submit="formSearch">
           <div class="input-container search-container">
             <input class="search" name="search" on-keyup="_onChangeQuery" on-change="_onChangeQuery">
@@ -64,9 +64,9 @@
     </ul>
   </nav>
 
-  <nav class="fixed">
-    <ul class="container desktop">
-      <li class="phone">
+  <nav class="navigation fixed">
+    <ul class="container desktop nav-list-2">
+      <li class="phone list-item">
         <button type="button" class="nav-button menu" on-tap="openNavigation">
           <svg class="icon">
             <title>Open Navigation</title>
@@ -80,20 +80,20 @@
           </svg>
         </button>
       </li>
-      <li class="schedule">
-        <a href="?sessionId=all">
+      <li class="schedule list-item">
+        <a class="anchor" href="?sessionId=all">
           Full Schedule
         </a>
       </li>
       <template is="dom-repeat" items="[[scheduleArray]]">
-        <li class="schedule">
-          <a href="?scheduleId=[[item.$key]]">
+        <li class="schedule list-item">
+          <a class="anchor" href="?scheduleId=[[item.$key]]&search=[[params.search]]">
             [[item.dayString]]
           </a>
         </li>
       </template>
 
-      <li class="search-item">
+      <li class="search-item list-item">
         <form on-submit="formSearch">
           <div class="input-container search-container">
             <input class="search" name="search" on-keyup="_onChangeQuery" on-change="_onChangeQuery">
@@ -126,16 +126,16 @@
     </ul>
   </nav>
 
-  <nav class="fixed-phone">
-    <ul class="container">
-      <li class="schedule-phone">
-        <a href="?sessionId=all">
+  <nav class="navigation fixed-phone">
+    <ul class="container nav-list-2">
+      <li class="schedule-phone list-item">
+        <a class="anchor" href="?sessionId=all">
           Full Schedule
         </a>
       </li>
       <template is="dom-repeat" items="[[scheduleArray]]">
-        <li class="schedule-phone">
-          <a href="?scheduleId=[[item.$key]]">
+        <li class="schedule-phone list-item">
+          <a class="anchor" href="?scheduleId=[[item.$key]]&search=[[params.search]]">
             [[item.dayString]]
           </a>
         </li>
@@ -144,33 +144,115 @@
   </nav>
 
   <div class="filter-container">
-    <h3>Filter Schedule</h3>
+    <h3 class="filter-title">Filter Search</h3>
     <form>
-    <div class="filter-grid">
-      <div class="checkbox-container">
-        <label>
-          <input type="checkbox" value="all" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
-          All
-
-        </label>
-      </div>
-      <template is="dom-repeat" items="[[venues]]">
+      <div class="filter-grid">
         <div class="checkbox-container">
-
           <label>
-            <input type="checkbox" value="[[item]]" name="filter" on-tap="addFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
-            [[getVenue(item)]]
+            <input type="checkbox" value="all" name="filter" on-tap="toggleSearchFilter" checked="[[_checkSearchFiltered('all', filteredSearch, filteredSearch.splices)]]">
+            All
           </label>
         </div>
-      </template>
-
+        <template is="dom-repeat" items="[[defaultFilteredSearch]]">
+          <div class="checkbox-container">
+            <label>
+              <input type="checkbox" value="[[item]]" name="filter" on-tap="toggleSearchFilter" checked="[[_checkSearchFiltered(item, filteredSearch, filteredSearch.splices)]]">
+              [[getSearch(item)]]
+            </label>
+          </div>
+        </template>
+      </div>
+    </form>
+    <h3 class="filter-title">Show Venues</h3>
+    <form>
+      <div class="filter-grid">
+        <div class="checkbox-container">
+          <label>
+            <input type="checkbox" value="all" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
+            All
+          </label>
+        </div>
+        <template is="dom-repeat" items="[[venues]]">
+          <div class="checkbox-container">
+            <label>
+              <input type="checkbox" value="[[item]]" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
+              [[getVenue(item)]]
+            </label>
+          </div>
+        </template>
       </div>
     </form>
   </div>
 
-  <template is="dom-if" if="[[!params.scheduleAtAGlance]]">
-    <chi-full-schedule></chi-full-schedule>
+  <template is="dom-if" if="[[searching]]">
+    <div class="searching">
+      Searching...
+    </div>
+  </template>
+
+  <template is="dom-if" if="[[!showFilterWarning]]">
+    <template is="dom-if" if="[[params.search]]">
+      <template is="dom-if" if="[[!searching]]">
+        <template is="dom-if" if="[[hitsNumber]]">
+          <div class="center-container">
+            <p>
+              Your search term: "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results.
+              <ul>
+                <template is="dom-if" if="[[searchResultTypes.author]]">
+                  <li>Number of authors with the matching term: [[searchResultTypes.author]]</li>
+                </template>
+                <template is="dom-if" if="[[searchResultTypes.publication]]">
+                  <li>Number of papers with the matching term: [[searchResultTypes.publication]]</li>
+                </template>
+                <template is="dom-if" if="[[searchResultTypes.session]]">
+                  <li>Number of sessions with the matching term: [[searchResultTypes.session]]</li>
+                </template>
+              </ul>
+            </p>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[!hitsNumber]]">
+          <div class="center-container">
+            <p>
+              Your search term: "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. Please choose another term.
+            </p>
+          </div>
+        </template>
+      </template>
+    </template>
+  </template>
+
+  <template is="dom-if" if="[[showFilterWarning]]">
+    <div class="center-container">
+      <p>
+        Your search term: "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. <br>
+        To improve performance, query results will not show up on the schedule.
+        <ul>
+          <template is="dom-if" if="[[searchResultTypes.author]]">
+            <li>Number of authors with the matching term: [[searchResultTypes.author]]</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.publication]]">
+            <li>Number of papers with the matching term: [[searchResultTypes.publication]]</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.session]]">
+            <li>Number of sessions with the matching term: [[searchResultTypes.session]]</li>
+          </template>
+        </ul>
+      </p>
+      <p>
+        Please use more specific search terms or use the "Filter Search" above to narrow down results.
+      </p>
+    </div>
   </template>
 
 
+  <chi-full-schedule class="chi-full-schedule-item" hidden$=[[searching]]></chi-full-schedule>
+
+
+  <button class="fab" on-tap="goUp">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z" />
+    </svg>
+  </button>
 </section>

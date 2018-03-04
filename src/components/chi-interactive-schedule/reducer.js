@@ -4,10 +4,15 @@ import { combineReducers } from 'redux';
 const CHI_STATE = {
   VENUE: 'CHI_STATE_UPDATE_VENUES',
   FILTER_VENUE: 'CHI_STATE_UPDATE_FILTERED_VENUES',
+  FILTER_SEARCH: 'CHI_STATE_UPDATE_FILTERED_SEARCH',
   QUERY_RESULTS: 'CHI_STATE_UPDATE_QUERY_RESULTS'
 };
 
-reducers.chiState = (obj = { venues: [], filteredVenues: ['all'] }, action) => {
+export const defaultFilteredSearch = [
+  'people', 'institution', 'session', 'paper-title', 'abstract'
+];
+
+reducers.chiState = (obj = { venues: [], filteredVenues: ['all'], filteredSearch: [ ...defaultFilteredSearch, 'all' ] }, action) => {
   switch (action.type) {
     case CHI_STATE.VENUE:
       return Object.assign({}, obj, {
@@ -16,7 +21,11 @@ reducers.chiState = (obj = { venues: [], filteredVenues: ['all'] }, action) => {
       });
     case CHI_STATE.FILTER_VENUE:
       return Object.assign({}, obj, {
-        filteredVenues: action.filteredVenues.indexOf('all') >= 0 ? [ ...obj.venues, 'all' ] : [ ...action.filteredVenues ]
+        filteredVenues: action.filteredVenues.indexOf('all') >= 0 ? [ ...obj.venues, 'all' ] : action.filteredVenues
+      });
+    case CHI_STATE.FILTER_SEARCH:
+      return Object.assign({}, obj, {
+        filteredSearch: action.filteredSearch.indexOf('all') >= 0 ? [ ...defaultFilteredSearch, 'all' ] : action.filteredSearch
       });
     case CHI_STATE.QUERY_RESULTS:
       return Object.assign({}, obj, {

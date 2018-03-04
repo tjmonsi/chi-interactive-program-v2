@@ -4,7 +4,7 @@
 :host
   display: block
 
-section
+.grid
   display: flex;
   flex-wrap: wrap
 
@@ -24,7 +24,7 @@ section
   @media screen and (max-width: 449px)
     grid-template-columns: 1fr
 
-  chi-session
+  .chi-session-item
     float: left;
     border: 1px solid black;
     // border-top: none;
@@ -40,10 +40,10 @@ section
       @media screen and (max-width: 449px)
         width: 100%;
 
-  chi-session[hidden]
+  .chi-session-item[hidden]
     display: none;
 
-  chi-session[show-publications]
+  .chi-session-item[show-publications]
     grid-column: 1 / 7;
     width: 100%;
 
@@ -106,5 +106,5 @@ section
   .timeslot
     padding: 20px;
 
-    h2
+    .time
       margin: 0

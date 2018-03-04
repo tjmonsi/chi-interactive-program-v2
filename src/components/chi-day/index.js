@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, scrollY, scrollTo, requestAnimationFrame } from 'global/window';
+import { customElements, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -59,7 +59,7 @@ class Component extends LittleQStoreMixin(Element) {
 
   constructor () {
     super();
-    this._debouncedCheckDay = debounce(this._checkDay.bind(this), 500);
+    this._debouncedCheckDay = debounce(this._checkDayOnce.bind(this), 500);
   }
 
   _getTimeslots (timeslots) {
@@ -77,20 +77,30 @@ class Component extends LittleQStoreMixin(Element) {
 
   _showDay (paramsScheduleId, scheduleId) {
     const showDay = this._isEqual(paramsScheduleId, scheduleId);
-
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (showDay) scrollTo(0, (scrollY + this.shadowRoot.querySelector('h1').getBoundingClientRect().top) - 102);
-      }, 100);
+        // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
+        if (showDay) {
+          // console.log(this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`))
+          this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`).scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+        }
+      }, 200);
     });
   }
 
-  _checkDay () {
+  _checkDayOnce () {
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.hidden = this.timeslots.length === this.shadowRoot.querySelectorAll('chi-timeslot[hidden]').length;
       }, 200);
     });
+  }
+
+  _checkDay () {
+    this._debouncedCheckDay();
   }
 
   _isEqual (a, b) { return a === b; }

@@ -1,5 +1,6 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { firebase, version } from 'firebase-obj';
+import { requestAnimationFrame } from 'global/window';
 const collection = 'timeslot';
 
 export const ChiTimeslotMixin = dedupingMixin(base => {
@@ -22,6 +23,11 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
         sessions: {
           type: Array,
           value: []
+        },
+        loading: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
         }
       };
     }
@@ -55,7 +61,11 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
     }
 
     _setTimeslot (snapshot) {
-      this.set('timeslot', snapshot.val());
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.set('timeslot', snapshot.val());
+        }, 200);
+      });
     }
 
     _getSession (sessions) {

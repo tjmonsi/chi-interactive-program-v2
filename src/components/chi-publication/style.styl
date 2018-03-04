@@ -6,17 +6,17 @@
   width: 18px;
   height: 18px;
 
-h4
+.title
   margin: 0
 
-  a
+  .anchor
     color: inherit;
     text-decoration: none;
 
-  a:hover
+  .anchor:hover
     text-decoration: underline;
 
-  img, .icon
+  .img-icon, .icon
     vertical-align: middle;
     height: 32px;
     width: 32px;
@@ -24,13 +24,13 @@ h4
   .icon
     margin-left: 10px;
 
-h5
+.authors-heading
   margin: 20px 0 0 0
 
-section
+.pub-body
   padding: 0 20px;
 
-chi-author-summary
+.chi-author-summary-item
   &:after
     content: ', '
 
@@ -40,6 +40,10 @@ chi-author-summary
 
 .authors
   margin: 0;
+  list-style-type: none;
+
+  .list-item
+    list-style-type: none
 
 .invi-anchor
   opacity: 0;

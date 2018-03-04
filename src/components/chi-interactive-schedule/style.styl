@@ -4,7 +4,38 @@
 :host
   display: block
 
-nav
+.center-container
+  border: 1px solid $brand-green;
+  padding: 20px;
+  margin: 20px 0;
+
+.searching
+  padding: 40px;
+  text-align: center;
+  margin: 20px
+
+.fab
+  z-index: 10000;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background: $brand-green;
+  border: 0
+  display: block
+  padding: 20px;
+  border-radius: 50%
+  cursor: pointer
+
+  .icon
+    fill: $light;
+    // width: 18px;
+    // height: 18px
+
+.chi-full-schedule-item[hidden]
+  display: none;
+
+.navigation
   &.on-top
     position: relative;
 
@@ -29,39 +60,43 @@ nav
     z-index: 5000;
     overflow: auto;
 
-  ul
-    list-style-type none
+  .nav-list
+    list-style-type: none
     margin: 0;
     padding: 0;
 
-  ul.desktop
+  .nav-list-2
+    list-style-type: none
+
+  .desktop
     display: flex;
     flex-direction: row;
     align-items: center;
 
+  .list-item
+    margin: 0 10px;
+    font-size: 0.9rem;
+    list-style-type: none
 
-  li
-    margin: 0 15px;
-
-    a
+    .anchor
       color: inherit
       text-decoration: none;
 
-    a:hover
+    .anchor:hover
       text-decoration: underline;
 
-  li.search-item
+  .search-item
     flex: 1
     text-align: right
 
     @media screen and (max-width: 600px)
       margin: 0;
 
-  li.schedule
+  .schedule
     @media screen and (max-width: 1200px)
       display: none;
 
-  li.phone
+  .phone
     display: none
 
     @media screen and (max-width: 1200px)
@@ -70,7 +105,7 @@ nav
     @media screen and (max-width: 600px)
       margin: 0;
 
-  li.schedule-phone
+  .schedule-phone
     padding: 10px 0;
 
 .icon
@@ -98,23 +133,23 @@ nav
 
 .search-container
   @media screen and (max-width: 1200px)
-    input
+    .search
       width: 300px
 
   @media screen and (max-width: 700px)
-    input
+    .search
       width: 200px
 
   @media screen and (max-width: 550px)
-    input
+    .search
       width: auto
 
   @media screen and (max-width: 490px)
-    input
+    .search
       width: 150px
 
   @media screen and (max-width: 420px)
-    input
+    .search
       width: 150px
 
 .search-button
@@ -134,20 +169,20 @@ nav
     display: flex;
     align-items: center;
 
-    input
+    .search
       flex: 1
       margin-left: 20px
 
   @media screen and (max-width: 350px)
-    input
+    .search
       width: 80px
 
   @media screen and (max-width: 310px)
-    input
+    .search
       width: 60px
 
   @media screen and (max-width: 300px)
-    input
+    .search
       width: 40px
 
 .search-button-icon
@@ -176,7 +211,7 @@ nav
   display: none;
   overflow: auto;
 
-  h3
+  .filter-title
     margin: 0
 
   .filter-grid

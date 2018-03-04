@@ -1,12 +1,12 @@
 <template is="dom-if" if="[[sessions.length]]">
-  <section class$="[[_timeslotColorClass(scheduleIndex)]]-border">
+  <section class$="grid [[_timeslotColorClass(scheduleIndex)]]-border">
     <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot">
-      <h2>
+      <h2 class="time">
         [[timeslot.time]]
       </h2>
     </div>
     <template is="dom-repeat" items="[[sessions]]">
-      <chi-session session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot"></chi-session>
+      <chi-session class="chi-session-item" session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]"></chi-session>
     </template>
   </section>
 </template>

@@ -30,22 +30,28 @@ class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
 
   static get observers () {
     return [
-      '_checkTimeslot(sessions, filteredVenues, filteredVenues.splices)'
+      '_checkTimeslot(timeslot, sessions, filteredVenues)'
     ];
   }
 
   constructor () {
     super();
-    this._debouncedCheckTimeslot = debounce(this._checkTimeslot.bind(this), 500);
+    this._debouncedCheckTimeslot = debounce(this._checkTimeslotOnce.bind(this), 500);
+  }
+
+  _checkTimeslotOnce () {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (this.timeslot) {
+          this.hidden = !this.timeslot.sessions || (this.timeslot.sessions && Object.entries(this.timeslot.sessions).length === this.shadowRoot.querySelectorAll('chi-session[hidden]').length);
+          this.dispatchEvent(new CustomEvent('chi-timeslot-hidden'));
+        }
+      }, 150);
+    });
   }
 
   _checkTimeslot () {
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        this.hidden = this.sessions.length === this.shadowRoot.querySelectorAll('chi-session[hidden]').length;
-        this.dispatchEvent(new CustomEvent('chi-timeslot-hidden'));
-      }, 150);
-    });
+    this._debouncedCheckTimeslot();
   }
 
   _timeslotColorClass (index) {

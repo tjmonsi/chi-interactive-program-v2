@@ -4,10 +4,12 @@ import { ChiSessionMixin } from 'chi-session-mixin';
 import { customElements, requestAnimationFrame, CustomEvent } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { CHI_STATE } from 'chi-interactive-schedule/reducer';
+import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-publication';
 import 'chi-room';
+import 'marked-element';
 
 // define style and template
 import style from './style.styl';
@@ -52,6 +54,10 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       _baseUrl: {
         type: String,
         value: window.baseURL || '/'
+      },
+      time: {
+        type: Number,
+        value: 0
       }
     };
   }
@@ -61,56 +67,57 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       '_showPublication(params.sessionId, params.oldSessionId, sessionId)',
       '_setClass(session.venue)',
       '_addVenue(session.venue, venues)',
-      '_filterSessions(filteredVenues, session.venue, queryResults, filteredVenues.splices, queryResults.splices, sessionId, session)'
+      // '_setLoading(loading, time)',
+      '_filterSessions(filteredVenues, session.venue, queryResults)'
     ];
   }
 
-  _filterInformation (queryResults) {
-    if (queryResults) {
-      this.hidden = queryResults.length > 0;
-
-      if (this.session) {
-        for (let result of queryResults) {
-          if (result.searchType === 'session' && result.objectID === this.sessionId) {
-            this.hidden = false;
-          }
-          if (result.publications) {
-            for (let publicationId in result.publications) {
-              // if (this.session.publications) console.log(this.session.publications[publicationId], publicationId)
-              if (this.session.publications && this.session.publications[publicationId]) {
-                this.showPublications = true;
-                this.hidden = false;
-              }
-            }
-          }
-          if (!this.hidden) break;
-        }
-      }
-    }
+  constructor () {
+    super();
+    this._debouncedFilterSessionsOnce = debounce(this._filterSessionsOnce.bind(this), 500);
   }
 
-  _filterSessions (filteredVenues, venue, queryResults) {
-    this.hidden = queryResults ? queryResults.length > 0 : false;
+  _filterSessionsOnce (filteredVenues, venue) {
+    const queryResults = this.queryResults;
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (this.loading) return;
+        this.hidden = queryResults ? queryResults.length > 0 : false;
 
-    if (this.session && queryResults) {
-      for (let result of queryResults) {
-        if (result.searchType === 'session' && result.objectID === this.sessionId) {
-          this.showPublications = true;
-          this.hidden = false;
-        }
-        if (result.publications) {
-          for (let publicationId in result.publications) {
-            if (this.session.publications && this.session.publications[publicationId]) {
+        if (this.session && queryResults) {
+          for (let result of queryResults) {
+            if (result.searchType === 'session' && result.objectID === this.sessionId) {
               this.showPublications = true;
               this.hidden = false;
             }
+            if (result.publications) {
+              for (let publicationId in result.publications) {
+                if (this.session.publications && this.session.publications[publicationId]) {
+                  this.showPublications = true;
+                  this.hidden = false;
+                }
+              }
+            }
+            if (result.searchType === 'publication' && this.session.publications && this.session.publications[result.objectID]) {
+              this.showPublications = true;
+              this.hidden = false;
+              if (this.shadowRoot.querySelector(`chi-publication[show-publication-id="${result.objectID}"]`)) this.shadowRoot.querySelector(`chi-publication[show-publication-id="${result.objectID}"]`).removeAttribute('hidden');
+            }
+            if (!this.hidden) break;
           }
         }
-        if (!this.hidden) break;
-      }
-    }
-    this.hidden = this.hidden || (filteredVenues && filteredVenues.indexOf(venue ? venue.toLowerCase() : null) < 0);
-    this.dispatchEvent(new CustomEvent('chi-session-hidden'));
+        this.hidden = this.hidden || (filteredVenues && filteredVenues.indexOf(venue ? venue.toLowerCase() : null) < 0);
+        this.dispatchEvent(new CustomEvent('chi-session-hidden'));
+        time = 100;
+        // console.log('session-call')
+      }, time);
+    });
+  }
+
+  _filterSessions (filteredVenues, venue, queryResults) {
+    // if (!this.session || (queryResults && !queryResults.length)) return;
+    this._debouncedFilterSessionsOnce(filteredVenues, venue, queryResults);
+    // console.log(filteredVenues, venue, queryResults)
   }
 
   _showPublication (paramsSessionId, paramsOldSessionId, sessionId) {
@@ -135,10 +142,10 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
   }
 
   _cleanText (title) {
-    return title.replace(/&nbsp;/, ' ').replace(/&amp;/, '&');
+    return title && title.replace(/&nbsp;/, ' ').replace(/&amp;/, '&');
   }
 
-  _setClass (venue) { this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
+  _setClass (venue) { if (venue) this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
 
   _addVenue (venue, oldVenues) {
     if (venue && oldVenues.indexOf(venue.toLowerCase()) < 0) {
@@ -150,15 +157,17 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
   _isEqual (a, b) { return a === b; }
 
   getVenue (venue) {
-    switch (venue.toLowerCase()) {
-      case 'altchi':
-        return 'alt.chi';
-      case 'casestudy':
-        return 'Case Study';
-      case 'docconsortium':
-        return 'Doctoral Consortium';
-      default:
-        return venue.charAt(0).toUpperCase() + venue.slice(1);
+    if (venue) {
+      switch (venue.toLowerCase()) {
+        case 'altchi':
+          return 'alt.chi';
+        case 'casestudy':
+          return 'Case Study';
+        case 'docconsortium':
+          return 'Doctoral Consortium';
+        default:
+          return venue.charAt(0).toUpperCase() + venue.slice(1);
+      }
     }
   }
 }

@@ -22,6 +22,10 @@ export const ChiPublicationMixin = dedupingMixin(base => {
         authors: {
           type: Array,
           value: []
+        },
+        loading: {
+          type: Boolean,
+          value: false
         }
       };
     }
@@ -44,6 +48,7 @@ export const ChiPublicationMixin = dedupingMixin(base => {
 
     _getPublication (publicationId) {
       if (publicationId) {
+        this.loading = true;
         this._closePublication();
         this._publicationRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${publicationId}`);
         this._publicationRef.on('value', this._boundSetPublication);
@@ -56,6 +61,7 @@ export const ChiPublicationMixin = dedupingMixin(base => {
 
     _setPublication (snapshot) {
       this.set('publication', snapshot.val());
+      this.loading = false;
       // dispatchEvent(new CustomEvent('chi-layout-reflow'));
     }
 

@@ -5,7 +5,7 @@ import { customElements, IntersectionObserver, scrollTo, history, dispatchEvent,
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { conf } from 'chi-conference-config';
-import { CHI_STATE } from './reducer';
+import { CHI_STATE, defaultFilteredSearch } from './reducer';
 import { debounce } from './debounce';
 import algoliasearch from 'algoliasearch/lite';
 import '@littleq/path-fetcher';
@@ -39,6 +39,30 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         type: Array,
         statePath: 'chiState.filteredVenues'
       },
+      filteredSearch: {
+        type: Array,
+        statePath: 'chiState.filteredSearch'
+      },
+      defaultFilteredSearch: {
+        type: Array,
+        value: defaultFilteredSearch
+      },
+      searching: {
+        type: Boolean,
+        value: false
+      },
+      showFilterWarning: {
+        type: Boolean,
+        value: false
+      },
+      hitsNumber: {
+        type: Number,
+        value: 0
+      },
+      searchResultTypes: {
+        type: Object,
+        value: {}
+      },
       _baseUrl: {
         type: String,
         value: window.baseURL || '/'
@@ -49,7 +73,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   static get observers () {
     return [
       'closeNavigation(params.scheduleId, params.sessionId, params.publicationId)',
-      '_queryChanged(params.search)',
+      '_queryChanged(params.search, filteredSearch)',
       '_updateParent(params, params.*)',
       '_goToTop(params.sessionId)'
     ];
@@ -168,22 +192,87 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     dispatchEvent(new CustomEvent('location-changed'));
   }
 
-  async _queryChanged (query) {
+  async _queryChanged (query, filteredSearch) {
     this.shadowRoot.querySelectorAll('[name=search]').forEach(node => {
       node.value = query || '';
     });
-    const { hits: queryResults } = query
-      ? await index.search(query, {
-        hitsPerPage: 300,
-        attributesToRetrieve: [
-          'authors', 'conferenceId', 'searchType', 'sessionId', 'timeslots', 'publications', 'scheduleId', 'timeslotId'
-        ]
-      })
-      : { hits: [] };
-    this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
+    this.searching = true;
+    this.showFilterWarning = false;
+    const settings = {
+      query,
+      hitsPerPage: 100,
+      attributesToRetrieve: [
+        'authors', 'conferenceId', 'searchType', 'sessionId', 'timeslots', 'publications', 'scheduleId', 'timeslotId'
+      ],
+      typoTolerance: 'strict'
+    };
+
+    // console.log(filteredSearch)
+
+    if (filteredSearch && filteredSearch.length && filteredSearch.indexOf('all') < 0) {
+      settings.restrictSearchableAttributes = [];
+      const searchType = [];
+      filteredSearch.forEach(filter => {
+        switch (filter) {
+          case 'people':
+            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'displayName', 'email', 'firstName', 'lastName' ];
+            if (searchType.indexOf('author') < 0) searchType.push('author');
+            break;
+          case 'institution':
+            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'primary.institution', 'primary.dept', 'primary.city', 'primary.country' ];
+            if (searchType.indexOf('author') < 0) searchType.push('author');
+            break;
+          case 'session':
+            if (settings.restrictSearchableAttributes.indexOf('title') < 0) settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'title' ];
+            if (searchType.indexOf('session') < 0) searchType.push('session');
+            break;
+          case 'paper-title':
+            if (settings.restrictSearchableAttributes.indexOf('title') < 0) settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'title' ];
+            if (searchType.indexOf('publication') < 0) searchType.push('publication');
+            break;
+          case 'abstract':
+            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'abstract', 'shortText' ];
+            if (searchType.indexOf('publication') < 0) searchType.push('publication');
+            break;
+        }
+      });
+      if (searchType.length) {
+        settings.filters = searchType.map(item => `searchType:${item}`).join(' OR ');
+      }
+    }
+
+    try {
+      const { hits: queryResults, nbHits } = query
+        ? await index.search(settings)
+        : { hits: [] };
+      this.searching = false;
+      this.hitsNumber = nbHits;
+      const searchResultTypes = {
+        author: 0,
+        publication: 0,
+        session: 0
+      };
+      queryResults.forEach(hit => {
+        searchResultTypes[hit.searchType]++;
+      });
+
+      this.set('searchResultTypes', searchResultTypes);
+
+      if (nbHits > 100) {
+        this.showFilterWarning = true;
+        this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults: [] });
+        return;
+      }
+
+      if (this._filterContainer) this.filter();
+
+      this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  addFilter ({ target: el }) {
+  toggleVenueFilter ({ target: el }) {
     // console.log(this.shadowRoot.querySelector('#filterForm').filter)
     setTimeout(() => {
       const { value, checked } = el;
@@ -198,10 +287,28 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     }, 10);
   }
 
+  toggleSearchFilter ({ target: el }) {
+    setTimeout(() => {
+      const { value, checked } = el;
+      const filteredSearch = [ ...this.filteredSearch ];
+      const index = filteredSearch.indexOf(value);
+      if (checked && index < 0) filteredSearch.push(value);
+      else if (!checked && index >= 0) {
+        filteredSearch.splice(index, 1);
+        if (filteredSearch.indexOf('all') >= 0) filteredSearch.splice(filteredSearch.indexOf('all'), 1);
+      }
+      this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch });
+    }, 10);
+  }
+
   _setFilterId (venue) { this.classList.add(venue.toLowerCase().replace(/ /, '-')); }
 
   _checkIfFiltered (venue, filteredVenues) {
     return filteredVenues.indexOf(venue) >= 0;
+  }
+
+  _checkSearchFiltered (filter, filteredSearch) {
+    return filteredSearch.indexOf(filter) >= 0;
   }
 
   getVenue (venue) {
@@ -215,6 +322,23 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       default:
         return venue.charAt(0).toUpperCase() + venue.slice(1);
     }
+  }
+
+  getSearch (filter) {
+    switch (filter.toLowerCase()) {
+      case 'paper-title':
+        return 'Paper Title';
+
+      default:
+        return filter.charAt(0).toUpperCase() + filter.slice(1);
+    }
+  }
+
+  goUp () {
+    this.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth'
+    });
   }
 }
 
