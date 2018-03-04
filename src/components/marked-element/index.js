@@ -62,14 +62,18 @@ class Component extends LittleQStoreMixin(Element) {
             });
           });
         }
-        search.forEach(([term]) => {
+        search.forEach(([term], index) => {
           while (newString.toLowerCase().indexOf(term.toLowerCase()) >= 0) {
             let index = newString.toLowerCase().indexOf(term.toLowerCase());
-            newString = newString.slice(0, index) + '<mark>$1</mark>' + newString.slice(index + term.length);
+            newString = newString.slice(0, index) + `$$$$__${index}__&&&&` + newString.slice(index + term.length);
           }
-          newString = newString.replace(/<mark>\$1<\/mark>/g, `<mark>${term}</mark>`);
+          // newString = newString.replace(/\$\$1\&\&/g, `<mark class="mark">${term}</mark>`);
         });
-        newString = newString.replace(/`/g, '\'');
+        search.forEach(([term], index) => {
+          newString = newString.replace(new RegExp(`__${index}__`), term);
+        });
+
+        newString = newString.replace(/ \\ /g, ' ').replace(/`/g, '\'').replace(/\$\$\$\$/g, '<mark class="mark">').replace(/&&&&/g, '</mark>');
         if (newString) this.innerHTML = marked(newString).replace(/<p>/g, '').replace(/<\/p>/g, '');
       }, 100);
     });

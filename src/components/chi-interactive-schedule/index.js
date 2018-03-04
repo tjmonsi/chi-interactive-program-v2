@@ -98,6 +98,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
 
     this._observer.observe(target);
     this._filterContainer = false;
+
+    document.querySelector('#loading-screen').style.display = 'none';
+    if (window.loaderInterval) clearInterval(window.loaderInterval);
   }
 
   disconnectedCallback () {

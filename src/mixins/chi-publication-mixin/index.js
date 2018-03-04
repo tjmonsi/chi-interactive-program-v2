@@ -25,7 +25,7 @@ export const ChiPublicationMixin = dedupingMixin(base => {
         },
         loading: {
           type: Boolean,
-          value: false
+          value: true
         }
       };
     }

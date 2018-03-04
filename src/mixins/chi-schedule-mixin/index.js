@@ -1,5 +1,6 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { firebase, conferenceId, version } from 'firebase-obj';
+import { requestAnimationFrame } from 'global/window';
 const collection = 'schedule';
 
 export const ChiScheduleMixin = dedupingMixin(base => {
@@ -15,6 +16,10 @@ export const ChiScheduleMixin = dedupingMixin(base => {
         scheduleArray: {
           type: Array,
           value: []
+        },
+        loading: {
+          type: Boolean,
+          value: true
         }
       };
     }
@@ -36,6 +41,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
 
     _getSchedule () {
       this._closeSchedule();
+      this.loading = true;
       this._scheduleRef = firebase
         .database()
         .ref(`${version}/${collection}Model/${collection}`)
@@ -49,11 +55,16 @@ export const ChiScheduleMixin = dedupingMixin(base => {
     }
 
     _setSchedule (snapshot) {
-      const schedule = [];
-      snapshot.forEach(sched => {
-        schedule.splice(sched.val().index, 0, { ...sched.val(), $key: sched.key });
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.loading = false;
+          const schedule = [];
+          snapshot.forEach(sched => {
+            schedule.splice(sched.val().index, 0, { ...sched.val(), $key: sched.key });
+          });
+          this.set('scheduleArray', schedule);
+        }, 200);
       });
-      this.set('scheduleArray', schedule);
     }
   }
   return ElementMixin;
