@@ -15,6 +15,8 @@ import 'marked-element';
 import style from './style.styl';
 import template from './template.html';
 
+let loaded = false; // haxx
+
 class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMixin(Element))) {
   static get is () { return 'chi-publication'; }
   static get template () { return `<style>${style}</style>${template}`; }
@@ -56,11 +58,12 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
   constructor () {
     super();
     this._debouncedFilterPublicationsOnce = debounce(this._filterPublicationsOnce.bind(this), 500);
+    this._debouncedShowInformationOnce = debounce(this._showInformationOnce.bind(this), 1000);
   }
 
   static get observers () {
     return [
-      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, publication, filteredVenues, publication.venue, filteredVenues.splices)',
+      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, params.search, publication, filteredVenues)',
       '_filterPublications(filteredVenues, publication.venue, queryResults)'
     ];
   }
@@ -95,18 +98,25 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     // this.dispatchEvent(new CustomEvent('chi-publication-hidden'));
   }
 
-  _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId) {
+  _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId, search) {
+    loaded
+      ? this._showInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, search)
+      : this._debouncedShowInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, search);
+  }
+
+  _showInformationOnce (paramsPublicationId, paramsOldPublicationId, publicationId, search) {
     // console.log(this.publication)
-    this.showInformation = this._isEqual(paramsPublicationId, publicationId);
+    this.showInformation = this._isEqual(paramsPublicationId, publicationId) || search;
     this._focusInformation = this._isEqual(paramsPublicationId, publicationId) || this._isEqual(paramsOldPublicationId, publicationId);
     requestAnimationFrame(() => {
       setTimeout(() => {
         // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
-        if (this._focusInformation) {
+        if (this._focusInformation && !search) {
           this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
             block: 'start',
             behavior: 'smooth'
           });
+          loaded = true;
         }
       }, 200);
     });

@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, requestAnimationFrame } from 'global/window';
+import { customElements, requestAnimationFrame, scrollTo, scrollY } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -66,7 +66,7 @@ class Component extends LittleQStoreMixin(Element) {
     this.set('timeslots', []);
     setTimeout(() => {
       const array = [];
-      Object.entries(timeslots).forEach(([key, item]) => { array.splice(item.value, 0, key); });
+      if (timeslots) Object.entries(timeslots).forEach(([key, item]) => { array.splice(item.value, 0, key); });
       this.set('timeslots', array);
     }, 100);
   }
@@ -79,14 +79,14 @@ class Component extends LittleQStoreMixin(Element) {
     const showDay = this._isEqual(paramsScheduleId, scheduleId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
-        if (showDay) {
-          // console.log(this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`))
-          this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`).scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
-        }
+        if (showDay) { scrollTo(0, (scrollY + this.shadowRoot.querySelector(`.${scheduleId}-day`).getBoundingClientRect().top) - 102); }
+        // if (showDay) {
+        //   // console.log(this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`))
+        //   this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`).scrollIntoView({
+        //     block: 'start',
+        //     behavior: 'smooth'
+        //   });
+        // }
       }, 200);
     });
   }
@@ -95,6 +95,7 @@ class Component extends LittleQStoreMixin(Element) {
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.hidden = this.timeslots.length === this.shadowRoot.querySelectorAll('chi-timeslot[hidden]').length;
+        this._showDay(this.params.scheduleId, this.scheduleObj.$key);
       }, 200);
     });
   }

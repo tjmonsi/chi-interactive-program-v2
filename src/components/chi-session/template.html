@@ -1,44 +1,61 @@
 <div class$="invi-anchor invi-anchor-session-[[sessionId]]"></div>
 <template is="dom-if" if="[[loading]]">
-  Loading...
+  <div class="loader-container">
+    <img class="loader" src="[[_baseUrl]]assets/loader-2.gif">
+  </div>
 </template>
-<h3 class="title">
-  <template is="dom-if" if="[[_isEqual(params.sessionId, sessionId)]]">
+
+<template is="dom-if" if="[[showPublications]]">
+  <h3 class="title big">
     <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">
+      <template is="dom-if" if="[[session.venue]]">
+        <img class="icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+      </template>
       <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
 
-      <!-- <svg class="icon" viewBox="0 0 24 24">
+      <svg class="icon circle" viewBox="0 0 24 24">
         <title>Hide...</title>
         <path d="M19,13H5V11H19V13Z" />
-      </svg> -->
+      </svg>
     </a>
-  </template>
-  <template is="dom-if" if="[[!_isEqual(params.sessionId, sessionId)]]">
-    <a href="?sessionId=[[sessionId]]&search=[[params.search]]">
-      <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
+  </h3>
+</template>
+<template is="dom-if" if="[[!showPublications]]">
+  <h3 class="title">
+    <!-- <a href="?sessionId=[[sessionId]]&search=[[params.search]]"> -->
+
+    <template is="dom-if" if="[[session.venue]]">
+      <img class="icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+    </template>
+    <marked-element marked="[[_cleanText(session.title, 40)]]"></marked-element>
       <!-- <svg class="icon" viewBox="0 0 24 24">
         <title>More...</title>
         <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
       </svg> -->
-    </a>
-  </template>
-</h3>
-<p class="venue">
-  [[getVenue(session.venue)]]
-  <template is="dom-if" if="[[!showPublications]]">
+    <!-- </a> -->
+  </h3>
+</template>
+
+<template is="dom-if" if="[[!showPublications]]">
+  <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
+  <p class="venue-small">
     <template is="dom-if" if="[[session.hasAward]]">
       <img title="Session has Best Paper Award" alt="Session has Best Paper Award" src="[[_baseUrl]]assets/best.png">
     </template>
     <template is="dom-if" if="[[session.hasHonorableMention]]">
       <img title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award"src="[[_baseUrl]]assets/honorable.png">
     </template>
-  </template>
-</p>
-<chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
-<section class="publications">
-  <template is="dom-if" if="[[showPublications]]">
+  </p>
+</template>
+
+<template is="dom-if" if="[[showPublications]]">
+  <p class="venue">
+    [[getVenue(session.venue)]]
+  </p>
+  <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
+  <section class="publications">
     <template is="dom-repeat" items="[[publications]]">
       <chi-publication class="chi-publication-item" show-publication-id$="[[item]]" publication-id="[[item]]" schedule-id="[[session.scheduleId]]"></chi-publication>
     </template>
-  </template>
-</section>
+  </section>
+</template>

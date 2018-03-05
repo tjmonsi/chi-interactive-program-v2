@@ -1,7 +1,8 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
+import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners';
 import { ChiTimeslotMixin } from 'chi-timeslot-mixin';
-import { customElements, requestAnimationFrame, CustomEvent } from 'global/window';
+import { customElements, requestAnimationFrame, CustomEvent, history, dispatchEvent } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -12,7 +13,7 @@ import 'chi-session';
 import style from './style.styl';
 import template from './template.html';
 
-class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
+class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin(Element))) {
   static get is () { return 'chi-timeslot'; }
   static get template () { return `<style>${style}</style>${template}`; }
 
@@ -24,6 +25,11 @@ class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
+      },
+      params: {
+        type: Object,
+        value: {},
+        statePath: 'littleqQueryParams.params'
       }
     };
   }
@@ -57,9 +63,9 @@ class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
   _timeslotColorClass (index) {
     switch (index) {
       case 0:
-        return 'grey';
-      case 1:
         return 'blue';
+      case 1:
+        return 'grey';
       case 2:
         return 'green';
       case 3:
@@ -70,6 +76,22 @@ class Component extends LittleQStoreMixin(ChiTimeslotMixin(Element)) {
         return 'pink';
       default:
         return 'pink';
+    }
+  }
+
+  _toggleSession (event) {
+    const { target: el, path } = event;
+    let comingFromPath = false;
+    const { sessionId, showPublications, forceClose } = el;
+    for (var element of path) {
+      if (element.nodeName === 'A' && element.href.indexOf(sessionId) >= 0) {
+        comingFromPath = true;
+        break;
+      }
+    }
+    if ((forceClose || !showPublications) && !comingFromPath) {
+      history.pushState({}, '', `?${showPublications || forceClose ? 'oldSessionId' : 'sessionId'}=${sessionId}&${this.params.search && this.params.search.trim() ? `search=${this.params.search}` : ''}`);
+      dispatchEvent(new CustomEvent('location-changed'));
     }
   }
 }

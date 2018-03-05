@@ -3,6 +3,7 @@ import { Element } from '@polymer/polymer/polymer-element';
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
 import { customElements } from 'global/window';
 import '@polymer/polymer/lib/elements/dom-repeat';
+import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-day';
 
 // define style and template

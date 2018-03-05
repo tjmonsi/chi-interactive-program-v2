@@ -8,13 +8,49 @@
   @media screen and (max-width: 400px)
     padding: 10px;
 
+.venue-small
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+.loader-container
+  padding: 20px;
+  text-align: center;
+
+  .loader
+    width: 100%;
+    max-width: 200px;
+
+    @media screen and (max-width: 400px)
+      max-width: 100px;
+
+:host(:hover:not([show-publications])), :host([force-close])
+  .icon
+    filter: invert(100%)
+
 .mark
   background-color: $brand-green
   color: $light
 
 .title
   font-size: 14px
+  line-height: 24px;
   margin: 0
+
+  &.big
+    font-size: 18px;
+    line-height: 28px;
+
+  .icon
+    margin-right: 10px
+    vertical-align: -5%
+    height: 16px;
+    width: auto;
+
+  .circle
+    border: 1px solid $dark
+    border-radius: 50%;
+    margin-left: 10px;
 
   a
     text-decoration: none

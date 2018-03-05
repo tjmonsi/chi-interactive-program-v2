@@ -1,9 +1,6 @@
 <span class="bold">
   <marked-element marked="[[author.displayName]]"></marked-element>
 </span>,
-<template is="dom-if" if="[[author.primary.dept]]">
-  <marked-element marked="[[author.primary.dept]]"></marked-element>,
-</template>
 <template is="dom-if" if="[[author.primary.institution]]">
   <marked-element marked="[[author.primary.institution]]"></marked-element>,
 </template>
@@ -11,3 +8,12 @@
   <marked-element marked="[[author.primary.city]]"></marked-element>,
 </template>
 <marked-element marked="[[author.primary.country]]"></marked-element>
+<template is="dom-if" if="[[author.secondary.institution]]">
+  ;<marked-element marked="[[author.secondary.institution]]"></marked-element>,
+</template>
+<template is="dom-if" if="[[author.secondary.city]]">
+  <marked-element marked="[[author.secondary.city]]"></marked-element>,
+</template>
+<template is="dom-if" if="[[author.secondary.country]]">
+  <marked-element marked="[[author.secondary.country]]"></marked-element>
+</template>

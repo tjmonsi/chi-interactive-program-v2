@@ -74,14 +74,14 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     return [
       'closeNavigation(params.scheduleId, params.sessionId, params.publicationId)',
       '_queryChanged(params.search, filteredSearch)',
-      '_updateParent(params, params.*)',
-      '_goToTop(params.sessionId)'
+      '_goToTop(params.sessionId)',
+      '_clearOldSession(params, params.oldSessionId)'
     ];
   }
 
   constructor () {
     super();
-    this._debouncedSearch = debounce(this.search.bind(this), 500);
+    this._debouncedSearch = debounce(this.search.bind(this), 2000);
   }
 
   connectedCallback () {
@@ -108,11 +108,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     if (this._observer) this._observer.disconnect();
   }
 
-  _updateParent (params) {
+  _clearOldSession (params) {
     const queryParams = [];
-    for (let q in params) { if (params[q]) queryParams.push(q + '=' + params[q]); }
-    if (window.top && window.top.history) window.top.history.pushState({}, '', '?' + queryParams.join('&'));
-    else if (window.top && window.top.updateURL && typeof window.top.updateURL === 'function') window.parent.updateURL(params);
+    for (let q in params) { if (params[q] && q !== 'oldSessionId') queryParams.push(q + '=' + params[q]); }
+    history.pushState({}, '', '?' + queryParams.join('&'));
   }
 
   _goToTop (sessionId) {
@@ -143,11 +142,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     this._filterContainer = false;
   }
 
-  filter () {
+  toggleFilter () {
     this.shadowRoot.querySelectorAll('.nav-button.menu').forEach(node => (node.style.display = 'block'));
     this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'none'));
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
-    this._filterContainer = !this._filterContainer;
     this.shadowRoot.querySelector('.filter-container').style.display = this._filterContainer ? 'block' : 'none';
     if (this._filterContainer) {
       this.shadowRoot.querySelector('.filter-container').style.top =
@@ -163,6 +161,11 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
             : '0px')
           : null;
     }
+  }
+
+  filter () {
+    this._filterContainer = !this._filterContainer;
+    this.toggleFilter();
   }
 
   _onChangeQuery ({ target: el }) {
@@ -222,7 +225,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
             if (searchType.indexOf('author') < 0) searchType.push('author');
             break;
           case 'institution':
-            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'primary.institution', 'primary.dept', 'primary.city', 'primary.country' ];
+            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'primary.institution', 'primary.city', 'primary.country', 'secondary.institution', 'secondary.city', 'secondary.country' ];
             if (searchType.indexOf('author') < 0) searchType.push('author');
             break;
           case 'session':
@@ -252,11 +255,29 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       this.hitsNumber = nbHits;
       const searchResultTypes = {
         author: 0,
+        primaryInstitution: 0,
+        secondaryInstitution: 0,
         publication: 0,
         session: 0
       };
       queryResults.forEach(hit => {
-        searchResultTypes[hit.searchType]++;
+        const { searchType, _highlightResult } = hit;
+        if (searchType === 'author') {
+          const { displayName, firstName, lastName, primary, secondary } = _highlightResult;
+          const { city, country, institution } = primary;
+          const { city: city2, country: country2, institution: institution2 } = secondary;
+          if (displayName.matchedWords.length || firstName.matchedWords.length || lastName.matchedWords.length) {
+            searchResultTypes[searchType]++;
+          }
+          if (city.matchedWords.length || country.matchedWords.length || institution.matchedWords.length) {
+            searchResultTypes.primaryInstitution++;
+          }
+          if (city2.matchedWords.length || country2.matchedWords.length || institution2.matchedWords.length) {
+            searchResultTypes.secondaryInstitution++;
+          }
+          return;
+        }
+        searchResultTypes[searchType]++;
       });
 
       this.set('searchResultTypes', searchResultTypes);
@@ -267,7 +288,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         return;
       }
 
-      if (this._filterContainer) this.filter();
+      if (this._filterContainer) this.toggleFilter();
 
       this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
     } catch (error) {
@@ -279,6 +300,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     // console.log(this.shadowRoot.querySelector('#filterForm').filter)
     setTimeout(() => {
       const { value, checked } = el;
+      if (value === 'all' && !checked) {
+        return this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues: [] });
+      }
       const filteredVenues = [ ...this.filteredVenues ];
       const index = filteredVenues.indexOf(value);
       if (checked && index < 0) filteredVenues.push(value);
@@ -286,6 +310,8 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         filteredVenues.splice(index, 1);
         if (filteredVenues.indexOf('all') >= 0) filteredVenues.splice(filteredVenues.indexOf('all'), 1);
       }
+
+      if (this._filterContainer) this.toggleFilter();
       this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues });
     }, 10);
   }
@@ -293,6 +319,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   toggleSearchFilter ({ target: el }) {
     setTimeout(() => {
       const { value, checked } = el;
+      if (value === 'all' && !checked) {
+        return this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch: [] });
+      }
       const filteredSearch = [ ...this.filteredSearch ];
       const index = filteredSearch.indexOf(value);
       if (checked && index < 0) filteredSearch.push(value);
@@ -300,6 +329,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         filteredSearch.splice(index, 1);
         if (filteredSearch.indexOf('all') >= 0) filteredSearch.splice(filteredSearch.indexOf('all'), 1);
       }
+      if (this._filterContainer) this.toggleFilter();
       this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch });
     }, 10);
   }

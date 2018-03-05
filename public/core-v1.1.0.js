@@ -1,4 +1,31 @@
-
+(function () {
+  var text = [
+    'Please Wait...',
+    'We are getting there...',
+    'Data is being downloaded to your device right now...',
+    'Loading funny texts while you wait...',
+    'Looking for sense of humour, please hold on',
+    'Do not run! We are your friends!',
+    'Let\'s take a mindfulness minute...',
+    'There is no spoon. Because we are not done loading it',
+    'Optimizing the optimizer...',
+    'Please wait... Consulting the manual...',
+    '@todo Insert witty loading message',
+    'Cracking military-grade encryption...',
+    'My other loading screen is much faster. ',
+    'We are not liable for any broken screens as a result of waiting.',
+    'We swear it\'s almost done.',
+    'A commit a day keeps the mobs away',
+    'Loading the Interactive Program...'
+  ];
+  var index = 0;
+  var loaderText = document.querySelector('.loading-screen-text');
+  window.loaderInterval = setInterval(function () {
+    if (index >= text.length) index = 0;
+    loaderText.textContent = text[index];
+    index++;
+  }, 5000);
+})();
 // polyfill detector
 /*! modernizr 3.5.0 (Custom Build) | MIT *
  * https://modernizr.com/download/?-es5array-es5date-es5function-es5object-es5string-es6array-es6collections-es6math-es6number-es6object-es6string-promises !
@@ -84,12 +111,12 @@ if (window.customElements) {
     document.removeEventListener('WebComponentsReady', componentsReady, false);
     var script = document.createElement('script');
     script.async = true
-    script.src = window.baseURL + 'bundle.js';
+    script.src = window.baseURL + 'bundle-' + window.chiVersion +'.js';
     script.setAttribute('nomodule', true);
     var scriptModule = document.createElement('script');
 
     scriptModule.async = true
-    scriptModule.src = window.baseURL + 'module.bundle.js';
+    scriptModule.src = window.baseURL + 'module.bundle-' + window.chiVersion + '.js';
     scriptModule.setAttribute('type', 'module');
     var refScript = document.body.getElementsByTagName('script')[0];
     refScript.parentNode.insertBefore(script, refScript);

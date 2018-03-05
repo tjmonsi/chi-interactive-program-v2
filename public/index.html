@@ -37,6 +37,6 @@
 </div>
 <chi-interactive-schedule>
 </chi-interactive-schedule>
-<script>window.baseURL="/",function(){var e=document.body.getElementsByTagName("script")[0],t=document.createElement("script");t.src=window.baseURL+"core.js",e.parentNode.insertBefore(t,e);var n=["Please Wait...","We are getting there...","Data is being downloaded to your device right now...","Loading funny texts while you wait...","Looking for sense of humour, please hold on","Do not run! We are your friends!","Let's take a mindfulness minute...","There is no spoon. Because we are not done loading it","Optimizing the optimizer...","Please wait... Consulting the manual...","@todo Insert witty loading message","Cracking military-grade encryption...","My other loading screen is much faster. ","We are not liable for any broken screens as a result of waiting.","We swear it's almost done.","A commit a day keeps the mobs away","Loading the Interactive Program..."],o=0,a=document.querySelector(".loading-screen-text");window.loaderInterval=setInterval(function(){o>=n.length&&(o=0),a.textContent=n[o],o++},5e3)}()</script>
+<script>window.baseURL="/",window.chiVersion="v1.1.0",function(){var e=document.body.getElementsByTagName("script")[0],n=document.createElement("script");n.src=window.baseURL+"core-"+window.chiVersion+".js",e.parentNode.insertBefore(n,e)}()</script>
 </body>
 </html>

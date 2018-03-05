@@ -62,6 +62,10 @@
     @supports (display: grid)
       width: auto;
 
+  .chi-session-item[force-close]
+    @media screen and (max-width: 449px)
+      display: none;
+
   &.grey-border
     border-top: 4px solid $brand-grey
 
@@ -88,6 +92,7 @@
 
   .yellow-timeslot
     background: $brand-yellow;
+    color: $light;
 
   &.orange-border
     border-top: 4px solid $brand-orange
@@ -108,3 +113,32 @@
 
     .time
       margin: 0
+
+.chi-session-item
+  cursor: pointer;
+  // &:not([show-publications])
+  //   cursor: auto
+
+  &.grey-item:hover:not([show-publications]), &.grey-item[force-close]
+    background: $brand-grey;
+    color: $light;
+
+  &.blue-item:hover:not([show-publications]), &.blue-item[force-close]
+    background: $brand-blue;
+    color: $light;
+
+  &.green-item:hover:not([show-publications]), &.green-item[force-close]
+    background: $brand-green;
+    color: $light;
+
+  &.yellow-item:hover:not([show-publications]), &.yellow-item[force-close]
+    background: $brand-yellow;
+    color: $light;
+
+  &.orange-item:hover:not([show-publications]), &.orange-item[force-close]
+    background: $brand-orange;
+    color: $light;
+
+  &.pink-item:hover:not([show-publications]), &.pink-item[force-close]
+    background: $brand-pink;
+    color: $light;

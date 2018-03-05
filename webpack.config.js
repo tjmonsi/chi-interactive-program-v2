@@ -6,6 +6,7 @@ const moduleConf = require('./webpack-module.config');
 const nomoduleConf = require('./webpack-nomodule.config');
 const getHtmlOptions = require('./src/utils/html-webpack/get-html-options');
 const IS_DEV_SERVER = !!process.argv.find(arg => arg.includes('--mode=development'));
+const version = 'v1.1.0';
 
 const copyStatics = {
   copyPolyfills: [
@@ -51,7 +52,7 @@ const copyStatics = {
     },
     {
       from: resolve(__dirname, './src/core.js'),
-      to: 'core.js'
+      to: `core-${version}.js`
     },
     {
       from: resolve(__dirname, './src/assets'),
@@ -66,11 +67,8 @@ const copyStatics = {
 
 const shared = env => {
   const IS_MODULE_BUILD = env.BROWSERS === 'module';
-
-  return {
-    entry: {
-      'bundle': resolve(__dirname, 'src/index.js')
-    },
+  const obj = {
+    entry: {},
     output: {
       path: resolve(__dirname, 'public'),
       chunkFilename: IS_MODULE_BUILD ? 'module.[name].fragment.js' : '[name].fragment.js',
@@ -123,6 +121,8 @@ const shared = env => {
       new CopyWebpackPlugin(copyStatics.copyPolyfills)
     ]
   };
+  obj.entry[`bundle-${version}`] = resolve(__dirname, 'src/index.js');
+  return obj;
 };
 
 module.exports = (env = {}) => merge(env.BROWSERS === 'module' ? moduleConf(IS_DEV_SERVER) : nomoduleConf(), shared(env));
