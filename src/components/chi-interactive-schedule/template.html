@@ -205,13 +205,41 @@
               Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> result(s).
               <ul>
                 <template is="dom-if" if="[[searchResultTypes.author]]">
-                  <li>[[searchResultTypes.author]] Author(s)</li>
+                  <li>
+                    [[searchResultTypes.author]] Author(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.displayNameList]]" as="displayName">
+                        <li>
+                          [[displayName.displayName]]: [[displayName.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
                 </template>
                 <template is="dom-if" if="[[searchResultTypes.primaryInstitution]]">
-                  <li>[[searchResultTypes.primaryInstitution]] Primary Institution(s)</li>
+                  <li>
+                    [[searchResultTypes.primaryInstitution]] Primary Institution(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.primaryInstitutionList]]" as="primaryInstitution">
+                        <li>
+                          [[primaryInstitution.institution]]: [[primaryInstitution.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
                 </template>
+
                 <template is="dom-if" if="[[searchResultTypes.secondaryInstitution]]">
-                  <li>[[searchResultTypes.secondaryInstitution]] Secondary Institution(s)</li>
+                  <li>
+                    [[searchResultTypes.secondaryInstitution]] Secondary Institution(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.secondaryInstitutionList]]" as="secondaryInstitution">
+                        <li>
+                          [[secondaryInstitution.institution]]: [[secondaryInstitution.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
                 </template>
                 <template is="dom-if" if="[[searchResultTypes.publication]]">
                   <li>[[searchResultTypes.publication]] Paper(s)</li>

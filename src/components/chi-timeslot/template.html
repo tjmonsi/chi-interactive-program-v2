@@ -1,12 +1,22 @@
+<div class$="invi-anchor invi-anchor-timeslot-[[timeslotId]]"></div>
 <template is="dom-if" if="[[sessions.length]]">
   <section class$="grid [[_timeslotColorClass(scheduleIndex)]]-border">
-    <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot">
+    <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot" on-tap="_toggleTimeslot">
       <h2 class="time">
         [[timeslot.time]]
       </h2>
     </div>
-    <template is="dom-repeat" items="[[sessions]]">
-      <chi-session date-string="[[dateString]]" time-string="[[timeslot.time]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item]]" session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]"></chi-session>
+    <template is="dom-if" if="[[!showSessions]]">
+      <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot timeslot-name" on-tap="_toggleTimeslot">
+        <h2 class="time">
+          [[timeslot.name]]
+        </h2>
+      </div>
+    </template>
+    <template is="dom-if" if="[[showSessions]]">
+      <template is="dom-repeat" items="[[sessions]]" class="sessions">
+        <chi-session date-string="[[dateString]]" time-string="[[timeslot.time]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item]]" session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]" timeslot-id="[[timeslotId]]"></chi-session>
+      </template>
     </template>
   </section>
 </template>

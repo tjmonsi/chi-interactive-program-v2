@@ -3,6 +3,12 @@
 
 :host
   display: block
+  position: relative;
+
+.time
+  cursor: pointer
+  &:hover
+    text-decoration: underline
 
 .grid
   display: block;
@@ -111,6 +117,21 @@
     .time
       margin: 0
 
+  .timeslot-name
+    grid-column: 2 / 7;
+
+    @media screen and (max-width: 1200px)
+      grid-column: 2 / 6;
+
+    @media screen and (max-width: 849px)
+      grid-column: 2 / 4;
+
+    @media screen and (max-width: 599px)
+      grid-column: 2 / 3;
+
+    @media screen and (max-width: 449px)
+      grid-column: 1
+
 .chi-session-item
   cursor: pointer;
   // &:not([show-publications])
@@ -140,3 +161,8 @@
     background: $brand-pink;
     color: $light;
 
+.invi-anchor
+  opacity: 0;
+  z-index: -1;
+  top: -82px;
+  position: absolute

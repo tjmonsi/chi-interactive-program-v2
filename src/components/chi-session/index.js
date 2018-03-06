@@ -170,7 +170,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         this._clone.sessionId = this.sessionId;
         this._clone.session = this.session;
         this._clone.addEventListener('click', () => {
-          history.pushState({}, '', `?$oldSessionId=${sessionId}&${search && search.trim() ? `search=${search}` : ''}`);
+          history.pushState({}, '', `?timeslotId=${this.timeslotId}&oldSessionId=${sessionId}&${search && search.trim() ? `search=${search}` : ''}`);
           dispatchEvent(new CustomEvent('location-changed'));
         });
       }

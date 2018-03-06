@@ -258,23 +258,84 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         primaryInstitution: 0,
         secondaryInstitution: 0,
         publication: 0,
-        session: 0
+        session: 0,
+        publicationList: [],
+        displayNameList: [],
+        displayNamePublicationList: [],
+        primaryInstitutionList: [],
+        secondaryInstitutionList: [],
+        secondaryPublicationInstutionList: []
       };
       queryResults.forEach(hit => {
-        const { searchType, _highlightResult } = hit;
+        const { searchType, publications, _highlightResult } = hit;
         if (searchType === 'author') {
-          const { displayName, firstName, lastName, primary, secondary } = _highlightResult;
-          const { city, country, institution } = primary;
-          const { city: city2, country: country2, institution: institution2 } = secondary;
-          if (displayName.matchedWords.length || firstName.matchedWords.length || lastName.matchedWords.length) {
-            searchResultTypes[searchType]++;
+          const { displayName, primary, secondary } = _highlightResult;
+          const { institution } = primary;
+          const { institution: institution2 } = secondary;
+
+          const displayNameItem = displayName.value.replace(/<em>/g, '').replace(/<\/em>/g, '');
+
+          if (displayName.matchedWords.length) {
+            let index = searchResultTypes.displayNameList.findIndex(item => item.displayName === displayNameItem);
+            if (index < 0) {
+              searchResultTypes.displayNameList.push({
+                displayName: displayNameItem,
+                publications: []
+              });
+              index = searchResultTypes.displayNameList.length - 1;
+            }
+            Object.entries(publications).forEach(([pub]) => {
+              if (searchResultTypes.displayNameList[index].publications.indexOf(pub) < 0) searchResultTypes.displayNameList[index].publications.push(pub);
+            });
+            searchResultTypes[searchType] = searchResultTypes.displayNameList.length;
           }
-          if (city.matchedWords.length || country.matchedWords.length || institution.matchedWords.length) {
-            searchResultTypes.primaryInstitution++;
+
+          const institutionItem = institution.value.replace(/<em>/g, '').replace(/<\/em>/g, '');
+
+          if (institution.matchedWords.length) {
+            let index = searchResultTypes.primaryInstitutionList.findIndex(item => item.institution === institutionItem);
+            if (index < 0) {
+              searchResultTypes.primaryInstitutionList.push({
+                institution: institutionItem,
+                publications: []
+              });
+              index = searchResultTypes.primaryInstitutionList.length - 1;
+            }
+            Object.entries(publications).forEach(([pub]) => {
+              if (searchResultTypes.primaryInstitutionList[index].publications.indexOf(pub) < 0) searchResultTypes.primaryInstitutionList[index].publications.push(pub);
+            });
+            searchResultTypes.primaryInstitution = searchResultTypes.primaryInstitutionList.length;
           }
-          if (city2.matchedWords.length || country2.matchedWords.length || institution2.matchedWords.length) {
-            searchResultTypes.secondaryInstitution++;
+
+          const institution2Item = institution2.value.replace(/<em>/g, '').replace(/<\/em>/g, '');
+
+          if (institution2.matchedWords.length) {
+            let index = searchResultTypes.secondaryInstitutionList.findIndex(item => item.institution === institution2Item);
+            if (index < 0) {
+              searchResultTypes.secondaryInstitutionList.push({
+                institution: institution2Item,
+                publications: []
+              });
+              index = searchResultTypes.secondaryInstitutionList.length - 1;
+            }
+            Object.entries(publications).forEach(([pub]) => {
+              if (searchResultTypes.secondaryInstitutionList[index].publications.indexOf(pub) < 0) searchResultTypes.secondaryInstitutionList[index].publications.push(pub);
+            });
+            searchResultTypes.secondaryInstitution = searchResultTypes.secondaryInstitutionList.length;
           }
+
+          if (institution2.matchedWords.length && searchResultTypes.secondaryInstitutionList.indexOf(institution2Item) < 0) {
+            if (institution.matchedWords.length) {
+              searchResultTypes.secondaryInstitutionList.push(institution2Item);
+              Object.entries(publications).forEach(([pub]) => {
+                if (searchResultTypes.secondaryPublicationInstutionList.indexOf(pub) < 0) searchResultTypes.secondaryPublicationInstutionList.push(pub);
+              });
+            }
+            searchResultTypes.secondaryInstitution = searchResultTypes.secondaryPublicationInstutionList.length;
+          }
+          // if (city2.matchedWords.length || country2.matchedWords.length || institution2.matchedWords.length) {
+          //   searchResultTypes.secondaryInstitution++;
+          // }
           return;
         }
         searchResultTypes[searchType]++;

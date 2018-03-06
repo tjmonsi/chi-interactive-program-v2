@@ -79,7 +79,7 @@ class Component extends LittleQStoreMixin(Element) {
     const showDay = this._isEqual(paramsScheduleId, scheduleId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (showDay) { scrollTo(0, (scrollY + this.shadowRoot.querySelector(`.${scheduleId}-day`).getBoundingClientRect().top) - 102); }
+        if (showDay && !this.hidden) { scrollTo(0, (scrollY + this.shadowRoot.querySelector(`.${scheduleId}-day`).getBoundingClientRect().top) - 102); }
         // if (showDay) {
         //   // console.log(this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`))
         //   this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`).scrollIntoView({

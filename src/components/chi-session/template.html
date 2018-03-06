@@ -7,7 +7,7 @@
 
 <template is="dom-if" if="[[showPublications]]">
   <h3 class="title big">
-    <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">
+    <a href="?timeslotId=[[timeslotId]]&oldSessionId=[[sessionId]]&search=[[params.search]]">
 
       <template is="dom-if" if="[[getVenue(session.venue)]]">
         [[getVenue(session.venue)]] :
