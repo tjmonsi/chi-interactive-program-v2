@@ -59,7 +59,7 @@
           <chi-author-summary class="chi-author-summary-item" author-id="[[item]]"></chi-author-summary>
         </template>
       </p> -->
-      <template is="dom-if" if="[[publication.abstract]]">
+      <template is="dom-if" if="[[_isOr(publication.abstract, publication.abstract)]]">
         <p>
           <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]&search=[[params.search]]">
             Show Abstract
@@ -81,7 +81,7 @@
           </li>
         </template>
       </ul> -->
-      <template is="dom-if" if="[[publication.shortText]]">
+      <template is="dom-if" if="[[_isOr(publication.shortText, publication.abstract)]]">
         <p>
           <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&search=[[params.search]]">
             Hide Abstract

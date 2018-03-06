@@ -124,6 +124,8 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
   }
 
   _isEqual (a, b) { return a === b; }
+
+  _isOr (a, b) { return a || b; }
 }
 
 !customElements.get(Component.is)
