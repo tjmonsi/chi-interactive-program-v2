@@ -8,6 +8,7 @@
     "size": "./node_modules/.bin/size-limit",
     "check-size": "./node_modules/.bin/gzip-size",
     "dev": "./dev.bash",
+    "dev-for-firefox": "./dev-for-firefox.bash",
     "serve": "node server",
     "prod": "NODE_ENV=production && ./node_modules/.bin/webpack --mode=production --env.BROWSERS=module && ./node_modules/.bin/webpack --mode=production && node compiler"
   },
@@ -74,6 +75,7 @@
     "es5-shim": "^4.5.10",
     "es6-promise": "^4.2.4",
     "es6-shim": "^0.35.3",
+    "es6-symbol": "^3.1.1",
     "firebase": "^4.9.1",
     "global": "^4.3.2",
     "indexeddbshim": "^3.5.0",

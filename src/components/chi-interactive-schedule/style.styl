@@ -4,6 +4,9 @@
 :host
   display: block
 
+.algolia-link
+  text-decoration: none;
+
 .center-container
   border: 1px solid $brand-green;
   padding: 20px;
@@ -75,7 +78,7 @@
 
   .list-item
     margin: 0 10px;
-    font-size: 0.9rem;
+    font-size: 90%;
     list-style-type: none
 
     .anchor
@@ -156,7 +159,7 @@
   border-radius: 5px;
   cursor: pointer;
   padding: 5px 10px;
-  font-size: 0.9rem;
+  font-size: 90%;
   @media screen and (max-width: 520px)
     display: none
 
@@ -166,16 +169,16 @@
   vertical-align: middle;
   margin-right: 10px;
 
-  @media screen and (max-width: 860px)
-    display: none
+//   @media screen and (max-width: 860px)
+//     display: none
 
-.algolia-icon
-  display: none
-  height: 30px;
-  vertical-align: middle;
-  margin-right: 10px;
-  @media screen and (max-width: 860px)
-    display: inline-block
+// .algolia-icon
+//   display: none
+//   height: 30px;
+//   vertical-align: middle;
+//   margin-right: 10px;
+//   @media screen and (max-width: 860px)
+//     display: inline-block
 
 .search-container
   @media screen and (max-width: 520px)
@@ -185,7 +188,7 @@
     .search
       flex: 1
 
-  @media screen and (max-width: 405px)
+  @media screen and (max-width: 365px)
     .search
       width: 80px
 
@@ -202,7 +205,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 90%;
   display: none
 
   .icon
@@ -210,6 +213,7 @@
 
   @media screen and (max-width: 520px)
     display: inline-block
+    padding: 0
 
 .filter-container
   padding: 20px
@@ -250,7 +254,17 @@
 
 .search
   padding: 10px
-  font-size: 1em
+  font-size: 100%
   border: 2px solid $brand-green;
   border-radius: 10px;
   margin-right: 10px;
+
+.footer
+  text-align: center;
+  position: fixed;
+  padding: 20px;
+  bottom: 0
+  left: 0
+  right: 0
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background: $light;

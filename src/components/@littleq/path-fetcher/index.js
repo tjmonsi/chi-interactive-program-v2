@@ -60,7 +60,7 @@ class Component extends LittleQStoreMixin(Element) {
     addEventListener('location-changed', this._boundUrlChanged);
     addEventListener('popstate', this._boundUrlChanged);
     document.body.addEventListener('click', this._boundGlobalOnClick, true);
-    this._lastChangedAt = window.performance.now() - (this.dwellTime - 200);
+    this._lastChangedAt = performance && performance.now() ? performance.now() : Date.now() - (this.dwellTime - 200);
     this._initialized = true;
 
     // set initialize values
@@ -129,7 +129,7 @@ class Component extends LittleQStoreMixin(Element) {
     const newUrl = this._getUrl();
     // Need to use a full URL in case the containing page has a base URI.
     const fullNewUrl = resolveUrl(newUrl, window.location.protocol + '//' + window.location.host).href;
-    const now = performance.now();
+    const now = performance && performance.now() ? performance.now() : Date.now();
     const shouldReplace = this._lastChangedAt + this.dwellTime > now;
     this._lastChangedAt = now;
     shouldReplace ? history.replaceState({}, '', fullNewUrl) : window.history.pushState({}, '', fullNewUrl);

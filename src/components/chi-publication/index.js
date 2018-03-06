@@ -77,7 +77,8 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     this.hidden = queryResults ? queryResults.length > 0 : false;
 
     if (this.publication && queryResults) {
-      for (let result of queryResults) {
+      for (let indexResult in queryResults) {
+        let result = queryResults[indexResult];
         if (result.searchType === 'publication' && result.objectID === this.publicationId) {
           this.showInformation = true;
           this.hidden = false;

@@ -18,7 +18,7 @@ export const ChiSessionMixin = dedupingMixin(base => {
         },
         sessionId: {
           type: String,
-          observer: '_getSession'
+          observer: ''
         },
         publications: {
           type: Array,
@@ -28,12 +28,17 @@ export const ChiSessionMixin = dedupingMixin(base => {
           type: Boolean,
           reflectToAttribute: true,
           value: true
+        },
+        dontLoad: {
+          type: Boolean,
+          value: false
         }
       };
     }
 
     static get observers () {
       return [
+        '_getSession(sessionId, dontLoad)',
         '_getPublications(session.publications, session.publications.*)'
       ];
     }
@@ -48,8 +53,8 @@ export const ChiSessionMixin = dedupingMixin(base => {
       this._closeSession();
     }
 
-    _getSession (sessionId) {
-      if (sessionId) {
+    _getSession (sessionId, dontLoad) {
+      if (sessionId && !dontLoad) {
         this._closeSession();
         this.loading = true;
 

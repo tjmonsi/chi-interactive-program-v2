@@ -8,15 +8,16 @@
 <template is="dom-if" if="[[showPublications]]">
   <h3 class="title big">
     <a href="?oldSessionId=[[sessionId]]&search=[[params.search]]">
-      <template is="dom-if" if="[[session.venue]]">
-        <img class="icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+
+      <template is="dom-if" if="[[getVenue(session.venue)]]">
+        [[getVenue(session.venue)]] :
       </template>
       <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
 
-      <svg class="icon circle" viewBox="0 0 24 24">
+      <!-- <svg class="icon circle" viewBox="0 0 24 24">
         <title>Hide...</title>
         <path d="M19,13H5V11H19V13Z" />
-      </svg>
+      </svg> -->
     </a>
   </h3>
 </template>
@@ -24,11 +25,14 @@
   <h3 class="title">
     <!-- <a href="?sessionId=[[sessionId]]&search=[[params.search]]"> -->
 
-    <template is="dom-if" if="[[session.venue]]">
+    <!-- <template is="dom-if" if="[[session.venue]]">
       <img class="icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+    </template> -->
+    <template is="dom-if" if="[[getVenue(session.venue)]]">
+      [[getVenue(session.venue)]] :
     </template>
-    <marked-element marked="[[_cleanText(session.title, 40)]]"></marked-element>
-      <!-- <svg class="icon" viewBox="0 0 24 24">
+    <marked-element marked="[[_cleanText(session.title, 30)]]"></marked-element>
+    <!-- <svg class="icon" viewBox="0 0 24 24">
         <title>More...</title>
         <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
       </svg> -->
@@ -37,20 +41,37 @@
 </template>
 
 <template is="dom-if" if="[[!showPublications]]">
-  <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
-  <p class="venue-small">
+  <p class="venue">
+
+    <template is="dom-if" if="[[session.venue]]">
+      <img class="venue-icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+    </template>
     <template is="dom-if" if="[[session.hasAward]]">
-      <img title="Session has Best Paper Award" alt="Session has Best Paper Award" src="[[_baseUrl]]assets/best.png">
+      <img class="venue-icon-2" title="Session has Best Paper Award" alt="Session has Best Paper Award" src="[[_baseUrl]]assets/best.png">
     </template>
     <template is="dom-if" if="[[session.hasHonorableMention]]">
-      <img title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award"src="[[_baseUrl]]assets/honorable.png">
+      <img class="venue-icon-2" title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award" src="[[_baseUrl]]assets/honorable.png">
     </template>
+
+    <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
   </p>
 </template>
 
 <template is="dom-if" if="[[showPublications]]">
+  <template is="dom-if" if="[[session.showChair]]">
+    <p class="venue">
+      Chair:
+      <marked-element marked="[[session.chair]]"></marked-element>
+    </p>
+  </template>
   <p class="venue">
-    [[getVenue(session.venue)]]
+    <template is="dom-if" if="[[session.venue]]">
+      <img class="venue-icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
+    </template>
+    [[_getDateTime(dateString, timeString)]]
+  </p>
+  <p class="venue">
+
   </p>
   <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
   <section class="publications">

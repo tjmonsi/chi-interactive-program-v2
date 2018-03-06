@@ -25,6 +25,19 @@
     loaderText.textContent = text[index];
     index++;
   }, 5000);
+
+  // polyfill for object entries
+  if (!Object.entries) {
+    Object.entries = function (obj) {
+      var entrys = [];
+      for (var key in obj) {
+        if (obj[key] && obj.propertyIsEnumerable(key)) {
+          entrys.push([key, obj[key]]);
+        }
+      }
+      return entrys;
+    };
+  }
 })();
 // polyfill detector
 /*! modernizr 3.5.0 (Custom Build) | MIT *
@@ -47,10 +60,13 @@
   // loads es6 polyfils if it doesn't have the following
   // es6 set and collections, math, number, object, and string methods
   if (!Modernizr.es6collections || !Modernizr.es6math || !Modernizr.es6number || !Modernizr.es6object || !Modernizr.es6string) {
+    var es5shim = document.createElement('script');
+    es5shim.src = window.baseURL + 'vendor/es5-shim.js';
     var es6shim = document.createElement('script');
     es6shim.src = window.baseURL + 'vendor/es6-shim.js';
     var es6sham = document.createElement('script');
     es6sham.src = window.baseURL + 'vendor/es6-sham.js';
+    refScript.parentNode.insertBefore(es5shim, refScript);
     refScript.parentNode.insertBefore(es6shim, refScript);
     refScript.parentNode.insertBefore(es6sham, refScript);
   }

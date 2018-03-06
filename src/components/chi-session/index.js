@@ -40,6 +40,12 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         value: [],
         statePath: 'chiState.venues'
       },
+      timeString: {
+        type: String
+      },
+      dateString: {
+        type: String
+      },
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
@@ -88,6 +94,14 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     // this._debouncedShowPublicationFast = debounce(this._showPublicationOnce.bind(this), 100);
   }
 
+  _toTextUrl (text) {
+    return encodeURI(text);
+  }
+
+  _getDateTime (dateString, time) {
+    return `${dateString} - ${time.split('-')[0]}`;
+  }
+
   _filterSessionsOnce (filteredVenues, venue) {
     const queryResults = this.queryResults;
     requestAnimationFrame(() => {
@@ -96,7 +110,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         this.hidden = queryResults ? queryResults.length > 0 : false;
 
         if (this.session && queryResults) {
-          for (let result of queryResults) {
+          for (let indexResult in queryResults) {
+            let result = queryResults[indexResult];
             if (result.searchType === 'session' && result.objectID === this.sessionId) {
               this.showPublications = true;
               this.hidden = false;
@@ -151,7 +166,9 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         this._clone.loading = false;
         this.parentNode.insertBefore(this._clone, this);
         this._clone.hidden = false;
+        this._clone.dontLoad = true;
         this._clone.sessionId = this.sessionId;
+        this._clone.session = this.session;
         this._clone.addEventListener('click', () => {
           history.pushState({}, '', `?$oldSessionId=${sessionId}&${search && search.trim() ? `search=${search}` : ''}`);
           dispatchEvent(new CustomEvent('location-changed'));

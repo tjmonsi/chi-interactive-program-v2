@@ -6,7 +6,7 @@
       </h2>
     </div>
     <template is="dom-repeat" items="[[sessions]]">
-      <chi-session class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item]]" session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]"></chi-session>
+      <chi-session date-string="[[dateString]]" time-string="[[timeslot.time]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item]]" session-id="[[item]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]"></chi-session>
     </template>
   </section>
 </template>

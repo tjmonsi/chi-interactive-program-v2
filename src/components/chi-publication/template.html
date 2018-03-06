@@ -4,22 +4,22 @@
 </template>
 <template is="dom-if" if="[[!loading]]">
   <h4 class="title">
-    <template is="dom-if" if="[[showInformation]]">
+    <template is="dom-if" if="[[_isEqual(paramsPublicationId, publicationId)]]">
       <a class="anchor" href="?sessionId=[[publication.sessionId]]&oldPublicationId=[[publicationId]]&search=[[params.search]]">
         <marked-element marked="[[publication.title]]"></marked-element>
-        <svg class="icon-title circle" viewBox="0 0 24 24">
+        <!-- <svg class="icon-title circle" viewBox="0 0 24 24">
           <title>Hide...</title>
           <path d="M19,13H5V11H19V13Z" />
-        </svg>
+        </svg> -->
       </a>
     </template>
-    <template is="dom-if" if="[[!showInformation]]">
+    <template is="dom-if" if="[[!_isEqual(paramsPublicationId, publicationId)]]">
       <a class="anchor" href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]&search=[[params.search]]">
         <marked-element marked="[[publication.title]]"></marked-element>
-        <svg class="icon-title circle" viewBox="0 0 24 24">
+        <!-- <svg class="icon-title circle" viewBox="0 0 24 24">
           <title>More...</title>
           <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-        </svg>
+        </svg> -->
       </a>
     </template>
 
@@ -40,16 +40,18 @@
     </template>
   </h4>
   <section class="pub-body">
-    <h5 class="authors-heading">
+    <!-- <h5 class="authors-heading">
       Authors
-    </h5>
-    <ul class="authors">
-      <template is="dom-repeat" items="[[authors]]">
-        <li class="list-item">
-          <chi-author author-id="[[item]]"></chi-author>
-        </li>
-      </template>
-    </ul>
+    </h5> -->
+    <p>
+      <ul class="authors">
+        <template is="dom-repeat" items="[[authors]]">
+          <li class="list-item">
+            <chi-author author-id="[[item]]"></chi-author>
+          </li>
+        </template>
+      </ul>
+    </p>
 
     <template is="dom-if" if="[[!showInformation]]">
       <!-- <p>
@@ -57,11 +59,15 @@
           <chi-author-summary class="chi-author-summary-item" author-id="[[item]]"></chi-author-summary>
         </template>
       </p> -->
+      <template is="dom-if" if="[[publication.abstract]]">
+        <p>
+          <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]&search=[[params.search]]">
+            Show Abstract
+          </a>
+        </p>
+      </template>
       <p>
         <marked-element marked="[[publication.shortText]]"></marked-element>
-        <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&publicationId=[[publicationId]]&search=[[params.search]]">
-          Show Abstract
-        </a>
       </p>
     </template>
     <template is="dom-if" if="[[showInformation]]">
@@ -75,11 +81,15 @@
           </li>
         </template>
       </ul> -->
+      <template is="dom-if" if="[[publication.shortText]]">
+        <p>
+          <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&search=[[params.search]]">
+            Hide Abstract
+          </a>
+        </p>
+      </template>
       <p>
         <marked-element marked="[[publication.abstract]]"></marked-element>
-        <a class="abstract-anchor" href="?sessionId=[[publication.sessionId]]&search=[[params.search]]">
-          Hide Abstract
-        </a>
       </p>
     </template>
   </section>

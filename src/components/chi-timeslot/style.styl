@@ -5,8 +5,7 @@
   display: block
 
 .grid
-  display: flex;
-  flex-wrap: wrap
+  display: block;
 
   display: grid;
   grid-auto-flow: dense;
@@ -25,12 +24,10 @@
     grid-template-columns: 1fr
 
   .chi-session-item
-    float: left;
     border: 1px solid black;
     // border-top: none;
-    min-height: 150px;
+    min-height: 70px;
     // for flex when grid is not supported
-    width: 250px;
 
     // when grid is supported
     @supports (display: grid)
@@ -142,3 +139,4 @@
   &.pink-item:hover:not([show-publications]), &.pink-item[force-close]
     background: $brand-pink;
     color: $light;
+

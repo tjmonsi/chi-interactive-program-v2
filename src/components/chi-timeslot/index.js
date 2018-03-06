@@ -22,6 +22,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
       scheduleIndex: {
         type: Number
       },
+      dateString: {
+        type: String
+      },
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
@@ -83,7 +86,8 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
     const { target: el, path } = event;
     let comingFromPath = false;
     const { sessionId, showPublications, forceClose } = el;
-    for (var element of path) {
+    for (let indexElement in path) {
+      let element = path[indexElement];
       if (element.nodeName === 'A' && element.href.indexOf(sessionId) >= 0) {
         comingFromPath = true;
         break;

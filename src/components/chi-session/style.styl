@@ -1,7 +1,8 @@
 @import '~settings/_variables.styl';
 
 :host
-  display: block;
+  display: flex;
+  flex-flow: column
   padding: 10px 20px;
   position: relative;
 
@@ -9,23 +10,23 @@
     padding: 10px;
 
 .venue-small
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  text-align: right;
+  padding: 10px;
+  margin: 0;
 
 .loader-container
-  padding: 20px;
+  // padding: 20px;
   text-align: center;
 
   .loader
     width: 100%;
-    max-width: 200px;
+    max-width: 50px;
 
     @media screen and (max-width: 400px)
-      max-width: 100px;
+      max-width: 50px;
 
 :host(:hover:not([show-publications])), :host([force-close])
-  .icon
+  .icon, .venue-icon, .venue-icon-2
     filter: invert(100%)
 
 .mark
@@ -33,13 +34,12 @@
   color: $light
 
 .title
-  font-size: 14px
-  line-height: 24px;
+  font-size: 80%
   margin: 0
+  flex: 1
 
   &.big
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 100%;
 
   .icon
     margin-right: 10px
@@ -61,7 +61,8 @@
 
 .venue
   margin: 10px 0 0 0;
-  font-size: 14px
+  font-size: 80%
+
 
   img
     vertical-align: middle;
@@ -80,6 +81,7 @@
 
 .chi-room-item
   padding: 10px 0 0 0
+  text-align: left;
 
 .invi-anchor
   opacity: 0;
@@ -90,3 +92,15 @@
 .icon
   width: 18px;
   height: 18px;
+
+.venue-icon
+  height: 26px
+  vertical-align: middle
+  // margin-right: 10px
+
+.venue-icon-2
+  vertical-align: middle
+  // margin-right: 10px
+
+.add-anchor
+  color: $brand-green;
