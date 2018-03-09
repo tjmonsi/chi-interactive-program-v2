@@ -10,7 +10,7 @@
     <a href="?timeslotId=[[timeslotId]]&oldSessionId=[[sessionId]]&search=[[params.search]]">
 
       <template is="dom-if" if="[[getVenue(session.venue)]]">
-        [[getVenue(session.venue)]] :
+        [[getVenue(session.venue)]] Session:
       </template>
       <marked-element marked="[[_cleanText(session.title)]]"></marked-element>
 
@@ -29,7 +29,7 @@
       <img class="icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
     </template> -->
     <template is="dom-if" if="[[getVenue(session.venue)]]">
-      [[getVenue(session.venue)]] :
+      [[getVenue(session.venue)]] Session:
     </template>
     <marked-element marked="[[_cleanText(session.title, 30)]]"></marked-element>
     <!-- <svg class="icon" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
     <template is="dom-if" if="[[session.venue]]">
       <img class="venue-icon" src="[[_baseUrl]]assets/[[_slugifyClass(session.venue)]]_black.png">
     </template>
-    [[_getDateTime(dateString, timeString)]]
+    [[_getDateTime(dayString, dateString, timeString)]]
   </p>
   <p class="venue">
 

@@ -28,6 +28,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
       dateString: {
         type: String
       },
+      dayString: {
+        type: String
+      },
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'

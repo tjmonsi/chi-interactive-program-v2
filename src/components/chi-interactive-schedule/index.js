@@ -118,6 +118,22 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     if (sessionId === 'all') scrollTo(0, 0);
   }
 
+  _ifTheresAll (filter) {
+    return filter.indexOf('all') >= 0;
+  }
+
+  _ifTheresAllTwo (filter, filter2) {
+    return filter.indexOf('all') >= 0 || filter2.indexOf('all') >= 0;
+  }
+
+  _returnSearch (filter) {
+    return filter.map(item => this.getSearch(item)).join(', ');
+  }
+
+  _returnVenues (filter) {
+    return filter.map(item => this.getVenue(item)).join(', ');
+  }
+
   openNavigation () {
     this.shadowRoot.querySelectorAll('.nav-button.menu').forEach(node => (node.style.display = 'none'));
     this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'block'));
@@ -147,6 +163,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'none'));
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
     this.shadowRoot.querySelector('.filter-container').style.display = this._filterContainer ? 'block' : 'none';
+
     if (this._filterContainer) {
       this.shadowRoot.querySelector('.filter-container').style.top =
         this.shadowRoot.querySelector('.fixed').style.display === 'none'
@@ -196,6 +213,9 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     }
     history.pushState({}, '', `?${queryParams.join('&')}`);
     dispatchEvent(new CustomEvent('location-changed'));
+
+    this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues: ['all'] });
+    this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch: ['all'] });
   }
 
   async _queryChanged (query, filteredSearch) {
@@ -225,7 +245,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
             if (searchType.indexOf('author') < 0) searchType.push('author');
             break;
           case 'institution':
-            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'primary.institution', 'primary.city', 'primary.country', 'secondary.institution', 'secondary.city', 'secondary.country' ];
+            settings.restrictSearchableAttributes = [ ...settings.restrictSearchableAttributes, 'primary.institution', 'primary.dept', 'primary.city', 'primary.country', 'secondary.institution', 'secondary.dept', 'secondary.city', 'secondary.country' ];
             if (searchType.indexOf('author') < 0) searchType.push('author');
             break;
           case 'session':
@@ -354,6 +374,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
     } catch (error) {
       console.log(error);
+      // if (this._filterContainer) this.toggleFilter();
     }
   }
 

@@ -46,6 +46,9 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       dateString: {
         type: String
       },
+      dayString: {
+        type: String
+      },
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
@@ -98,8 +101,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     return encodeURI(text);
   }
 
-  _getDateTime (dateString, time) {
-    return `${dateString} - ${time.split('-')[0]}`;
+  _getDateTime (dayString, dateString, time) {
+    return `${dayString}, ${dateString} - ${time.split('-')[0]}`;
   }
 
   _filterSessionsOnce (filteredVenues, venue) {

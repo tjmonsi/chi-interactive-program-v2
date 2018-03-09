@@ -46,6 +46,9 @@
   .chi-session-item[hidden]
     display: none;
 
+  .chi-session-item[hidden-for-now]
+    display: none;
+
   .chi-session-item[show-publications]
     grid-column: 1 / 7;
     width: 100%;
@@ -133,9 +136,9 @@
       grid-column: 1
 
 .chi-session-item
-  cursor: pointer;
-  // &:not([show-publications])
-  //   cursor: auto
+  // cursor: pointer;
+  &:not([show-publications])
+    cursor: pointer
 
   &.grey-item:hover:not([show-publications]), &.grey-item[force-close]
     background: $brand-grey;
