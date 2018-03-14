@@ -426,6 +426,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     return filteredSearch.indexOf(filter) >= 0;
   }
 
+  _slugifyClass (venue) {
+    return venue.toLowerCase().replace(/ /, '-');
+  }
+
   getVenue (venue) {
     switch (venue.toLowerCase()) {
       case 'altchi':
@@ -440,6 +444,8 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
         return 'Special Interest Groups (SIG)';
       case 'videoshowcase':
         return 'Video Showcase';
+      case 'awards':
+        return 'Awards';
       default:
         return venue.charAt(0).toUpperCase() + venue.slice(1) + 's';
     }

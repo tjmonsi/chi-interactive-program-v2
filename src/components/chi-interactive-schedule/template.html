@@ -212,14 +212,14 @@
         <div class="checkbox-container">
           <label>
             <input type="checkbox" value="all" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
-            All
+            <img class="venue-icon" src="[[_baseUrl]]assets/all_black.svg">All
           </label>
         </div>
         <template is="dom-repeat" items="[[venues]]">
           <div class="checkbox-container">
             <label>
               <input type="checkbox" value="[[item]]" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
-              [[getVenue(item)]]
+              <img class="venue-icon" src="[[_baseUrl]]assets/[[_slugifyClass(item)]]_black.svg"> [[getVenue(item)]]
             </label>
           </div>
         </template>
