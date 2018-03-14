@@ -49,6 +49,9 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       dayString: {
         type: String
       },
+      forceOpen: {
+        type: String
+      },
       filteredVenues: {
         type: Array,
         statePath: 'chiState.filteredVenues'
@@ -80,7 +83,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   static get observers () {
     return [
-      '_showPublication(params.sessionId, params.oldSessionId, sessionId, params.search)',
+      '_showPublication(params.sessionId, params.oldSessionId, sessionId, params.timeslotId, timeslotId, forceOpen, params.search)',
       '_setClass(session.venue)',
       '_addVenue(session.venue, venues)',
       '_showAndFocusPublication(showPublications, _focusPublications)',
@@ -152,15 +155,17 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     // console.log(filteredVenues, venue, queryResults)
   }
 
-  _showPublication (paramsSessionId, paramsOldSessionId, sessionId, search) {
+  _showPublication (paramsSessionId, paramsOldSessionId, sessionId, paramsTimeslotId, timeslotId, forceOpen, search) {
     loaded
-      ? this._showPublicationOnce(paramsSessionId, paramsOldSessionId, sessionId, search)
-      : this._debouncedShowPublicationOnce(paramsSessionId, paramsOldSessionId, sessionId, search);
+      ? this._showPublicationOnce(paramsSessionId, paramsOldSessionId, sessionId, paramsTimeslotId, timeslotId, forceOpen, search)
+      : this._debouncedShowPublicationOnce(paramsSessionId, paramsOldSessionId, sessionId, paramsTimeslotId, timeslotId, forceOpen, search);
   }
 
-  _showPublicationOnce (paramsSessionId, paramsOldSessionId, sessionId, search) {
-    this.showPublications = (this._isEqual(paramsSessionId, sessionId) && !this.forceClose);
+  _showPublicationOnce (paramsSessionId, paramsOldSessionId, sessionId, paramsTimeslotId, timeslotId, forceOpen, search) {
+    this.showPublications = (this._isEqual(paramsSessionId, sessionId) && !this.forceClose) || (this._isEqual(paramsTimeslotId, timeslotId) && forceOpen === 'yes');
     this._focusPublications = this._isEqual(paramsSessionId, sessionId); // || this._isEqual(paramsOldSessionId, sessionId);
+
+    if (forceOpen === 'yes') return;
 
     if (this.showPublications && !search) {
       if (!this._clone) {
@@ -251,6 +256,53 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
           return venue.charAt(0).toUpperCase() + venue.slice(1);
       }
     }
+  }
+
+  getVenueTitle (venue) {
+    if (venue) {
+      switch (venue.toLowerCase()) {
+        case 'altchi':
+          return 'alt.chi';
+        case 'casestudy':
+          return 'Case Study';
+        case 'docconsortium':
+          return '';
+        case 'science jam':
+          return '';
+        case 'game jam':
+          return '';
+        case 'symposia':
+          return 'Symposium';
+        case 'keynote':
+          return '';
+        case 'paper':
+          return 'Paper Session';
+        case 'sig':
+          return 'SIG';
+        case 'competition':
+          return '';
+        case 'awards':
+          return '';
+        case 'panel':
+          return 'Panel/Roundtable';
+        default:
+          return venue.charAt(0).toUpperCase() + venue.slice(1);
+      }
+    }
+  }
+
+  copyLink () {
+    const copyText = document.createElement('input');
+    const { location: { protocol, host, pathname } } = window;
+    copyText.value = `${protocol}//${host}${pathname}?timeslotId=${encodeURI(this.timeslotId)}&sessionId=${encodeURI(this.sessionId)}`;
+    copyText.style.display = 'inline';
+    copyText.style.position = 'fixed';
+    copyText.style.opacity = 0;
+    this.shadowRoot.appendChild(copyText);
+    copyText.select();
+    document.execCommand('copy');
+    this.shadowRoot.removeChild(copyText);
+    console.log('copied');
   }
 }
 

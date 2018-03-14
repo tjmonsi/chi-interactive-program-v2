@@ -431,11 +431,17 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       case 'altchi':
         return 'alt.chi';
       case 'casestudy':
-        return 'Case Study';
+        return 'Case Studies';
       case 'docconsortium':
         return 'Doctoral Consortium';
+      case 'keynote':
+        return 'Plenaries';
+      case 'sig':
+        return 'Special Interest Groups (SIG)';
+      case 'videoshowcase':
+        return 'Video Showcase';
       default:
-        return venue.charAt(0).toUpperCase() + venue.slice(1);
+        return venue.charAt(0).toUpperCase() + venue.slice(1) + 's';
     }
   }
 
@@ -454,6 +460,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
       block: 'start',
       behavior: 'smooth'
     });
+  }
+
+  showClear (search, filteredSearch, filteredVenues) {
+    return search || filteredSearch.indexOf('all') < 0 || filteredVenues.indexOf('all') < 0;
   }
 }
 

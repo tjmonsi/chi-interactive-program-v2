@@ -34,7 +34,7 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
 
     static get observers () {
       return [
-        '_getSession(timeslot.sessions, timeslot.sessions.*)'
+        '_getSession(timeslot.sessions, timeslot.className, timeslot.sessions.*)'
       ];
     }
 
@@ -68,9 +68,15 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
       });
     }
 
-    _getSession (sessions) {
+    _getSession (sessions, className) {
       const array = [];
-      if (sessions) Object.entries(sessions).forEach(([key, item]) => { array.splice(item.value, 0, key); });
+      if (sessions) Object.entries(sessions).forEach(([key, item]) => { array.splice(item.value, 0, { key, room: item.room, title: item.title }); });
+      array.sort((a, b) => {
+        const attr = className === 'workshops' ? 'title' : 'room';
+        if (a[attr] < b[attr]) return -1;
+        if (a[attr] > b[attr]) return 1;
+        return 0;
+      });
       this.set('sessions', array);
     }
   }

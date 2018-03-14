@@ -30,6 +30,9 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
       scheduleId: {
         type: String
       },
+      thisSessionId: {
+        type: String
+      },
       params: {
         type: Object,
         value: {},
@@ -63,7 +66,7 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
 
   static get observers () {
     return [
-      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, params.search, publication, filteredVenues)',
+      '_showInformation(params.publicationId, params.oldPublicationId, publicationId, params.sessionId, thisSessionId, params.search, publication, filteredVenues)',
       '_filterPublications(filteredVenues, publication.venue, queryResults)'
     ];
   }
@@ -99,16 +102,16 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     // this.dispatchEvent(new CustomEvent('chi-publication-hidden'));
   }
 
-  _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId, search) {
+  _showInformation (paramsPublicationId, paramsOldPublicationId, publicationId, paramsSessionId, sessionId, search) {
     loaded
-      ? this._showInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, search)
-      : this._debouncedShowInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, search);
+      ? this._showInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, paramsSessionId, sessionId, search)
+      : this._debouncedShowInformationOnce(paramsPublicationId, paramsOldPublicationId, publicationId, paramsSessionId, sessionId, search);
   }
 
-  _showInformationOnce (paramsPublicationId, paramsOldPublicationId, publicationId, search) {
+  _showInformationOnce (paramsPublicationId, paramsOldPublicationId, publicationId, paramsSessionId, sessionId, search) {
     // console.log(this.publication)
-    this.showInformation = this._isEqual(paramsPublicationId, publicationId) || search;
-    this._focusInformation = this._isEqual(paramsPublicationId, publicationId) || this._isEqual(paramsOldPublicationId, publicationId);
+    this.showInformation = (this._isEqual(paramsPublicationId, publicationId) && this._isEqual(paramsSessionId, sessionId)) || search;
+    this._focusInformation = (this._isEqual(paramsPublicationId, publicationId) && this._isEqual(paramsSessionId, sessionId));
     requestAnimationFrame(() => {
       setTimeout(() => {
         // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
@@ -126,6 +129,20 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
   _isEqual (a, b) { return a === b; }
 
   _isOr (a, b) { return a || b; }
+
+  copyLink () {
+    const copyText = document.createElement('input');
+    const { location: { protocol, host, pathname } } = window;
+    copyText.value = `${protocol}//${host}${pathname}?sessionId=${encodeURI(this.thisSessionId)}&publicationId=${encodeURI(this.publicationId)}`;
+    copyText.style.display = 'inline';
+    copyText.style.position = 'fixed';
+    copyText.style.opacity = 0;
+    this.shadowRoot.appendChild(copyText);
+    copyText.select();
+    document.execCommand('copy');
+    this.shadowRoot.removeChild(copyText);
+    console.log('copied');
+  }
 }
 
 !customElements.get(Component.is)
