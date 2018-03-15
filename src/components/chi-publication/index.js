@@ -5,6 +5,7 @@ import { ChiPublicationMixin } from 'chi-publication-mixin';
 import { customElements, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
+import toastr from 'toastr';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-author-summary';
@@ -14,6 +15,24 @@ import 'marked-element';
 // define style and template
 import style from './style.styl';
 import template from './template.html';
+
+toastr.options = {
+  'closeButton': true,
+  'debug': false,
+  'newestOnTop': false,
+  'progressBar': true,
+  'positionClass': 'toast-bottom-full-width',
+  'preventDuplicates': true,
+  'onclick': null,
+  'showDuration': '300',
+  'hideDuration': '1000',
+  'timeOut': '5000',
+  'extendedTimeOut': '1000',
+  'showEasing': 'swing',
+  'hideEasing': 'linear',
+  'showMethod': 'fadeIn',
+  'hideMethod': 'fadeOut'
+};
 
 let loaded = false; // haxx
 
@@ -116,10 +135,10 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
       setTimeout(() => {
         // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
         if (this._focusInformation && !search) {
-          this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
+          // this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
+          //   block: 'start',
+          //   behavior: 'smooth'
+          // });
           loaded = true;
         }
       }, 200);
@@ -142,6 +161,7 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     document.execCommand('copy');
     this.shadowRoot.removeChild(copyText);
     console.log('copied');
+    toastr.info(`Copied Publication link: "${this.publication.title}" to the clipboard`);
   }
 }
 

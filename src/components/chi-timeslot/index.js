@@ -88,7 +88,8 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
         // if (this._focusPublications) scroll(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
         if (showSessions && !this.params.sessionId && !this.params.publicationId && !this.params.search) {
           // scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).getBoundingClientRect().top) - 102);
-          this.shadowRoot.querySelector('.sessions').render();
+          const repeater = this.shadowRoot.querySelector('.sessions');
+          if (repeater) repeater.render();
           const el = this.shadowRoot.querySelector(`.invi-anchor-timeslot-${this.timeslotId}`);
 
           el.scrollIntoView({

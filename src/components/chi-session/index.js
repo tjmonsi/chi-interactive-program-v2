@@ -6,6 +6,7 @@ import { LittleQStoreMixin } from '@littleq/state-manager';
 import { CHI_STATE } from 'chi-interactive-schedule/reducer';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import { checkVisible } from 'chi-interactive-schedule/check-visible';
+import toastr from 'toastr';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'chi-publication';
@@ -15,6 +16,24 @@ import 'marked-element';
 // define style and template
 import style from './style.styl';
 import template from './template.html';
+
+toastr.options = {
+  'closeButton': true,
+  'debug': false,
+  'newestOnTop': false,
+  'progressBar': true,
+  'positionClass': 'toast-bottom-full-width',
+  'preventDuplicates': true,
+  'onclick': null,
+  'showDuration': '300',
+  'hideDuration': '1000',
+  'timeOut': '5000',
+  'extendedTimeOut': '1000',
+  'showEasing': 'swing',
+  'hideEasing': 'linear',
+  'showMethod': 'fadeIn',
+  'hideMethod': 'fadeOut'
+};
 
 let time = 500; // haxx
 let loaded = false;
@@ -113,6 +132,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     requestAnimationFrame(() => {
       setTimeout(() => {
         if (this.loading) return;
+
         this.hidden = queryResults ? queryResults.length > 0 : false;
 
         if (this.session && queryResults) {
@@ -140,7 +160,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
             if (!this.hidden) break;
           }
         }
-        this.hidden = this.hidden || (filteredVenues && filteredVenues.indexOf(venue ? venue.toLowerCase() : null) < 0);
+        this.hidden = this.hidden || (venue && filteredVenues && filteredVenues.indexOf(venue.toLowerCase()) < 0);
+        // if (this.sessionId === '-L7SBTLdBf3qw5014YjK') console.log(this.sessionId, venue, filteredVenues, venue && filteredVenues && filteredVenues.indexOf(venue.toLowerCase()) < 0)
         this.dispatchEvent(new CustomEvent('chi-session-hidden'));
         time = 100;
         // this._showPublication(this.params.sessionId, this.params.oldSessionId, this.sessionId, this.params.search);
@@ -176,11 +197,16 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         this._clone.hidden = false;
         this._clone.dontLoad = true;
         this._clone.sessionId = this.sessionId;
-        this._clone.session = this.session;
+
         this._clone.addEventListener('click', () => {
           history.pushState({}, '', `?timeslotId=${this.timeslotId}&oldSessionId=${sessionId}&${search && search.trim() ? `search=${search}` : ''}`);
           dispatchEvent(new CustomEvent('location-changed'));
         });
+
+        setTimeout(() => {
+          this._clone.session = this.session;
+          console.log(this._clone.session, this.session);
+        }, 200);
       }
     } else if (this._clone) {
       // console.log(this._clone);
@@ -205,10 +231,10 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
             ? this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`)
             : this.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`);
 
-          el.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
+          // el.scrollIntoView({
+          //   block: 'start',
+          //   behavior: 'smooth'
+          // });
           loaded = true;
           // console.log(checkVisible(el))
           if (!checkVisible(el)) {
@@ -283,6 +309,8 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
           return '';
         case 'awards':
           return '';
+        case 'videoshowcase':
+          return '';
         case 'panel':
           return 'Panel/Roundtable';
         default:
@@ -303,6 +331,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     document.execCommand('copy');
     this.shadowRoot.removeChild(copyText);
     console.log('copied');
+    toastr.info(`Copied Session link: "${this.session.title}" to the clipboard`);
   }
 }
 

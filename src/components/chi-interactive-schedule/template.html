@@ -185,45 +185,48 @@
     <p>
       Use this to filter search results.
     </p>
-    <form>
+    <form class="filter-form">
       <div class="filter-grid">
         <div class="checkbox-container">
           <label>
-            <input type="checkbox" value="all" name="filter" on-tap="toggleSearchFilter" checked="[[_checkSearchFiltered('all', filteredSearch, filteredSearch.splices)]]">
+            <input type="checkbox" value="all" name="filter" on-change="toggleSearchFilter" checked="[[_checkSearchFiltered('all', filteredSearch, filteredSearch.splices)]]">
             All
           </label>
         </div>
         <template is="dom-repeat" items="[[defaultFilteredSearch]]">
           <div class="checkbox-container">
             <label>
-              <input type="checkbox" value="[[item]]" name="filter" on-tap="toggleSearchFilter" checked="[[_checkSearchFiltered(item, filteredSearch, filteredSearch.splices)]]">
+              <input type="checkbox" value="[[item]]" name="filter" on-change="toggleSearchFilter" checked="[[_checkSearchFiltered(item, filteredSearch, filteredSearch.splices)]]">
               [[getSearch(item)]]
             </label>
           </div>
         </template>
       </div>
     </form>
+
     <h3 class="filter-title">Show Venues</h3>
     <p>
       Use this to show only particular venues.
     </p>
-    <form>
+    <form class="filter-form">
       <div class="filter-grid">
         <div class="checkbox-container">
-          <label>
-            <input type="checkbox" value="all" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
+          <label >
+            <input type="checkbox" value="all" name="filter" on-change="toggleVenueFilter" on-change="toggleVenueFilter" checked="[[_checkIfFiltered('all', filteredVenues, filteredVenues.splices)]]">
             <img class="venue-icon" src="[[_baseUrl]]assets/all_black.svg">All
           </label>
         </div>
         <template is="dom-repeat" items="[[venues]]">
           <div class="checkbox-container">
             <label>
-              <input type="checkbox" value="[[item]]" name="filter" on-tap="toggleVenueFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
+              <input type="checkbox" value="[[item]]" name="filter" on-change="toggleVenueFilter" on-change="toggleVenueFilter" checked="[[_checkIfFiltered(item, filteredVenues, filteredVenues.splices)]]">
               <img class="venue-icon" src="[[_baseUrl]]assets/[[_slugifyClass(item)]]_black.svg"> [[getVenue(item)]]
             </label>
           </div>
         </template>
       </div>
+
+      <button class="filter-button" type="button" on-tap="filter">Apply & Close</button>
     </form>
   </div>
 
@@ -333,6 +336,7 @@
 
   <chi-full-schedule class="chi-full-schedule-item" hidden$=[[searching]]></chi-full-schedule>
 
+  <div style="height: 300px"></div>
 
   <!-- <button class="fab" on-tap="goUp">
     <svg class="icon" viewBox="0 0 24 24">

@@ -8,6 +8,7 @@ import { conf } from 'chi-conference-config';
 import { CHI_STATE, defaultFilteredSearch } from './reducer';
 import { debounce } from './debounce';
 import algoliasearch from 'algoliasearch/lite';
+import toastr from 'toastr';
 import '@littleq/path-fetcher';
 import '@littleq/query-params-fetcher';
 import 'chi-full-schedule';
@@ -17,6 +18,24 @@ import '@polymer/polymer/lib/elements/dom-if';
 // define style and template
 import style from './style.styl';
 import template from './template.html';
+
+toastr.options = {
+  'closeButton': true,
+  'debug': false,
+  'newestOnTop': false,
+  'progressBar': true,
+  'positionClass': 'toast-bottom-full-width',
+  'preventDuplicates': true,
+  'onclick': null,
+  'showDuration': '300',
+  'hideDuration': '1000',
+  'timeOut': '5000',
+  'extendedTimeOut': '1000',
+  'showEasing': 'swing',
+  'hideEasing': 'linear',
+  'showMethod': 'fadeIn',
+  'hideMethod': 'fadeOut'
+};
 
 const client = algoliasearch('3QB5G30QFN', '67be59962960c0eb7aec182885ef1b3f');
 const index = client.initIndex(`chi-index-${conf}`);
@@ -234,6 +253,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     };
 
     // console.log(filteredSearch)
+    if (filteredSearch && filteredSearch.length === 0) {
+      toastr.info('You need at least one search filter to use search');
+      return;
+    }
 
     if (filteredSearch && filteredSearch.length && filteredSearch.indexOf('all') < 0) {
       settings.restrictSearchableAttributes = [];
@@ -381,8 +404,12 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
   toggleVenueFilter ({ target: el }) {
     // console.log(this.shadowRoot.querySelector('#filterForm').filter)
     setTimeout(() => {
+      if (el.nodeType === 'LABEL') {
+        el = el.querySelector('input[type=checkbox]');
+      }
       const { value, checked } = el;
       if (value === 'all' && !checked) {
+        toastr.info('You need at least one venue checked to see the schedule.');
         return this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues: [] });
       }
       const filteredVenues = [ ...this.filteredVenues ];
@@ -398,9 +425,14 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     }, 10);
   }
 
-  toggleSearchFilter ({ target: el }) {
+  toggleSearchFilter (event) {
+    event.stopPropagation();
+    let { target: el } = event;
+    if (el.tagName === 'LABEL') {
+      el = el.querySelector('input[type=checkbox]');
+    }
+    const { value, checked } = el;
     setTimeout(() => {
-      const { value, checked } = el;
       if (value === 'all' && !checked) {
         return this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch: [] });
       }

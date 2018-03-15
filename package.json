@@ -84,6 +84,7 @@
     "path-to-regexp": "^2.1.0",
     "redux": "^3.7.2",
     "smoothscroll-polyfill": "^0.4.3",
+    "toastr": "^2.1.4",
     "whatwg-fetch": "^2.0.3"
   }
 }

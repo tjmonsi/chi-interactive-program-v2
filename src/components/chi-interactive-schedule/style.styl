@@ -169,8 +169,18 @@
     .search
       width: 150px
 
+.filter-button
+  border: 1px solid black;
+  background: $brand-green;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 90%;
+  margin-top: 20px;
+  float: right;
+
 .search-button
-  background: none;
   border: 1px solid black;
   background: $brand-green;
   color: white;
@@ -239,6 +249,7 @@
   top: 72px;
   left: 0;
   right: 0;
+  bottom: 0;
   background: white;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   z-index: 5000;
@@ -263,12 +274,13 @@
 
     .checkbox-container
       padding: 10px 20px;
+      font-size: 80%
 
       @media screen and (max-width: 550px)
         padding: 5px 20px
 
       @media screen and (max-height: 500px)
-        padding: 0px 20px
+        padding: 10px 10px
 
 .search
   padding: 10px
@@ -286,3 +298,6 @@
   right: 0
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: $light;
+
+.filter-form
+  margin-bottom: 20px;
