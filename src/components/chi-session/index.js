@@ -1,11 +1,11 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiSessionMixin } from 'chi-session-mixin';
-import { customElements, requestAnimationFrame, CustomEvent, history, dispatchEvent } from 'global/window';
+import { customElements, requestAnimationFrame, CustomEvent, history, dispatchEvent, scroll, scrollY } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { CHI_STATE } from 'chi-interactive-schedule/reducer';
 import { debounce } from 'chi-interactive-schedule/debounce';
-import { checkVisible } from 'chi-interactive-schedule/check-visible';
+// import { checkVisible } from 'chi-interactive-schedule/check-visible';
 import toastr from 'toastr';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
@@ -225,11 +225,11 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
       setTimeout(() => {
         // if (this._focusPublications) scroll(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
         if (this._focusPublications && !this.forceClose && !this.params.publicationId && !search) {
-          // scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).getBoundingClientRect().top) - 102);
+          scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).getBoundingClientRect().top) - 102);
 
-          const el = window.innerWidth >= 450
-            ? this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`)
-            : this.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`);
+          // const el = window.innerWidth >= 450
+          //   ? this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`)
+          //   : this.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`);
 
           // el.scrollIntoView({
           //   block: 'start',
@@ -237,11 +237,11 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
           // });
           loaded = true;
           // console.log(checkVisible(el))
-          if (!checkVisible(el)) {
-            setTimeout(() => {
-              this._showAndFocusPublication(showPublications, _focusPublications);
-            }, 200);
-          }
+          // if (!checkVisible(el)) {
+          //   setTimeout(() => {
+          //     this._showAndFocusPublication(showPublications, _focusPublications);
+          //   }, 200);
+          // }
         }
       }, 200);
     });

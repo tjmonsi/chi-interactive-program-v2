@@ -2,7 +2,7 @@
 import { Element } from '@polymer/polymer/polymer-element';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners';
 import { ChiPublicationMixin } from 'chi-publication-mixin';
-import { customElements, requestAnimationFrame } from 'global/window';
+import { customElements, requestAnimationFrame, scroll, scrollY } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import toastr from 'toastr';
@@ -135,6 +135,7 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
       setTimeout(() => {
         // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
         if (this._focusInformation && !search) {
+          scroll(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102);
           // this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
           //   block: 'start',
           //   behavior: 'smooth'
