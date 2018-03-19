@@ -82,6 +82,17 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
     this.showSessions = !!((this._isEqual(paramsTimeslotId, timeslotId) || (this.timeslot && this.timeslot.sessions[this.params.sessionId]) || search));
   }
 
+  _getName (name) {
+    switch (name) {
+      case 'keynote':
+        return 'Plenary';
+      case 'videoshowcase':
+        return 'Video Showcase';
+      default:
+        return name;
+    }
+  }
+
   _showAndFocusSession (showSessions) {
     requestAnimationFrame(() => {
       setTimeout(() => {
