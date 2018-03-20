@@ -8,7 +8,7 @@
     </div>
     <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot timeslot-name">
       <h2 class="time">
-        <a class="header-anchor" on-tap="_toggleTimeslot">[[timeslot.name]]</a>
+        <a class="header-anchor" on-tap="_toggleTimeslot">[[_getName(timeslot.name)]]</a>
 
         <template is="dom-if" if="[[showSessions]]">
           <a class="header-anchor-icon" href="?oldTimeslotId=[[timeslotId]]">
