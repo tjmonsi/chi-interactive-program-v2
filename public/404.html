@@ -1,284 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="generator" content="CHI 2018 Interactive Program">
-    <meta name="viewport" content="width=device-width, minimum-scale = 1.0, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no">
-
-    <title>CHI 2018 Interactive Program</title>
-    <meta name="description" content="This is the interactive schedule program for CHI 2018">
-
-    <meta property="og:title" content="CHI 2018 Interactive Program" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="" />
-    <meta property="og:description" content="This is the interactive schedule program for CHI 2018" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="" />
-    <meta name="twitter:creator" content="" />
-    <meta name="twitter:title" content="CHI 2018 Interactive Program" />
-    <meta name="twitter:description" content="This is the interactive schedule program for CHI 2018" />
-    <meta name="twitter:image" content="" />
-
-    <!--
-      If deploying to a non-root path, replace href="/" with the full path to the project root.
-      For example: href="/polymer-starter-kit/relative-path-example/"
-    -->
-    <base href="">
-
-    <link rel="icon" href="images/favicon.ico">
-
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- See https://goo.gl/qRE0vM -->
-    <meta name="theme-color" content="">
-
-    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
-    <meta name="mobile-web-app-capable" content="">
-    <meta name="application-name" content="CHI 2018 Interactive Program">
-
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="">
-    <meta name="apple-mobile-web-app-status-bar-style" content="">
-    <meta name="apple-mobile-web-app-title" content="CHI 2018 Interactive Program">
-
-    <!-- Homescreen icons -->
-    
-
-    
-    <meta name="msapplication-TileColor" content="">
-    <meta name="msapplication-tap-highlight" content="">
-
-    <style>
-      body {
-  margin: 0;
-  padding: 0;
-}
-* {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-[autosize] {
-  contain: layout style paint;
-}
-* {
-  font-family: 'Open Sans', sans-serif;
-  letter-spacing: 0.25px;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Roboto Condensed', sans-serif;
-  letter-spacing: 0.4px;
-}
-h1 {
-  letter-spacing: 1px;
-}
-.toast-title {
-  font-weight: bold;
-}
-.toast-message {
-  -ms-word-wrap: break-word;
-  word-wrap: break-word;
-}
-.toast-message a,
-.toast-message label {
-  color: #fff;
-}
-.toast-message a:hover {
-  color: #ccc;
-  text-decoration: none;
-}
-.toast-close-button {
-  position: relative;
-  right: -0.3em;
-  top: -0.3em;
-  float: right;
-  font-size: 20px;
-  font-weight: bold;
-  color: #fff;
-  -webkit-text-shadow: 0 1px 0 #fff;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 1;
-}
-.toast-close-button:hover,
-.toast-close-button:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-  opacity: 0.4;
-}
-button.toast-close-button {
-  padding: 0;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-  -webkit-appearance: none;
-}
-.toast-top-center {
-  top: 0;
-  right: 0;
-  width: 100%;
-}
-.toast-bottom-center {
-  bottom: 0;
-  right: 0;
-  width: 100%;
-}
-.toast-top-full-width {
-  top: 0;
-  right: 0;
-  width: 100%;
-}
-.toast-bottom-full-width {
-  bottom: 0;
-  right: 0;
-  width: 100%;
-}
-.toast-top-left {
-  top: 12px;
-  left: 12px;
-}
-.toast-top-right {
-  top: 12px;
-  right: 12px;
-}
-.toast-bottom-right {
-  right: 12px;
-  bottom: 12px;
-}
-.toast-bottom-left {
-  bottom: 12px;
-  left: 12px;
-}
-#toast-container {
-  position: fixed;
-  z-index: 999999;
-/*overrides*/
-}
-#toast-container * {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#toast-container > div {
-  position: relative;
-  overflow: hidden;
-  margin: 0 0 6px;
-  padding: 15px 15px 15px 50px;
-  width: 300px;
-  border-radius: 3px 3px 3px 3px;
-  background-position: 15px center;
-  background-repeat: no-repeat;
-  -webkit-box-shadow: 0 0 12px #999;
-  box-shadow: 0 0 12px #999;
-  color: #fff;
-  opacity: 1;
-}
-#toast-container > div:hover {
-  -webkit-box-shadow: 0 0 12px #000;
-  box-shadow: 0 0 12px #000;
-  opacity: 1;
-  cursor: pointer;
-}
-#toast-container > .toast-info {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGwSURBVEhLtZa9SgNBEMc9sUxxRcoUKSzSWIhXpFMhhYWFhaBg4yPYiWCXZxBLERsLRS3EQkEfwCKdjWJAwSKCgoKCcudv4O5YLrt7EzgXhiU3/4+b2ckmwVjJSpKkQ6wAi4gwhT+z3wRBcEz0yjSseUTrcRyfsHsXmD0AmbHOC9Ii8VImnuXBPglHpQ5wwSVM7sNnTG7Za4JwDdCjxyAiH3nyA2mtaTJufiDZ5dCaqlItILh1NHatfN5skvjx9Z38m69CgzuXmZgVrPIGE763Jx9qKsRozWYw6xOHdER+nn2KkO+Bb+UV5CBN6WC6QtBgbRVozrahAbmm6HtUsgtPC19tFdxXZYBOfkbmFJ1VaHA1VAHjd0pp70oTZzvR+EVrx2Ygfdsq6eu55BHYR8hlcki+n+kERUFG8BrA0BwjeAv2M8WLQBtcy+SD6fNsmnB3AlBLrgTtVW1c2QN4bVWLATaIS60J2Du5y1TiJgjSBvFVZgTmwCU+dAZFoPxGEEs8nyHC9Bwe2GvEJv2WXZb0vjdyFT4Cxk3e/kIqlOGoVLwwPevpYHT+00T+hWwXDf4AJAOUqWcDhbwAAAAASUVORK5CYII=") !important;
-}
-#toast-container > .toast-error {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHOSURBVEhLrZa/SgNBEMZzh0WKCClSCKaIYOED+AAKeQQLG8HWztLCImBrYadgIdY+gIKNYkBFSwu7CAoqCgkkoGBI/E28PdbLZmeDLgzZzcx83/zZ2SSXC1j9fr+I1Hq93g2yxH4iwM1vkoBWAdxCmpzTxfkN2RcyZNaHFIkSo10+8kgxkXIURV5HGxTmFuc75B2RfQkpxHG8aAgaAFa0tAHqYFfQ7Iwe2yhODk8+J4C7yAoRTWI3w/4klGRgR4lO7Rpn9+gvMyWp+uxFh8+H+ARlgN1nJuJuQAYvNkEnwGFck18Er4q3egEc/oO+mhLdKgRyhdNFiacC0rlOCbhNVz4H9FnAYgDBvU3QIioZlJFLJtsoHYRDfiZoUyIxqCtRpVlANq0EU4dApjrtgezPFad5S19Wgjkc0hNVnuF4HjVA6C7QrSIbylB+oZe3aHgBsqlNqKYH48jXyJKMuAbiyVJ8KzaB3eRc0pg9VwQ4niFryI68qiOi3AbjwdsfnAtk0bCjTLJKr6mrD9g8iq/S/B81hguOMlQTnVyG40wAcjnmgsCNESDrjme7wfftP4P7SP4N3CJZdvzoNyGq2c/HWOXJGsvVg+RA/k2MC/wN6I2YA2Pt8GkAAAAASUVORK5CYII=") !important;
-}
-#toast-container > .toast-success {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADsSURBVEhLY2AYBfQMgf///3P8+/evAIgvA/FsIF+BavYDDWMBGroaSMMBiE8VC7AZDrIFaMFnii3AZTjUgsUUWUDA8OdAH6iQbQEhw4HyGsPEcKBXBIC4ARhex4G4BsjmweU1soIFaGg/WtoFZRIZdEvIMhxkCCjXIVsATV6gFGACs4Rsw0EGgIIH3QJYJgHSARQZDrWAB+jawzgs+Q2UO49D7jnRSRGoEFRILcdmEMWGI0cm0JJ2QpYA1RDvcmzJEWhABhD/pqrL0S0CWuABKgnRki9lLseS7g2AlqwHWQSKH4oKLrILpRGhEQCw2LiRUIa4lwAAAABJRU5ErkJggg==") !important;
-}
-#toast-container > .toast-warning {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGYSURBVEhL5ZSvTsNQFMbXZGICMYGYmJhAQIJAICYQPAACiSDB8AiICQQJT4CqQEwgJvYASAQCiZiYmJhAIBATCARJy+9rTsldd8sKu1M0+dLb057v6/lbq/2rK0mS/TRNj9cWNAKPYIJII7gIxCcQ51cvqID+GIEX8ASG4B1bK5gIZFeQfoJdEXOfgX4QAQg7kH2A65yQ87lyxb27sggkAzAuFhbbg1K2kgCkB1bVwyIR9m2L7PRPIhDUIXgGtyKw575yz3lTNs6X4JXnjV+LKM/m3MydnTbtOKIjtz6VhCBq4vSm3ncdrD2lk0VgUXSVKjVDJXJzijW1RQdsU7F77He8u68koNZTz8Oz5yGa6J3H3lZ0xYgXBK2QymlWWA+RWnYhskLBv2vmE+hBMCtbA7KX5drWyRT/2JsqZ2IvfB9Y4bWDNMFbJRFmC9E74SoS0CqulwjkC0+5bpcV1CZ8NMej4pjy0U+doDQsGyo1hzVJttIjhQ7GnBtRFN1UarUlH8F3xict+HY07rEzoUGPlWcjRFRr4/gChZgc3ZL2d8oAAAAASUVORK5CYII=") !important;
-}
-#toast-container.toast-top-center > div,
-#toast-container.toast-bottom-center > div {
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#toast-container.toast-top-full-width > div,
-#toast-container.toast-bottom-full-width > div {
-  width: 96%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.toast {
-  background-color: #030303;
-}
-.toast-success {
-  background-color: #51a351;
-}
-.toast-error {
-  background-color: #bd362f;
-}
-.toast-info {
-  background-color: #f29d34;
-}
-.toast-warning {
-  background-color: #f89406;
-}
-.toast-progress {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 4px;
-  background-color: #000;
-  opacity: 0.4;
-}
-@media all and (max-width: 240px) {
-  #toast-container > div {
-    padding: 8px 8px 8px 50px;
-    width: 11em;
-  }
-  #toast-container .toast-close-button {
-    right: -0.2em;
-    top: -0.2em;
-  }
-}
-@media all and (min-width: 241px) and (max-width: 480px) {
-  #toast-container > div {
-    padding: 8px 8px 8px 50px;
-    width: 18em;
-  }
-  #toast-container .toast-close-button {
-    right: -0.2em;
-    top: -0.2em;
-  }
-}
-@media all and (min-width: 481px) and (max-width: 768px) {
-  #toast-container > div {
-    padding: 15px 15px 15px 50px;
-    width: 25em;
-  }
-}
-
-    </style>
-  </head>
-  <body>
-    <div style="height: 300px"></div>
-    <div id="loading-screen" style="max-width: 1170px;margin: 20px auto;padding: 20px; padding: 80px 20px; text-align: center">
-      <img src="/program/loader.gif">
-      <br/><span class="loading-screen-text">Loading the Interactive Program...</span>
-    </div>
-
-    <chi-interactive-schedule>
-    </chi-interactive-schedule>
-
-    <script>
-      window.baseURL = '/';
-      window.chiVersion = 'v1.1.7';
-      (function() {
-        var refScript = document.body.getElementsByTagName('script')[0];
-        var core = document.createElement('script');
-        core.src = window.baseURL + 'core-' + window.chiVersion + '.js';
-        refScript.parentNode.insertBefore(core, refScript);
-      })();
-    </script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="CHI 2018 Interactive Program">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>CHI 2018 Interactive Program</title>
+<meta name="description" content="This is the interactive schedule program for CHI 2018">
+<meta property="og:title" content="CHI 2018 Interactive Program">
+<meta property="og:type" content="website">
+<meta property="og:image" content="">
+<meta property="og:description" content="This is the interactive schedule program for CHI 2018">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="">
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="CHI 2018 Interactive Program">
+<meta name="twitter:description" content="This is the interactive schedule program for CHI 2018">
+<meta name="twitter:image" content="">
+<base href="">
+<link rel="icon" href="images/favicon.ico">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="">
+<meta name="mobile-web-app-capable" content="">
+<meta name="application-name" content="CHI 2018 Interactive Program">
+<meta name="apple-mobile-web-app-capable" content="">
+<meta name="apple-mobile-web-app-status-bar-style" content="">
+<meta name="apple-mobile-web-app-title" content="CHI 2018 Interactive Program">
+<meta name="msapplication-TileColor" content="">
+<meta name="msapplication-tap-highlight" content="">
+<style>body{margin:0;padding:0}*{-webkit-box-sizing:border-box;box-sizing:border-box}[autosize]{contain:layout style paint}*{font-family:'Open Sans',sans-serif;letter-spacing:.25px}h1,h2,h3,h4,h5,h6{font-family:'Roboto Condensed',sans-serif;letter-spacing:.4px}h1{letter-spacing:1px}.toast-title{font-weight:700}.toast-message{-ms-word-wrap:break-word;word-wrap:break-word}.toast-message a,.toast-message label{color:#fff}.toast-message a:hover{color:#ccc;text-decoration:none}.toast-close-button{position:relative;right:-.3em;top:-.3em;float:right;font-size:20px;font-weight:700;color:#fff;-webkit-text-shadow:0 1px 0 #fff;text-shadow:0 1px 0 #fff;opacity:1}.toast-close-button:focus,.toast-close-button:hover{color:#000;text-decoration:none;cursor:pointer;opacity:.4}button.toast-close-button{padding:0;cursor:pointer;background:0 0;border:0;-webkit-appearance:none}.toast-top-center{top:0;right:0;width:100%}.toast-bottom-center{bottom:0;right:0;width:100%}.toast-top-full-width{top:0;right:0;width:100%}.toast-bottom-full-width{bottom:0;right:0;width:100%}.toast-top-left{top:12px;left:12px}.toast-top-right{top:12px;right:12px}.toast-bottom-right{right:12px;bottom:12px}.toast-bottom-left{bottom:12px;left:12px}#toast-container{position:fixed;z-index:999999}#toast-container *{-webkit-box-sizing:border-box;box-sizing:border-box}#toast-container>div{position:relative;overflow:hidden;margin:0 0 6px;padding:15px 15px 15px 50px;width:300px;border-radius:3px 3px 3px 3px;background-position:15px center;background-repeat:no-repeat;-webkit-box-shadow:0 0 12px #999;box-shadow:0 0 12px #999;color:#fff;opacity:1}#toast-container>div:hover{-webkit-box-shadow:0 0 12px #000;box-shadow:0 0 12px #000;opacity:1;cursor:pointer}#toast-container>.toast-info{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGwSURBVEhLtZa9SgNBEMc9sUxxRcoUKSzSWIhXpFMhhYWFhaBg4yPYiWCXZxBLERsLRS3EQkEfwCKdjWJAwSKCgoKCcudv4O5YLrt7EzgXhiU3/4+b2ckmwVjJSpKkQ6wAi4gwhT+z3wRBcEz0yjSseUTrcRyfsHsXmD0AmbHOC9Ii8VImnuXBPglHpQ5wwSVM7sNnTG7Za4JwDdCjxyAiH3nyA2mtaTJufiDZ5dCaqlItILh1NHatfN5skvjx9Z38m69CgzuXmZgVrPIGE763Jx9qKsRozWYw6xOHdER+nn2KkO+Bb+UV5CBN6WC6QtBgbRVozrahAbmm6HtUsgtPC19tFdxXZYBOfkbmFJ1VaHA1VAHjd0pp70oTZzvR+EVrx2Ygfdsq6eu55BHYR8hlcki+n+kERUFG8BrA0BwjeAv2M8WLQBtcy+SD6fNsmnB3AlBLrgTtVW1c2QN4bVWLATaIS60J2Du5y1TiJgjSBvFVZgTmwCU+dAZFoPxGEEs8nyHC9Bwe2GvEJv2WXZb0vjdyFT4Cxk3e/kIqlOGoVLwwPevpYHT+00T+hWwXDf4AJAOUqWcDhbwAAAAASUVORK5CYII=)!important}#toast-container>.toast-error{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHOSURBVEhLrZa/SgNBEMZzh0WKCClSCKaIYOED+AAKeQQLG8HWztLCImBrYadgIdY+gIKNYkBFSwu7CAoqCgkkoGBI/E28PdbLZmeDLgzZzcx83/zZ2SSXC1j9fr+I1Hq93g2yxH4iwM1vkoBWAdxCmpzTxfkN2RcyZNaHFIkSo10+8kgxkXIURV5HGxTmFuc75B2RfQkpxHG8aAgaAFa0tAHqYFfQ7Iwe2yhODk8+J4C7yAoRTWI3w/4klGRgR4lO7Rpn9+gvMyWp+uxFh8+H+ARlgN1nJuJuQAYvNkEnwGFck18Er4q3egEc/oO+mhLdKgRyhdNFiacC0rlOCbhNVz4H9FnAYgDBvU3QIioZlJFLJtsoHYRDfiZoUyIxqCtRpVlANq0EU4dApjrtgezPFad5S19Wgjkc0hNVnuF4HjVA6C7QrSIbylB+oZe3aHgBsqlNqKYH48jXyJKMuAbiyVJ8KzaB3eRc0pg9VwQ4niFryI68qiOi3AbjwdsfnAtk0bCjTLJKr6mrD9g8iq/S/B81hguOMlQTnVyG40wAcjnmgsCNESDrjme7wfftP4P7SP4N3CJZdvzoNyGq2c/HWOXJGsvVg+RA/k2MC/wN6I2YA2Pt8GkAAAAASUVORK5CYII=)!important}#toast-container>.toast-success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADsSURBVEhLY2AYBfQMgf///3P8+/evAIgvA/FsIF+BavYDDWMBGroaSMMBiE8VC7AZDrIFaMFnii3AZTjUgsUUWUDA8OdAH6iQbQEhw4HyGsPEcKBXBIC4ARhex4G4BsjmweU1soIFaGg/WtoFZRIZdEvIMhxkCCjXIVsATV6gFGACs4Rsw0EGgIIH3QJYJgHSARQZDrWAB+jawzgs+Q2UO49D7jnRSRGoEFRILcdmEMWGI0cm0JJ2QpYA1RDvcmzJEWhABhD/pqrL0S0CWuABKgnRki9lLseS7g2AlqwHWQSKH4oKLrILpRGhEQCw2LiRUIa4lwAAAABJRU5ErkJggg==)!important}#toast-container>.toast-warning{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGYSURBVEhL5ZSvTsNQFMbXZGICMYGYmJhAQIJAICYQPAACiSDB8AiICQQJT4CqQEwgJvYASAQCiZiYmJhAIBATCARJy+9rTsldd8sKu1M0+dLb057v6/lbq/2rK0mS/TRNj9cWNAKPYIJII7gIxCcQ51cvqID+GIEX8ASG4B1bK5gIZFeQfoJdEXOfgX4QAQg7kH2A65yQ87lyxb27sggkAzAuFhbbg1K2kgCkB1bVwyIR9m2L7PRPIhDUIXgGtyKw575yz3lTNs6X4JXnjV+LKM/m3MydnTbtOKIjtz6VhCBq4vSm3ncdrD2lk0VgUXSVKjVDJXJzijW1RQdsU7F77He8u68koNZTz8Oz5yGa6J3H3lZ0xYgXBK2QymlWWA+RWnYhskLBv2vmE+hBMCtbA7KX5drWyRT/2JsqZ2IvfB9Y4bWDNMFbJRFmC9E74SoS0CqulwjkC0+5bpcV1CZ8NMej4pjy0U+doDQsGyo1hzVJttIjhQ7GnBtRFN1UarUlH8F3xict+HY07rEzoUGPlWcjRFRr4/gChZgc3ZL2d8oAAAAASUVORK5CYII=)!important}#toast-container.toast-bottom-center>div,#toast-container.toast-top-center>div{width:300px;margin-left:auto;margin-right:auto}#toast-container.toast-bottom-full-width>div,#toast-container.toast-top-full-width>div{width:96%;margin-left:auto;margin-right:auto}.toast{background-color:#030303}.toast-success{background-color:#51a351}.toast-error{background-color:#bd362f}.toast-info{background-color:#f29d34}.toast-warning{background-color:#f89406}.toast-progress{position:absolute;left:0;bottom:0;height:4px;background-color:#000;opacity:.4}@media all and (max-width:240px){#toast-container>div{padding:8px 8px 8px 50px;width:11em}#toast-container .toast-close-button{right:-.2em;top:-.2em}}@media all and (min-width:241px) and (max-width:480px){#toast-container>div{padding:8px 8px 8px 50px;width:18em}#toast-container .toast-close-button{right:-.2em;top:-.2em}}@media all and (min-width:481px) and (max-width:768px){#toast-container>div{padding:15px 15px 15px 50px;width:25em}}</style>
+</head>
+<body>
+<div style="height:300px"></div>
+<div id="loading-screen" style="max-width:1170px;margin:20px auto;padding:20px;padding:80px 20px;text-align:center">
+<img src="/program/loader.gif">
+<br><span class="loading-screen-text">Loading the Interactive Program...</span>
+</div>
+<chi-interactive-schedule>
+</chi-interactive-schedule>
+<script>window.baseURL="/",window.chiVersion="v1.1.7",function(){var e=document.body.getElementsByTagName("script")[0],n=document.createElement("script");n.src=window.baseURL+"core-"+window.chiVersion+".js",e.parentNode.insertBefore(n,e);var t=document.querySelector("chi-interactive-schedue"),c=document.querySelector("#loading-screen");t||(t=document.createElement("chi-interactive-schedule"),c.parentNode.insertBefore(t,c))}()</script>
+</body>
 </html>

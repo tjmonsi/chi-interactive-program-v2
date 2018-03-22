@@ -78,6 +78,12 @@
         var core = document.createElement('script');
         core.src = window.baseURL + 'core-' + window.chiVersion + '.js';
         refScript.parentNode.insertBefore(core, refScript);
+        var el = document.querySelector('chi-interactive-schedue');
+        var loading = document.querySelector('#loading-screen');
+        if (!el) {
+          el = document.createElement('chi-interactive-schedule');
+          loading.parentNode.insertBefore(el, loading);
+        }
       })();
     </script>
   </body>
