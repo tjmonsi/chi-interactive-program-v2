@@ -2,9 +2,8 @@
 import { Element } from '@polymer/polymer/polymer-element';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners';
 import { ChiTimeslotMixin } from 'chi-timeslot-mixin';
-import { customElements, requestAnimationFrame, CustomEvent, history, dispatchEvent } from 'global/window';
+import { customElements, requestAnimationFrame, CustomEvent, history, dispatchEvent, scroll, scrollY } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-import { checkVisible } from 'chi-interactive-schedule/check-visible';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
@@ -40,6 +39,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
         value: false,
         observer: '_showAndFocusSession'
       },
+      forceShowSessions: {
+        type: Boolean,
+        value: false
+      },
       params: {
         type: Object,
         value: {},
@@ -50,7 +53,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
 
   static get observers () {
     return [
-      '_showSessions(params.timeslotId, params.oldTimeslotId, timeslotId, params.search, timeslot, params.*)',
+      '_showSessions(params.timeslotId, params.oldTimeslotId, timeslotId, params.search, timeslot, params.*, forceShowSessions)',
       '_checkTimeslot(timeslot, sessions, filteredVenues)'
     ];
   }
@@ -79,7 +82,7 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
   }
 
   _showSessionOnce (paramsTimeslotId, paramsOldTimeslotId, timeslotId, search) {
-    this.showSessions = !!((this._isEqual(paramsTimeslotId, timeslotId) || (this.timeslot && this.timeslot.sessions[this.params.sessionId]) || search));
+    this.showSessions = this.forceShowSessions || !!((this._isEqual(paramsTimeslotId, timeslotId) || (this.timeslot && this.timeslot.sessions[this.params.sessionId]) || search));
   }
 
   _getName (name) {
@@ -98,22 +101,10 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiTimeslotMixin
       setTimeout(() => {
         // if (this._focusPublications) scroll(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
         if (showSessions && !this.params.sessionId && !this.params.publicationId && !this.params.search) {
-          // scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).getBoundingClientRect().top) - 102);
+          scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${this.sessionId}`).getBoundingClientRect().top) - 102);
           const repeater = this.shadowRoot.querySelector('.sessions');
           if (repeater) repeater.render();
-          const el = this.shadowRoot.querySelector(`.invi-anchor-timeslot-${this.timeslotId}`);
-
-          el.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
           loaded = true;
-          // console.log(checkVisible(el))
-          if (!checkVisible(el)) {
-            setTimeout(() => {
-              this._showAndFocusSession(showSessions);
-            }, 200);
-          }
         }
       }, 200);
     });

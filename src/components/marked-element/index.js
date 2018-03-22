@@ -42,8 +42,12 @@ class Component extends LittleQStoreMixin(Element) {
         let newString = string || '';
         const search = [];
         if (queryResults) {
-          queryResults.forEach(hit => {
-            Object.entries(hit._highlightResult).forEach(([key, value]) => {
+          for (let hit of queryResults) {
+            let keys = Object.keys(hit._highlightResult);
+
+            for (let i = 0, l = keys.length; i < l; i++) {
+              let key = keys[i];
+              let value = hit._highlightResult[key];
               if (value.matchedWords && value.matchedWords.length) {
                 value.value.split('<em>').forEach(node => {
                   const term = node.split('</em>')[0];
@@ -59,19 +63,31 @@ class Component extends LittleQStoreMixin(Element) {
                   }
                 });
               }
-            });
-          });
-        }
-        search.forEach(([term], searchIndex) => {
-          while (newString.toLowerCase().indexOf(term.toLowerCase()) >= 0) {
-            let index = newString.toLowerCase().indexOf(term.toLowerCase());
-            newString = newString.slice(0, index) + `$$$$__${searchIndex}__&&&&` + newString.slice(index + term.length);
+            }
           }
-          // newString = newString.replace(/\$\$1\&\&/g, `<mark class="mark">${term}</mark>`);
-        });
-        search.forEach(([term], index) => {
+        }
+        for (let searchIndex = 0, len = search.length; searchIndex < len; searchIndex++) {
+          let [term] = search[searchIndex];
+          if (term.length > 1) {
+            while (newString.toLowerCase().indexOf(term.toLowerCase()) >= 0) {
+              let index = newString.toLowerCase().indexOf(term.toLowerCase());
+              newString = newString.slice(0, index) + `$$$$__${searchIndex}__&&&&` + newString.slice(index + term.length);
+            }
+          }
+        }
+
+        for (let index = 0, len = search.length; index < len; index++) {
+          let [term] = search[index];
           newString = newString.replace(new RegExp(`__${index}__`, 'g'), term);
-        });
+        }
+
+        // search.forEach(([term], searchIndex) => {
+
+        //   // newString = newString.replace(/\$\$1\&\&/g, `<mark class="mark">${term}</mark>`);
+        // });
+        // search.forEach(([term], index) => {
+
+        // });
 
         // console.log(newString)
 

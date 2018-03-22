@@ -102,7 +102,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
 
   static get observers () {
     return [
-      '_showPublication(params.sessionId, params.oldSessionId, sessionId, params.timeslotId, timeslotId, forceOpen, params.search)',
+      '_showPublication(params.sessionId, params.oldSessionId, sessionId, params.timeslotId, timeslotId, forceOpen, params.search, session)',
       '_setClass(session.venue)',
       '_addVenue(session.venue, venues)',
       '_showAndFocusPublication(showPublications, _focusPublications)',
@@ -206,7 +206,7 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
         setTimeout(() => {
           this._clone.session = this.session;
           console.log(this._clone.session, this.session);
-        }, 200);
+        }, 500);
       }
     } else if (this._clone) {
       // console.log(this._clone);
@@ -224,24 +224,9 @@ class Component extends LittleQStoreMixin(ChiSessionMixin(Element)) {
     requestAnimationFrame(() => {
       setTimeout(() => {
         // if (this._focusPublications) scroll(0, (scrollY + this.shadowRoot.querySelector('h3').getBoundingClientRect().top) - 102);
-        if (this._focusPublications && !this.forceClose && !this.params.publicationId && !search) {
+        if (this._focusPublications && !this.forceClose && !this.params.publicationId && !search && !loaded) {
           scroll(0, (scrollY + this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`).getBoundingClientRect().top) - 102);
-
-          // const el = window.innerWidth >= 450
-          //   ? this._clone.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`)
-          //   : this.shadowRoot.querySelector(`.invi-anchor-session-${sessionId}`);
-
-          // el.scrollIntoView({
-          //   block: 'start',
-          //   behavior: 'smooth'
-          // });
           loaded = true;
-          // console.log(checkVisible(el))
-          // if (!checkVisible(el)) {
-          //   setTimeout(() => {
-          //     this._showAndFocusPublication(showPublications, _focusPublications);
-          //   }, 200);
-          // }
         }
       }, 200);
     });

@@ -72,6 +72,7 @@
     "@webcomponents/shadycss": "^1.1.1",
     "@webcomponents/webcomponentsjs": "^1.1.0",
     "algoliasearch": "^3.24.12",
+    "clooneyjs": "^0.6.3",
     "es5-shim": "^4.5.10",
     "es6-promise": "^4.2.4",
     "es6-shim": "^0.35.3",

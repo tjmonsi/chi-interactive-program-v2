@@ -133,13 +133,8 @@ class Component extends LittleQStoreMixin(GestureEventListeners(ChiPublicationMi
     this._focusInformation = (this._isEqual(paramsPublicationId, publicationId) && this._isEqual(paramsSessionId, sessionId));
     requestAnimationFrame(() => {
       setTimeout(() => {
-        // if (this.showInformation) { scrollTo(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102); }
-        if (this._focusInformation && !search) {
+        if (this._focusInformation && !search && !loaded) {
           scroll(0, (scrollY + this.shadowRoot.querySelector('h4').getBoundingClientRect().top) - 102);
-          // this.shadowRoot.querySelector(`.invi-anchor-pub-${publicationId}`).scrollIntoView({
-          //   block: 'start',
-          //   behavior: 'smooth'
-          // });
           loaded = true;
         }
       }, 200);
