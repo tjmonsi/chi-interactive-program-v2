@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, requestAnimationFrame, scrollTo, scrollY } from 'global/window';
+import { customElements, requestAnimationFrame, scroll, scrollY } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { debounce } from 'chi-interactive-schedule/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -41,6 +41,10 @@ class Component extends LittleQStoreMixin(Element) {
         type: Array,
         statePath: 'chiState.filteredVenues'
       },
+      forceShowSessions: {
+        type: Boolean,
+        value: false
+      },
       hidden: {
         type: Boolean,
         value: false,
@@ -79,14 +83,9 @@ class Component extends LittleQStoreMixin(Element) {
     const showDay = this._isEqual(paramsScheduleId, scheduleId);
     requestAnimationFrame(() => {
       setTimeout(() => {
-        if (showDay && !this.hidden) { scrollTo(0, (scrollY + this.shadowRoot.querySelector(`.${scheduleId}-day`).getBoundingClientRect().top) - 102); }
-        // if (showDay) {
-        //   // console.log(this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`))
-        //   this.shadowRoot.querySelector(`.invi-anchor-day-${scheduleId}`).scrollIntoView({
-        //     block: 'start',
-        //     behavior: 'smooth'
-        //   });
-        // }
+        if (showDay && !this.hidden) {
+          scroll(0, (scrollY + this.shadowRoot.querySelector(`.${scheduleId}-day`).getBoundingClientRect().top) - 102);
+        }
       }, 200);
     });
   }
@@ -102,6 +101,14 @@ class Component extends LittleQStoreMixin(Element) {
 
   _checkDay () {
     this._debouncedCheckDay();
+  }
+
+  _closeSlots () {
+    this.forceShowSessions = false;
+  }
+
+  _openSlots () {
+    this.forceShowSessions = true;
   }
 
   _isEqual (a, b) { return a === b; }

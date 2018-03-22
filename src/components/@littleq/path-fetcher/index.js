@@ -149,6 +149,10 @@ class Component extends LittleQStoreMixin(Element) {
     if (event.defaultPrevented) return;
     const href = this._getSameOriginLinkHref(event);
     if (!href) return;
+    // add just for chi2018.acm.org
+    if (window.location.hostname === 'chi2018.acm.org' && window.location.pathname.indexOf('technical-program') < 0) {
+      return;
+    }
     event.preventDefault();
     // If the navigation is to the current page we shouldn't add a history
     // entry or fire a change event.

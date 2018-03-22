@@ -159,14 +159,14 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'block';
     this.shadowRoot.querySelector('.filter-container').style.display = 'none';
     this._filterContainer = false;
-    this.shadowRoot.querySelector('.fixed-phone').style.top =
-      this.shadowRoot.querySelector('.fixed').style.display === 'none'
-        ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top <= (window.innerHeight / 2) ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top + 72) + 'px' : '0px')
-        : '72px';
-    this.shadowRoot.querySelector('.fixed-phone').style.bottom =
-      this.shadowRoot.querySelector('.fixed').style.display === 'none'
-        ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top > (window.innerHeight / 2) ? (window.innerHeight - this.shadowRoot.querySelector('.container').getBoundingClientRect().top) + 'px' : '0px')
-        : null;
+    // this.shadowRoot.querySelector('.fixed-phone').style.top =
+    //   this.shadowRoot.querySelector('.fixed').style.display === 'none'
+    //     ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top <= (window.innerHeight / 2) ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top + 72) + 'px' : '0px')
+    //     : '72px';
+    // this.shadowRoot.querySelector('.fixed-phone').style.bottom =
+    //   this.shadowRoot.querySelector('.fixed').style.display === 'none'
+    //     ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top > (window.innerHeight / 2) ? (window.innerHeight - this.shadowRoot.querySelector('.container').getBoundingClientRect().top) + 'px' : '0px')
+    //     : null;
   }
 
   closeNavigation () {
@@ -184,18 +184,18 @@ class Component extends GestureEventListeners(LittleQStoreMixin(ChiScheduleMixin
     this.shadowRoot.querySelector('.filter-container').style.display = this._filterContainer ? 'block' : 'none';
 
     if (this._filterContainer) {
-      this.shadowRoot.querySelector('.filter-container').style.top =
-        this.shadowRoot.querySelector('.fixed').style.display === 'none'
-          ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top <= (window.innerHeight / 2)
-            ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top + 72) + 'px'
-            : '0px')
-          : '72px';
-      this.shadowRoot.querySelector('.filter-container').style.bottom =
-        this.shadowRoot.querySelector('.fixed').style.display === 'none'
-          ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top > (window.innerHeight / 2)
-            ? (window.innerHeight - this.shadowRoot.querySelector('.container').getBoundingClientRect().top) + 'px'
-            : '0px')
-          : null;
+      // this.shadowRoot.querySelector('.filter-container').style.top =
+      //   this.shadowRoot.querySelector('.fixed').style.display === 'none'
+      //     ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top <= (window.innerHeight / 2)
+      //       ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top + 72) + 'px'
+      //       : '0px')
+      //     : '72px';
+      // this.shadowRoot.querySelector('.filter-container').style.bottom =
+      //   this.shadowRoot.querySelector('.fixed').style.display === 'none'
+      //     ? (this.shadowRoot.querySelector('.container').getBoundingClientRect().top > (window.innerHeight / 2)
+      //       ? (window.innerHeight - this.shadowRoot.querySelector('.container').getBoundingClientRect().top) + 'px'
+      //       : '0px')
+      //     : null;
     }
   }
 
