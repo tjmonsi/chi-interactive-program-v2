@@ -1,0 +1,17 @@
+<path-fetcher></path-fetcher>
+<query-params-fetcher></query-params-fetcher>
+
+<section class="container">
+
+  <template is="dom-repeat" items="[[schedule]]">
+    <chi-day day="[[item]]" schedule-index="[[index]]"></chi-day>
+  </template>
+
+  <div style="height: 300px"></div>
+
+  <footer class="footer">
+    <a class="github-link" href="https://github.com/tjmonsi/chi-interactive-program-v2/issues" target="_blank" rel="noopener">
+      For suggestions or bug reports, open an issue here.
+    </a>
+  </footer>
+</section>

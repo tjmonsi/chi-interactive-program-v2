@@ -1,0 +1,61 @@
+<div class$="invi-anchor invi-anchor-timeslot-[[timeslotId]]"></div>
+<template is="dom-if" if="[[sessions.length]]">
+  <section class$="grid [[_timeslotColorClass(scheduleIndex)]]-border">
+    <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot" on-tap="_toggleTimeslot">
+      <h2 class="time">
+        [[timeslot.time]]
+      </h2>
+    </div>
+    <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot timeslot-name">
+      <h2 class="time">
+        <a class="header-anchor" on-tap="_toggleTimeslot">[[timeslot.name]]</a>
+
+        <template is="dom-if" if="[[showSessions]]">
+          <a class="header-anchor-icon" href="?oldTimeslotId=[[timeslotId]]">
+            <svg class="header-icon">
+              <title>Collapse</title>
+              <path d="M19.78,11.78L18.36,13.19L12,6.83L5.64,13.19L4.22,11.78L12,4L19.78,11.78Z" />
+            </svg>
+          </a>
+          <template is="dom-if" if="[[_isEqual(params.forceOpen, 'yes')]]">
+            <a class="header-anchor-icon" href="?timeslotId=[[timeslotId]]">
+              <svg class="header-icon">
+                <title>Show Summary</title>
+                <path d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
+              </svg>
+            </a>
+          </template>
+          <template is="dom-if" if="[[!_isEqual(params.forceOpen, 'yes')]]">
+            <a class="header-anchor-icon" href="?timeslotId=[[timeslotId]]&forceOpen=yes">
+              <svg class="header-icon">
+                <title>Show All</title>
+                <path d="M5,2H19A1,1 0 0,1 20,3V13A1,1 0 0,1 19,14H5A1,1 0 0,1 4,13V3A1,1 0 0,1 5,2M6,4V12H18V4H6M20,17A1,1 0 0,1 19,18H5A1,1 0 0,1 4,17V16H20V17M20,21A1,1 0 0,1 19,22H5A1,1 0 0,1 4,21V20H20V21Z" />
+              </svg>
+            </a>
+          </template>
+        </template>
+        <template is="dom-if" if="[[!showSessions]]">
+          <a class="header-anchor-icon" href="?timeslotId=[[timeslotId]]">
+            <svg class="header-icon">
+              <title>Show Summary</title>
+              <path d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
+            </svg>
+          </a>
+          <a class="header-anchor-icon" href="?timeslotId=[[timeslotId]]&forceOpen=yes">
+            <svg class="header-icon">
+              <title>Show All</title>
+              <path d="M5,2H19A1,1 0 0,1 20,3V13A1,1 0 0,1 19,14H5A1,1 0 0,1 4,13V3A1,1 0 0,1 5,2M6,4V12H18V4H6M20,17A1,1 0 0,1 19,18H5A1,1 0 0,1 4,17V16H20V17M20,21A1,1 0 0,1 19,22H5A1,1 0 0,1 4,21V20H20V21Z" />
+            </svg>
+          </a>
+        </template>
+
+      </h2>
+    </div>
+
+    <template is="dom-repeat" items="[[sessions]]" class="sessions">
+      <chi-session session-id="[[item.$key]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" timeslot-id="[[timeslotId]]"></chi-session>
+      <!-- <chi-session force-open="[[params.forceOpen]]" hidden-for-now$="[[!showSessions]]" day-string="[[dayString]]" date-string="[[dateString]]" time-string="[[timeslot.time]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item.key]]" session-id="[[item.key]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]" timeslot-id="[[timeslotId]]"></chi-session> -->
+    </template>
+
+  </section>
+</template>

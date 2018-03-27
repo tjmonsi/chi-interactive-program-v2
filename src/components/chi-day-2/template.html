@@ -1,0 +1,20 @@
+<div class$="invi-anchor invi-anchor-day-[[day.$key]]"></div>
+<h1 class$="day [[day.$key]]-day">
+  [[day.dayString]] - [[_getDateString(day.dateString)]]
+  <template is="dom-if" if="[[forceShowSessions]]">
+    <svg class="header-icon" on-click="_closeSlots">
+      <title>Collapse</title>
+      <path d="M19.78,11.78L18.36,13.19L12,6.83L5.64,13.19L4.22,11.78L12,4L19.78,11.78Z" />
+    </svg>
+  </template>
+  <template is="dom-if" if="[[!forceShowSessions]]">
+    <svg class="header-icon" on-click="_openSlots">
+      <title>Show All</title>
+      <path d="M5,2H19A1,1 0 0,1 20,3V13A1,1 0 0,1 19,14H5A1,1 0 0,1 4,13V3A1,1 0 0,1 5,2M6,4V12H18V4H6M20,17A1,1 0 0,1 19,18H5A1,1 0 0,1 4,17V16H20V17M20,21A1,1 0 0,1 19,22H5A1,1 0 0,1 4,21V20H20V21Z" />
+    </svg>
+  </template>
+</h1>
+<template is="dom-repeat" items="[[timeslots]]">
+  <chi-timeslot timeslot-id="[[item.$key]]" schedule-index="[[scheduleIndex]]"></chi-timeslot>
+  <!-- <chi-timeslot force-show-sessions="[[forceShowSessions]]" day-string="[[scheduleObj.dayString]]" date-string="[[_getDateString(scheduleObj.dateString)]]" class="chi-timeslot-item" timeslot-id="[[item]]" schedule-index="[[scheduleIndex]]" on-chi-timeslot-hidden="_debouncedCheckDay"></chi-timeslot> -->
+</template>
