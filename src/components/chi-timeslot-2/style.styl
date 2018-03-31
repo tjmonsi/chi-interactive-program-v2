@@ -8,6 +8,12 @@
 .time
   cursor: pointer
 
+.header
+  display: flex;
+
+  @media screen and (max-width: 550px)
+    display: block;
+
 .grid
   display: block;
 
@@ -67,71 +73,74 @@
       width: auto;
 
   .chi-session-item[force-close]
+    grid-column: auto
     @media screen and (max-width: 449px)
       display: none;
 
   &.grey-border
     border-top: 4px solid $brand-grey
 
-  .grey-timeslot
-    background: $brand-grey;
-    color: $light;
-
   &.blue-border
     border-top: 4px solid $brand-blue
-
-  .blue-timeslot
-    background: $brand-blue;
-    color: $light;
 
   &.green-border
     border-top: 4px solid $brand-green
 
-  .green-timeslot
-    background: $brand-green;
-    color: $light;
-
   &.yellow-border
     border-top: 4px solid $brand-yellow
 
-  .yellow-timeslot
-    background: $brand-yellow;
-    color: $light;
 
   &.orange-border
     border-top: 4px solid $brand-orange
 
-  .orange-timeslot
-    background: $brand-orange;
-    color: $light;
-
   &.pink-border
     border-top: 4px solid $brand-pink
 
-  .pink-timeslot
-    background: $brand-pink;
-    color: $light;
 
-  .timeslot
-    padding: 20px;
+.timeslot
+  padding: 20px;
 
-    .time
-      margin: 0
+  .time
+    margin: 0
 
-  .timeslot-name
-    grid-column: 2 / 7;
+.grey-timeslot
+  background: $brand-grey;
+  color: $light;
 
-    @media screen and (max-width: 1200px)
-      grid-column: 2 / 6;
+.blue-timeslot
+  background: $brand-blue;
+  color: $light;
 
-    @media screen and (max-width: 849px)
-      grid-column: 2 / 4;
+.green-timeslot
+  background: $brand-green;
+  color: $light;
 
-    @media screen and (max-width: 599px)
-      grid-column: 2 / 3;
+.yellow-timeslot
+  background: $brand-yellow;
+  color: $light;
 
-    @media screen and (max-width: 449px)
-      grid-column: 1
+.orange-timeslot
+  background: $brand-orange;
+  color: $light;
+
+.pink-timeslot
+  background: $brand-pink;
+  color: $light;
+
+.timeslot-time
+  flex: 1;
+
+.timeslot-name
+  flex: 5;
+
+  @media screen and (max-width: 1100px)
+    flex: 4;
+
+  @media screen and (max-width: 880px)
+    flex: 3;
+
+  @media screen and (max-width: 730px)
+    flex: 2;
 
 .chi-session-item
   // cursor: pointer;

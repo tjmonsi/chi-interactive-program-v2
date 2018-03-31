@@ -57,14 +57,44 @@ class Component extends Element {
 
   _timeslotChange (timeslot) {
     const keys = Object.keys(timeslot.sessions);
+    const { className } = timeslot;
     const sessions = [];
     for (let i = 0, l = keys.length; i < l; i++) {
       const key = keys[i];
       const obj = { ...timeslot.sessions[key], $key: key };
       sessions.push(obj);
     }
-    sessions.sort((i, j) => (i.value - j.value));
+
+    sessions.sort((a, b) => {
+      const attr = className === 'workshops' ? 'title' : 'room';
+      if (a[attr] < b[attr]) return -1;
+      if (a[attr] > b[attr]) return 1;
+      return 0;
+    });
     this.sessions = sessions;
+  }
+
+  _duplicate ({target: el}) {
+    const { index, sessionId: $key } = el;
+    const obj = {
+      $key,
+      forceClose: true
+    };
+    if (index === 0) {
+      this.unshift('sessions', obj);
+    } else {
+      this.splice('sessions', el.index, 0, obj);
+    }
+    const newIndex = this.sessions.findIndex(item => item.forceClose !== true && item.showPublications !== true && item.$key === $key);
+    this.set(`sessions.${newIndex}.showPublications`, true);
+  }
+
+  _closeDuplicate ({target: el}) {
+    const { sessionId: $key } = el;
+    const duplicateIndex = this.sessions.findIndex(item => item.forceClose === true && item.$key === $key);
+    this.splice('sessions', duplicateIndex, 1);
+    const index = this.sessions.findIndex(item => item.showPublications === true && item.$key === $key);
+    this.set(`sessions.${index}.showPublications`, false);
   }
 
   _timeslotColorClass (index) {

@@ -1,16 +1,19 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements } from 'global/window';
+import { customElements, CustomEvent, dispatchEvent, history, requestAnimationFrame } from 'global/window';
+import { LittleQStoreMixin } from '@littleq/state-manager';
 import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'marked-element';
+import 'chi-publication-2';
+import 'chi-room';
 
 // define style and template
 import style from './style.styl';
 import template from './template.html';
 
-class Component extends Element {
+class Component extends LittleQStoreMixin(Element) {
   static get is () { return 'chi-session'; }
   static get template () { return `<style>${style}</style>${template}`; }
 
@@ -26,30 +29,68 @@ class Component extends Element {
       },
       showPublications: {
         type: Boolean,
-        value: false
+        value: false,
+        reflectToAttribute: true,
+        observer: '_showPub'
+      },
+      forceClose: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      },
+      index: {
+        type: Number,
+        value: 0
+      },
+      params: {
+        type: Object,
+        value: {},
+        statePath: 'littleqQueryParams.params'
       }
     };
+  }
+
+  static get observers () {
+    return [
+      '_checkParams(params, sessionId, session, params.*)'
+    ];
   }
 
   constructor () {
     super();
     this._boundSessionUpdate = this._sessionIdChange.bind(this);
+    this._boundShowSession = this._showSession.bind(this);
+    this._boundCloseSession = this._closeSession.bind(this);
   }
 
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-session', this._boundSessionUpdate);
+    this.addEventListener('click', this._boundShowSession);
   }
 
   disconnectedCallback () {
     super.disconnectedCallback();
     window.removeEventListener('chi-update-session', this._boundSessionUpdate);
+    this.removeEventListener('click', this._boundShowSession);
   }
 
   _sessionIdChange () {
     const sessionId = this.sessionId;
     if (store.session[sessionId]) {
       this.session = store.session[sessionId];
+    }
+  }
+
+  _showPub () {
+    if (this.showPublications && !this.params.publicationId) {
+      requestAnimationFrame(() => {
+        this.shadowRoot.querySelector(`.invi-anchor-session-${this.sessionId}`)
+          .scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+      });
     }
   }
 
@@ -63,7 +104,7 @@ class Component extends Element {
         publications.push(obj);
       }
       publications.sort((i, j) => (i.value - j.value));
-      this.sessions = publications;
+      this.publications = publications;
     }
   }
 
@@ -80,6 +121,30 @@ class Component extends Element {
 
   _setClass (venue) { if (venue) this.classList.add(this._slugifyClass(venue)); }
 
+  _showSession () {
+    if (!this.showPublications && !this.forceClose) {
+      this.dispatchEvent(new CustomEvent('open-duplicate'));
+    } else if (this.forceClose) {
+      this.dispatchEvent(new CustomEvent('close-duplicate'));
+    }
+  }
+
+  _closeSession (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.dispatchEvent(new CustomEvent('close-duplicate'));
+  }
+
+  _checkParams (params, sessionId, session) {
+    if (sessionId && session && params.sessionId === this.sessionId) {
+      this._showSession();
+      setTimeout(() => {
+        history.pushState({}, '', `?`);
+        dispatchEvent(new CustomEvent('location-changed'));
+      }, 1000);
+    }
+  }
+
   getVenueTitle (venue) {
     if (venue) {
       switch (venue.toLowerCase()) {
@@ -90,6 +155,10 @@ class Component extends Element {
         case 'docconsortium':
           return '';
         case 'science jam':
+          return '';
+        case 'demo':
+          return '';
+        case 'workshop':
           return '';
         case 'game jam':
           return '';
@@ -107,6 +176,8 @@ class Component extends Element {
           return '';
         case 'videoshowcase':
           return '';
+        case 'lbw':
+          return 'Late-breaking Work';
         case 'panel':
           return 'Panel/Roundtable';
         default:
