@@ -5,15 +5,20 @@ const CHI_STATE = {
   VENUE: 'CHI_STATE_UPDATE_VENUES',
   FILTER_VENUE: 'CHI_STATE_UPDATE_FILTERED_VENUES',
   FILTER_SEARCH: 'CHI_STATE_UPDATE_FILTERED_SEARCH',
-  QUERY_RESULTS: 'CHI_STATE_UPDATE_QUERY_RESULTS'
+  QUERY_RESULTS: 'CHI_STATE_UPDATE_QUERY_RESULTS',
+  SEARCH_RESULT_TYPES: 'CHI_STATE_SEARCH_RESULT_TYPES'
 };
 
 export const defaultFilteredSearch = [
   'people', 'institution', 'session', 'paper-title', 'abstract'
 ];
 
-reducers.chiState = (obj = { venues: [], filteredVenues: ['all'], filteredSearch: [ ...defaultFilteredSearch, 'all' ] }, action) => {
+reducers.chiState = (obj = { venues: [], filteredVenues: ['all'], filteredSearch: [ ...defaultFilteredSearch, 'all' ], searchResultTypes: {} }, action) => {
   switch (action.type) {
+    case CHI_STATE.SEARCH_RESULT_TYPES:
+      return Object.assign({}, obj, {
+        searchResultTypes: action.searchResultTypes
+      });
     case CHI_STATE.VENUE:
       return Object.assign({}, obj, {
         venues: action.venues,

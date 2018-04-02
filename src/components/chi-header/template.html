@@ -1,41 +1,86 @@
-<header>
-  <div class="container">
-    <a href="https://chi2018.acm.org">
-      <img class="logo" src="/assets/logo-bigengage-blackbg.png">
-    </a>
-    <p>
-      Montréal, Canada • April 21-26
-    </p>
-  </div>
-  <div class="nav-container desktop-nav">
-    <nav class="container">
-      <a href="/" class$="nav-item schedule-at-a-glance [[_isScheduleAtAGlance(route)]]">Schedule at Glance</a>
-      <template is="dom-repeat" items="[[scheduleArray]]">
-        <a href="/day/[[item.$key]]" class$="nav-item [[_isSelected(params.id, item.$key)]]">[[item.dayString]]</a>
-      </template>
-      <a href="/search" class$="nav-item [[_isSearch(route)]]">Search</a>
-    </nav>
-  </div>
+<header class="container">
+  <nav class="navigation on-top">
+    <ul class="desktop nav-list">
+      <li class="phone list-item">
+        <button type="button" class="nav-button menu" on-click="openNavigation">
+          <svg class="icon">
+            <title>Open Navigation</title>
+            <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+          </svg>
+        </button>
+        <button type="button" class="nav-button close hidden" on-click="closeNavigation">
+          <svg class="icon">
+            <title>Close Navigation</title>
+            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+          </svg>
+        </button>
+      </li>
 
-  <div class="nav-container phone-nav">
-    <button type="button" class="nav-button menu" on-click="openNavigation">
-      <svg class="icon">
-        <title>Open Navigation</title>
-        <use xlink:href="/assets/icons.svg#menu"></use>
-      </svg>
-    </button>
-    <button type="button" class="nav-button close hidden" on-click="closeNavigation">
-      <svg class="icon">
-        <title>Close Navigation</title>
-        <use xlink:href="/assets/icons.svg#close"></use>
-      </svg>
-    </button>
-    <nav class="container phone">
-      <a href="/search" class="nav-item">Search</a>
-      <a href="/" class="nav-item">Schedule at Glance</a>
       <template is="dom-repeat" items="[[scheduleArray]]">
-        <a href="/day/[[item.$key]]" class="nav-item">[[item.dayString]]</a>
+        <li class="schedule list-item">
+          <a class="anchor" href="?scheduleId=[[item.$key]]&search=[[params.search]]">
+            [[item.dayString]]
+          </a>
+        </li>
       </template>
-    </nav>
-  </div>
+      <li class="search-item list-item">
+        <form on-submit="formSearch">
+          <div class="input-container search-container">
+
+            <input class="search" name="search" on-keyup="_onChangeQuery" on-change="_onChangeQuery">
+            <button class="search-button" type="button" on-click="search">Search</button>
+            <template is="dom-if" if="[[showClear(params.search, filteredSearch, filteredVenues)]]">
+              <button class="search-button" type="button" on-click="clear">Clear</button>
+            </template>
+            <button class="search-button" type="button" on-click="filter">Filter</button>
+
+            <button class="search-button-icon" type="button" on-click="search">
+              <svg class="icon">
+                <title>Search</title>
+                <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+              </svg>
+            </button>
+
+            <template is="dom-if" if="[[showClear(params.search, filteredSearch, filteredVenues)]]">
+              <button class="search-button-icon" type="button" on-click="clear">
+                <svg class="icon">
+                  <title>Clear</title>
+                  <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                </svg>
+              </button>
+            </template>
+
+            <button class="search-button-icon" type="button" on-click="filter">
+              <svg class="icon">
+                <title>Filter</title>
+                <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </li>
+    </ul>
+    <template is="dom-if" if="[[!_ifTheresAll(filteredSearch)]]">
+      <div class="center-container small-font">
+        Search is being filtered by: [[_returnSearch(filteredSearch)]]
+      </div>
+    </template>
+    <template is="dom-if" if="[[!_ifTheresAll(filteredVenues)]]">
+      <div class="center-container small-font">
+        Showing only: [[_returnVenues(filteredVenues)]]
+      </div>
+    </template>
+  </nav>
+
+  <nav class="navigation fixed-phone">
+    <ul class="container nav-list-2">
+      <template is="dom-repeat" items="[[scheduleArray]]">
+        <li class="schedule-phone list-item">
+          <a class="anchor" href="?scheduleId=[[item.$key]]&search=[[params.search]]">
+            [[item.dayString]]
+          </a>
+        </li>
+      </template>
+    </ul>
+  </nav>
 </header>

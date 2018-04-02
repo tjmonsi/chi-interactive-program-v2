@@ -4,51 +4,66 @@
 :host
   display: block
 
-header
-  background-image: url('/assets/cropped-cropped-header_9-3.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  margin-bottom: 20px;
-  position: relative;
+.fixed-phone
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  display: none;
+  z-index: 5000;
+  overflow: auto;
 
-  .logo
-    width: 320px;
-    padding-top: 22px;
+.navigation
 
-  .container
-    padding-top: 30px;
-
-  p
-    color: $menu-light-green;
-    font-size: 16.7pt;
+  .nav-list
+    list-style-type: none
     margin: 0;
-
-.nav-container
-  margin-top: 50px;
-  background: $menu-light-green;
-
-  .container
     padding: 0;
 
-.desktop-nav
-  @media screen and (max-width: 660px)
-    display: none;
+  .nav-list-2
+    list-style-type: none
 
-  .container
+  .desktop
     display: flex;
+    flex-direction: row;
     align-items: center;
 
-.phone-nav
-  display: none;
-  @media screen and (max-width: 660px)
-    display: block
+  .list-item
+    margin: 0 10px;
+    font-size: 90%;
+    list-style-type: none
 
-  .container
-    display: none;
+    .anchor
+      color: inherit
+      text-decoration: none;
 
-  .container.open
-    display: block;
+    .anchor:hover
+      text-decoration: underline;
+
+  .search-item
+    flex: 1
+    text-align: right
+
+    @media screen and (max-width: 600px)
+      margin: 0;
+
+  .schedule
+    @media screen and (max-width: 1200px)
+      display: none;
+
+  .phone
+    display: none
+
+    @media screen and (max-width: 1200px)
+      display: block
+
+    @media screen and (max-width: 600px)
+      margin: 0;
+
+  .schedule-phone
+    padding: 10px 0;
 
 .icon
   width: 25px;
@@ -62,6 +77,9 @@ header
   border: none;
   cursor: pointer;
 
+  @media screen and (max-width: 650px)
+    margin: 10px 0;
+
   &.hidden
     display: none;
 
@@ -70,22 +88,139 @@ header
     color: $light;
     fill: $light;
 
-.nav-item
-  text-align: center;
-  padding: 10px 20px;
-  display: block;
-  color: $dark;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-family: 'Roboto Condensed', sans-serif;
-  letter-spacing: 0.75px;
+.search-container
+  @media screen and (max-width: 1200px)
+    .search
+      width: 300px
 
-  &:hover, &.selected
-    background: $dark;
-    color: $light;
+  @media screen and (max-width: 740px)
+    .search
+      width: 200px
 
-  @media screen and (max-width: 799px)
-    padding: 10px;
+  @media screen and (max-width: 570px)
+    .search
+      width: auto
 
-.schedule-at-a-glance
-  min-width: 170px;
+  @media screen and (max-width: 540px)
+    .search
+      width: 150px
+
+.filter-button
+  border: 1px solid black;
+  background: $brand-green;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 90%;
+  margin-top: 20px;
+  float: right;
+
+.search-button
+  border: 1px solid black;
+  background: $brand-green;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 90%;
+  @media screen and (max-width: 520px)
+    display: none
+
+
+.algolia
+  width: 150px;
+  vertical-align: middle;
+  margin-right: 10px;
+
+//   @media screen and (max-width: 860px)
+//     display: none
+
+// .algolia-icon
+//   display: none
+//   height: 30px;
+//   vertical-align: middle;
+//   margin-right: 10px;
+//   @media screen and (max-width: 860px)
+//     display: inline-block
+
+.search-container
+  @media screen and (max-width: 520px)
+    display: flex;
+    align-items: center;
+
+    .search
+      flex: 1
+
+  @media screen and (max-width: 365px)
+    .search
+      width: 80px
+
+  @media screen and (max-width: 320px)
+    .search
+      width: 60px
+
+  @media screen and (max-width: 300px)
+    .search
+      width: 40px
+
+.search-button-icon
+  background: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 90%;
+  display: none
+
+  .icon
+    fill: $brand-green;
+
+  @media screen and (max-width: 520px)
+    display: inline-block
+    padding: 0
+
+.filter-container
+  padding: 20px
+  position: fixed;
+  top: 72px;
+  left: 20px;
+  right: 20px;
+  max-height: calc(100vh - 150px);
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  z-index: 5000;
+  display: none;
+  overflow: auto;
+
+  .filter-title
+    margin: 0
+
+  .filter-grid
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr
+
+    @media screen and (max-width: 1000px)
+      grid-template-columns: 1fr 1fr 1fr
+
+    @media screen and (max-width: 770px)
+      grid-template-columns: 1fr 1fr
+
+    @media screen and (max-width: 550px)
+      grid-template-columns: 1fr
+
+    .checkbox-container
+      padding: 10px 20px;
+      font-size: 80%
+
+      @media screen and (max-width: 550px)
+        padding: 5px 20px
+
+      @media screen and (max-height: 500px)
+        padding: 10px 10px
+
+.search
+  padding: 10px
+  font-size: 100%
+  border: 2px solid $brand-green;
+  border-radius: 10px;
+  margin-right: 10px;

@@ -1,13 +1,15 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-import { customElements } from 'global/window';
+import { customElements, IntersectionObserver } from 'global/window';
 import { store } from 'chi-store';
 // import { conf } from 'chi-conference-config';
 import '@littleq/path-fetcher';
 import '@littleq/query-params-fetcher';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import 'chi-day-2';
+import 'chi-header';
+import 'chi-search';
 
 // define style and template
 import style from './style.styl';
@@ -22,6 +24,10 @@ class Component extends LittleQStoreMixin(Element) {
       schedule: {
         type: Array,
         value: []
+      },
+      searchResultTypes: {
+        type: Object,
+        statePath: 'chiState.searchResultTypes'
       }
     };
   }
@@ -34,6 +40,18 @@ class Component extends LittleQStoreMixin(Element) {
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-schedule', this._boundScheduleUpdate);
+
+    const target = this.shadowRoot.querySelector('.on-top');
+    const fixed = this.shadowRoot.querySelector('.fixed');
+    const options = { threshold: 0 };
+
+    this._observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(({target: entryTarget, isIntersecting}) => {
+        if (entryTarget) fixed.style.display = isIntersecting ? 'none' : 'block';
+      });
+    }, options);
+
+    this._observer.observe(target);
   }
 
   disconnectedCallback () {

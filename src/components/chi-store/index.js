@@ -3,7 +3,8 @@ import { firebase, conferenceId, version } from 'firebase-obj';
 const store = {
   schedule: {},
   timeslot: {},
-  session: {}
+  session: {},
+  search: ''
 };
 
 const db = firebase.database();
@@ -59,4 +60,11 @@ _sessionRef.on('value', snapshot => {
   window.dispatchEvent(new window.CustomEvent('chi-update-session'));
 });
 
-export { store };
+const searchStore = (search) => {
+  store.search = search;
+  if (store.search) {
+
+  }
+};
+
+export { store, searchStore };

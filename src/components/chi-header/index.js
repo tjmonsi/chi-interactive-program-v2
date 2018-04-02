@@ -1,8 +1,10 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
-import { customElements } from 'global/window';
+import { customElements, history, CustomEvent, dispatchEvent } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
+import { CHI_STATE, defaultFilteredSearch } from 'chi-interactive-schedule-2/reducer';
+import { debounce } from 'chi-interactive-schedule-2/debounce';
 import '@polymer/polymer/lib/elements/dom-repeat';
 
 // define style and template
@@ -15,34 +17,108 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
 
   static get properties () {
     return {
+      currentScheduleId: {
+        type: String
+      },
       params: {
         type: Object,
-        statePath: 'littleqSmallRouter.params'
+        statePath: 'littleqQueryParams.params'
       },
-      route: {
-        type: String,
-        statePath: 'littleqSmallRouter.route'
+      venues: {
+        type: Array,
+        statePath: 'chiState.venues'
+      },
+      filteredVenues: {
+        type: Array,
+        statePath: 'chiState.filteredVenues'
+      },
+      filteredSearch: {
+        type: Array,
+        statePath: 'chiState.filteredSearch'
+      },
+      defaultFilteredSearch: {
+        type: Array,
+        value: defaultFilteredSearch
       }
     };
   }
 
+  static get observers () {
+    return [
+      '_checkParams(params, currentScheduleId, params.*)'
+    ];
+  }
+
+  constructor () {
+    super();
+    this._debouncedSearch = debounce(this.search.bind(this), 2000);
+  }
+
+  _checkParams (params, currentScheduleId) {
+    if (params.scheduleId !== currentScheduleId) {
+      this.currentScheduleId = params.scheduleId;
+      this.closeNavigation();
+    }
+  }
+
+  _returnSearch (filter) {
+    return filter.map(item => this.getSearch(item)).join(', ');
+  }
+
+  _returnVenues (filter) {
+    return filter.map(item => this.getVenue(item)).join(', ');
+  }
+
+  _ifTheresAll (filter) {
+    return filter.indexOf('all') >= 0;
+  }
+
+  _onChangeQuery ({ target: el }) {
+    this._debouncedSearch();
+  }
+
   openNavigation () {
-    this.shadowRoot.querySelector('.menu').classList.add('hidden');
-    this.shadowRoot.querySelector('.close').classList.remove('hidden');
-    this.shadowRoot.querySelector('.phone').classList.add('open');
+    this.shadowRoot.querySelectorAll('.nav-button.menu').forEach(node => (node.style.display = 'none'));
+    this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'block'));
+    this.shadowRoot.querySelector('.fixed-phone').style.display = 'block';
+    // this.shadowRoot.querySelector('.filter-container').style.display = 'none';
+    this._filterContainer = false;
   }
 
   closeNavigation () {
-    this.shadowRoot.querySelector('.menu').classList.remove('hidden');
-    this.shadowRoot.querySelector('.close').classList.add('hidden');
-    this.shadowRoot.querySelector('.phone').classList.remove('open');
+    this.shadowRoot.querySelectorAll('.nav-button.menu').forEach(node => (node.style.display = 'block'));
+    this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'none'));
+    this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
+    // this.shadowRoot.querySelector('.filter-container').style.display = 'none';
+    this._filterContainer = false;
   }
 
-  _isSelected (paramsDayId, dayId) { return paramsDayId === dayId ? 'selected' : ''; }
+  showClear (search, filteredSearch, filteredVenues) {
+    return search || filteredSearch.indexOf('all') < 0 || filteredVenues.indexOf('all') < 0;
+  }
 
-  _isScheduleAtAGlance (route) { return route === '/' ? 'selected' : ''; }
+  formSearch (e) {
+    e.preventDefault();
+    this.search();
+  }
 
-  _isSearch (route) { return route === '/search' ? 'selected' : ''; }
+  search () {
+    const query = this.shadowRoot.querySelector('[name=search]').value;
+    history.pushState({}, '', query ? `?search=${query}` : '?sessionId=all');
+    dispatchEvent(new CustomEvent('location-changed'));
+  }
+
+  clear () {
+    const queryParams = [];
+    for (let q in this.params) {
+      if (q !== 'search') queryParams.push(`${q}=${this.params[q]}`);
+    }
+    history.pushState({}, '', `?${queryParams.join('&')}`);
+    dispatchEvent(new CustomEvent('location-changed'));
+
+    this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues: ['all'] });
+    this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch: ['all'] });
+  }
 }
 
 !customElements.get(Component.is)

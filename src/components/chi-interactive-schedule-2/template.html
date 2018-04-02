@@ -1,8 +1,10 @@
 <path-fetcher></path-fetcher>
 <query-params-fetcher></query-params-fetcher>
 
+<chi-header class="on-top"></chi-header>
+<chi-header class="fixed"></chi-header>
+<chi-search></chi-search>
 <section class="container">
-
   <template is="dom-repeat" items="[[schedule]]">
     <chi-day day="[[item]]" schedule-index="[[index]]"></chi-day>
   </template>
