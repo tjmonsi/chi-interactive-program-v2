@@ -42,6 +42,11 @@ class Component extends LittleQStoreMixin(Element) {
         type: Number,
         value: 0
       },
+      hidden: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      },
       params: {
         type: Object,
         value: {},
@@ -66,12 +71,14 @@ class Component extends LittleQStoreMixin(Element) {
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-session', this._boundSessionUpdate);
+    window.addEventListener('chi-update-query', this._boundSessionUpdate);
     this.addEventListener('click', this._boundShowSession);
   }
 
   disconnectedCallback () {
     super.disconnectedCallback();
     window.removeEventListener('chi-update-session', this._boundSessionUpdate);
+    window.removeEventListener('chi-update-query', this._boundSessionUpdate);
     this.removeEventListener('click', this._boundShowSession);
   }
 
@@ -79,11 +86,14 @@ class Component extends LittleQStoreMixin(Element) {
     const sessionId = this.sessionId;
     if (store.session[sessionId]) {
       this.session = store.session[sessionId];
+      this.hidden = store.session[sessionId].hidden;
+      // this.showPublications = store.session[sessionId].expand;
     }
   }
 
   _showPub () {
-    if (this.showPublications && !this.params.publicationId) {
+    console.log(this.showPublications, this.sessionId)
+    if (this.showPublications && this.params.sessionId === this.sessionId && !this.params.publicationId) {
       requestAnimationFrame(() => {
         this.shadowRoot.querySelector(`.invi-anchor-session-${this.sessionId}`)
           .scrollIntoView({
@@ -132,7 +142,7 @@ class Component extends LittleQStoreMixin(Element) {
   _closeSession (e) {
     e.stopPropagation();
     e.preventDefault();
-    this.dispatchEvent(new CustomEvent('close-duplicate'));
+    if (!store.session[this.sessionId].expand) this.dispatchEvent(new CustomEvent('close-duplicate'));
   }
 
   _checkParams (params, sessionId, session) {
@@ -141,7 +151,7 @@ class Component extends LittleQStoreMixin(Element) {
       setTimeout(() => {
         history.pushState({}, '', `?`);
         dispatchEvent(new CustomEvent('location-changed'));
-      }, 1000);
+      }, 5000);
     }
   }
 

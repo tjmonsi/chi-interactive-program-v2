@@ -15,6 +15,6 @@
   </template>
 </h1>
 <template is="dom-repeat" items="[[timeslots]]">
-  <chi-timeslot timeslot-id="[[item.$key]]" schedule-index="[[scheduleIndex]]"></chi-timeslot>
+  <chi-timeslot class="chi-timeslot-item" timeslot-id="[[item.$key]]" schedule-index="[[scheduleIndex]]"></chi-timeslot>
   <!-- <chi-timeslot force-show-sessions="[[forceShowSessions]]" day-string="[[scheduleObj.dayString]]" date-string="[[_getDateString(scheduleObj.dateString)]]" class="chi-timeslot-item" timeslot-id="[[item]]" schedule-index="[[scheduleIndex]]" on-chi-timeslot-hidden="_debouncedCheckDay"></chi-timeslot> -->
 </template>

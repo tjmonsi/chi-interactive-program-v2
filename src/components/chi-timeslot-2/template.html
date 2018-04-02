@@ -56,9 +56,9 @@
   <section class$="grid [[_timeslotColorClass(scheduleIndex)]]-border">
 
 
-    <template is="dom-repeat" items="[[sessions]]" class="sessions">
-      <chi-session session-id="[[item.$key]]" index=[[index]] class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" timeslot-id="[[timeslotId]]" force-close="[[item.forceClose]]" show-publications="[[item.showPublications]]" target-el="[[item.targetEl]]" on-open-duplicate="_duplicate" on-close-duplicate="_closeDuplicate"></chi-session>
-      <!-- <chi-session force-open="[[params.forceOpen]]" hidden-for-now$="[[!showSessions]]" day-string="[[dayString]]" date-string="[[dateString]]" time-string="[[timeslot.time]]" class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" on-tap="_toggleSession" show-session-id$="[[item.key]]" session-id="[[item.key]]" on-chi-session-hidden="_debouncedCheckTimeslot" time="[[index]]" timeslot-id="[[timeslotId]]"></chi-session> -->
+    <template is="dom-repeat" id="chi-session-list" items="{{sessions}}" class="sessions">
+      <chi-session session-id="[[item.$key]]" index=[[index]] class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" timeslot-id="[[timeslotId]]" force-close="[[item.forceClose]]" target-el="[[item.targetEl]]" on-open-duplicate="_duplicate" on-close-duplicate="_closeDuplicate"></chi-session>
+      
     </template>
 
   </section>

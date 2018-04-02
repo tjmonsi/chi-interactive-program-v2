@@ -40,6 +40,7 @@ class Component extends LittleQStoreMixin(Element) {
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-schedule', this._boundScheduleUpdate);
+    window.addEventListener('chi-update-query', this._boundScheduleUpdate);
 
     const target = this.shadowRoot.querySelector('.on-top');
     const fixed = this.shadowRoot.querySelector('.fixed');
@@ -57,6 +58,7 @@ class Component extends LittleQStoreMixin(Element) {
   disconnectedCallback () {
     super.disconnectedCallback();
     window.removeEventListener('chi-update-schedule', this._boundScheduleUpdate);
+    window.removeEventListener('chi-update-query', this._boundScheduleUpdate);
   }
 
   _scheduleUpdate () {

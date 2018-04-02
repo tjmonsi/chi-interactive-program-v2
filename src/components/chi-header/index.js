@@ -59,6 +59,8 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
       this.currentScheduleId = params.scheduleId;
       this.closeNavigation();
     }
+    
+    this.shadowRoot.querySelector('[name=search]').value = params.search || '';
   }
 
   _returnSearch (filter) {

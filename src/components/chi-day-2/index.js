@@ -37,6 +37,11 @@ class Component extends LittleQStoreMixin(Element) {
         type: Object,
         value: {},
         statePath: 'littleqQueryParams.params'
+      },
+      hidden: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
       }
     };
   }
@@ -61,6 +66,7 @@ class Component extends LittleQStoreMixin(Element) {
     }
     timeslots.sort((i, j) => (i.value - j.value));
     this.timeslots = timeslots;
+    this.hidden = day.hidden;
   }
 
   _showDay () {

@@ -4,6 +4,7 @@ import { customElements, requestAnimationFrame } from 'global/window';
 import { ChiPublicationMixin } from 'chi-publication-mixin';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { toastr } from 'toastr-component';
+import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'marked-element';
@@ -35,14 +36,35 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
         type: Object,
         value: {},
         statePath: 'littleqQueryParams.params'
+      },
+      hidden: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
       }
     };
   }
 
   static get observers () {
     return [
-      '_checkParams(params, sessionId, publicationId, publication, params.*)'
+      '_checkParams(params, sessionId, publicationId, publication, params.*)',
+      '_showPublication(publication)'
     ];
+  }
+  
+  constructor () {
+    super();
+    this._boundShowPublication = this._showPublication.bind(this);
+  }
+  
+  connectedCallback () {
+    super.connectedCallback();
+    window.addEventListener('chi-update-query', this._boundShowPublication);
+  }
+  
+  disconnectedCallback () {
+    super.connectedCallback();
+    window.removeEventListener('chi-update-query', this._boundShowPublication);
   }
 
   _isEqual (a, b) { return a === b; }
@@ -71,6 +93,17 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
           });
       });
     }
+  }
+  
+  _showPublication () {
+    if (store.showPublications && store.showPublications.length === 0) {
+      this.hidden = false;
+    } else if (store.showPublications && store.showPublications.indexOf(this.publicationId) < 0) {
+      this.hidden = true
+    } else {
+      this.hidden = false
+    }
+    // console.log(this.hidden, this.publicationId)
   }
 
   _checkParams (params, sessionId, publicationId, publication) {

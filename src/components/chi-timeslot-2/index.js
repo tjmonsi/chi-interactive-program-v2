@@ -29,6 +29,11 @@ class Component extends Element {
       },
       scheduleIndex: {
         type: Number
+      },
+      hidden: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
       }
     };
   }
@@ -41,17 +46,20 @@ class Component extends Element {
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-timeslot', this._boundTimeslotUpdate);
+    window.addEventListener('chi-update-query', this._boundTimeslotUpdate);
   }
 
   disconnectedCallback () {
     super.disconnectedCallback();
     window.removeEventListener('chi-update-timeslot', this._boundTimeslotUpdate);
+    window.removeEventListener('chi-update-query', this._boundTimeslotUpdate);
   }
 
   _timeslotIdChange () {
     const timeslotId = this.timeslotId;
     if (store.timeslot[timeslotId]) {
       this.timeslot = store.timeslot[timeslotId];
+      this.hidden = store.timeslot[timeslotId].hidden;
     }
   }
 
@@ -87,13 +95,15 @@ class Component extends Element {
     }
     const newIndex = this.sessions.findIndex(item => item.forceClose !== true && item.showPublications !== true && item.$key === $key);
     this.set(`sessions.${newIndex}.showPublications`, true);
+    this.shadowRoot.querySelectorAll('chi-session')[newIndex].showPublications = true;
   }
 
   _closeDuplicate ({target: el}) {
     const { sessionId: $key } = el;
     const duplicateIndex = this.sessions.findIndex(item => item.forceClose === true && item.$key === $key);
-    this.splice('sessions', duplicateIndex, 1);
     const index = this.sessions.findIndex(item => item.showPublications === true && item.$key === $key);
+    this.shadowRoot.querySelectorAll('chi-session')[index].showPublications = false;  
+    this.splice('sessions', duplicateIndex, 1);
     this.set(`sessions.${index}.showPublications`, false);
   }
 
