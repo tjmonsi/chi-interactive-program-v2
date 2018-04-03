@@ -28,7 +28,7 @@
     @media screen and (max-width: 400px)
       max-width: 50px;
 
-:host(:hover:not([show-publications])), :host([force-close])
+:host(:hover:not([show-publications]):not([force-show-publications])), :host([force-close])
   .icon, .venue-icon, .venue-icon-2
     filter: invert(100%)
 

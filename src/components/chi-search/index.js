@@ -3,7 +3,7 @@ import { Element } from '@polymer/polymer/polymer-element';
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
 import { customElements } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-import { CHI_STATE, defaultFilteredSearch } from 'chi-interactive-schedule-2/reducer';
+import { defaultFilteredSearch } from 'chi-interactive-schedule-2/reducer';
 import { toastr } from 'toastr-component';
 import { conf } from 'chi-conference-config';
 import { store } from 'chi-store';
@@ -46,32 +46,99 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         type: Boolean,
         value: false,
         notify: true
+      },
+      searching: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+      hitsNumber: {
+        type: Number,
+        value: 0,
+        notify: true
+      },
+      searchResultTypes: {
+        type: Object,
+        value: {},
+        notify: true
+      },
+      search: {
+        type: String,
+        value: '',
+        notify: true
       }
     };
   }
 
   static get observers () {
     return [
-      '_checkParams(params, params.*)'
+      '_checkParams(params, filteredSearch, filteredSearch.splices, params.*)',
+      '_checkFilteredVenues(filteredVenues, filteredVenues.splices)'
     ];
   }
-  
+
   constructor () {
     super();
     this._boundStoreUpdate = this._storeUpdate.bind(this);
   }
-  
+
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-session', this._boundStoreUpdate);
   }
-  
+
+  _checkFilteredVenues (filteredVenues) {
+    if (this.queryResults.length) {
+      this._queryResultChanged(this.queryResults);
+    } else {
+      this._hideAll();
+      if (filteredVenues.indexOf('all') >= 0) {
+        this._showAll();
+        return;
+      }
+      this._filterVenues(filteredVenues);
+      window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+    }
+  }
+
+  _filterVenues (filteredVenues) {
+    for (let i in store.session) {
+      if (filteredVenues.indexOf(store.session[i].venue.toLowerCase()) >= 0) {
+        store.session[i].hidden = false;
+      }
+    }
+
+    for (let i in store.timeslot) {
+      let hidden = true;
+      // console.log(store.timeslot[i].sessions)
+      for (let j in store.timeslot[i].sessions) {
+        if (store.session[j].hidden === false) {
+          hidden = false;
+          break;
+        }
+      }
+      store.timeslot[i].hidden = hidden;
+    }
+
+    for (let i in store.schedule) {
+      let hidden = true;
+      for (let j in store.schedule[i].timeslots) {
+        if (store.timeslot[j].hidden === false) {
+          hidden = false;
+          break;
+        }
+      }
+      store.schedule[i].hidden = hidden;
+    }
+  }
+
   _storeUpdate () {
     this._queryResultChanged(this.queryResults);
   }
 
-  _checkParams (params, currentScheduleId) {
-    this._queryChanged(params.search, this.filteredSearch);
+  _checkParams (params, filteredSearch, currentScheduleId) {
+    this.search = params.search;
+    this._queryChanged(params.search, filteredSearch);
   }
 
   async _queryChanged (query, filteredSearch) {
@@ -123,14 +190,14 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         settings.filters = searchType.map(item => `searchType:${item}`).join(' OR ');
       }
     }
-    
+
     if (!query) {
       this.searching = false;
       this.hitsNumber = 0;
       this.queryResults = [];
       store.search = '';
     }
-    
+
     store.search = query;
 
     try {
@@ -139,37 +206,61 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         : { hits: [] };
       this.searching = false;
       this.hitsNumber = nbHits;
-      this.queryResults = queryResults
-    } catch (error) { 
+      this.queryResults = queryResults;
+    } catch (error) {
       console.log(error);
-    } 
+    }
   }
-  
+
+  _hideAll () {
+    for (let s in store.schedule) {
+      store.schedule[s].hidden = true;
+      store.schedule[s].expand = false;
+    }
+
+    for (let t in store.timeslot) {
+      store.timeslot[t].hidden = true;
+      store.timeslot[t].expand = false;
+    }
+
+    for (let ss in store.session) {
+      store.session[ss].hidden = true;
+      store.session[ss].expand = false;
+    }
+
+    store.showPublications = [];
+    store.keywords = [];
+  }
+
+  _showAll () {
+    for (let s in store.schedule) {
+      store.schedule[s].hidden = false;
+      store.schedule[s].expand = false;
+    }
+
+    for (let t in store.timeslot) {
+      store.timeslot[t].hidden = false;
+      store.timeslot[t].expand = false;
+    }
+
+    for (let ss in store.session) {
+      store.session[ss].hidden = false;
+      store.session[ss].expand = false;
+    }
+
+    store.showPublications = [];
+    store.keywords = [];
+    store.search = '';
+    window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+  }
+
   _queryResultChanged (queryResults) {
-    console.log(queryResults)
+    // console.log(queryResults)
     if (queryResults.length === 0) {
-      for (let s in store.schedule) {
-        store.schedule[s].hidden = false;
-        store.schedule[s].expand = false;
-      }
-      
-      for (let t in store.timeslot) {
-        store.timeslot[t].hidden = false;
-        store.timeslot[t].expand = false;
-      }
-      
-      for (let ss in store.session) {
-        store.session[ss].hidden = false;
-        store.session[ss].expand = false;
-      }
-      
-      store.showPublications = [];
-      store.keywords = [];
-      store.search = '';
-      window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+      this._showAll();
       return;
     }
-    
+
     const searchResultTypes = {
       author: 0,
       primaryInstitution: 0,
@@ -183,46 +274,48 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
       secondaryInstitutionList: [],
       secondaryPublicationInstutionList: []
     };
-    
-    
-    
-    for (let s in store.schedule) {
-      store.schedule[s].hidden = true;
-      store.schedule[s].expand = false;
-    }
-    
-    for (let t in store.timeslot) {
-      store.timeslot[t].hidden = true;
-      store.timeslot[t].expand = false;
-    }
-    
-    for (let ss in store.session) {
-      store.session[ss].hidden = true;
-      store.session[ss].expand = false;
-    }
-    
-    store.showPublications = [];
-    store.keywords = [];
+
+    this._hideAll();
 
     for (let hit of queryResults) {
       const { searchType, publications, scheduleId, timeslotId, objectID, sessionId, _highlightResult } = hit;
+
+      for (let i in _highlightResult) {
+        let value = _highlightResult[i];
+        if (value.matchedWords && value.matchedWords.length) {
+          value.value.split('<em>').forEach(node => {
+            const term = node.split('</em>')[0];
+            if (node.indexOf('</em>') >= 0 && term && store.keywords.findIndex(item => item[1] === term.toLowerCase()) < 0) store.keywords.push([term, term.toLowerCase()]);
+          });
+        } else {
+          Object.entries(value).forEach(([subkey, subvalue]) => {
+            if (subvalue.matchedWords && subvalue.matchedWords.length) {
+              subvalue.value.split('<em>').forEach(node => {
+                const term = node.split('</em>')[0];
+                if (node.indexOf('</em>') >= 0 && term && store.keywords.findIndex(item => item[1] === term.toLowerCase()) < 0) store.keywords.push([term, term.toLowerCase()]);
+              });
+            }
+          });
+        }
+      }
+
       if (searchType === 'session') {
-        if (store.session[objectID]) {
+        if (store.session[objectID] && (this.filteredVenues.indexOf('all') >= 0 || this.filteredVenues.indexOf(store.session[objectID].venue) >= 0)) {
           store.session[objectID].hidden = false;
           store.session[objectID].expand = true;
           store.timeslot[timeslotId].hidden = false;
-          store.timeslot[timeslotId].expand = true; 
+          store.timeslot[timeslotId].expand = true;
           store.schedule[scheduleId].hidden = false;
-          store.schedule[scheduleId].expand = true; 
-          
+          store.schedule[scheduleId].expand = true;
+
           for (let ps in store.session[objectID].publications) {
             if (store.showPublications.indexOf(ps) < 0) store.showPublications.push(ps);
-          }  
+          }
         }
       }
-      
+
       if (searchType === 'publication') {
-        if (store.session[sessionId]) {
+        if (store.session[sessionId] && (this.filteredVenues.indexOf('all') >= 0 || this.filteredVenues.indexOf(store.session[sessionId].venue) >= 0)) {
           store.session[sessionId].hidden = false;
           store.session[sessionId].expand = true;
           if (store.showPublications.indexOf(objectID) < 0) store.showPublications.push(objectID);
@@ -230,21 +323,38 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
           store.timeslot[store.session[sessionId].timeslotId].expand = true;
           store.schedule[store.session[sessionId].scheduleId].hidden = false;
           store.schedule[store.session[sessionId].scheduleId].expand = true;
-          
         }
       }
-      
+
       if (searchType === 'author') {
         const { displayName, primary, secondary } = _highlightResult;
         const { institution } = primary;
         const { institution: institution2 } = secondary;
+
+
+        let value = institution;
+        if (value.matchedWords && value.matchedWords.length) {
+          value.value.split('<em>').forEach(node => {
+            const term = node.split('</em>')[0];
+            if (node.indexOf('</em>') >= 0 && term && store.keywords.findIndex(item => item[1] === term.toLowerCase()) < 0) store.keywords.push([term, term.toLowerCase()]);
+          });
+        } else {
+          Object.entries(value).forEach(([subkey, subvalue]) => {
+            if (subvalue.matchedWords && subvalue.matchedWords.length) {
+              subvalue.value.split('<em>').forEach(node => {
+                const term = node.split('</em>')[0];
+                if (node.indexOf('</em>') >= 0 && term && store.keywords.findIndex(item => item[1] === term.toLowerCase()) < 0) store.keywords.push([term, term.toLowerCase()]);
+              });
+            }
+          });
+        }
 
         const displayNameItem = displayName.value.replace(/<em>/g, '').replace(/<\/em>/g, '');
 
         for (let psa in publications) {
           if (store.showPublications.indexOf(psa) < 0) store.showPublications.push(psa);
           for (let ses in store.session) {
-            if (store.session[ses] && store.session[ses].publications && store.session[ses].publications[psa]) {
+            if (store.session[ses] && store.session[ses].publications && store.session[ses].publications[psa] && (this.filteredVenues.indexOf('all') >= 0 || this.filteredVenues.indexOf(store.session[ses].venue) >= 0)) {
               store.session[ses].hidden = false;
               store.session[ses].expand = true;
               store.timeslot[store.session[ses].timeslotId].hidden = false;
@@ -338,40 +448,24 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     }
 
     // this.set('searchResultTypes', searchResultTypes);
-    this.dispatch({ type: CHI_STATE.SEARCH_RESULT_TYPES, searchResultTypes });
+    // this.dispatch({ type: CHI_STATE.SEARCH_RESULT_TYPES, searchResultTypes });
 
     if (this.hitsNumber > 100) {
       this.showFilterWarning = true;
-      
-      for (let s in store.schedule) {
-        store.schedule[s].hidden = false;
-        store.schedule[s].expand = false;
-      }
-      
-      for (let t in store.timeslot) {
-        store.timeslot[t].hidden = false;
-        store.timeslot[t].expand = false;
-      }
-      
-      for (let ss in store.session) {
-        store.session[ss].hidden = false;
-        store.session[ss].expand = false;
-      }
-      
-      store.showPublications = [];
-      store.keywords = [];
-      window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+
+      this._showAll();
       return;
     }
 
     if (this._filterContainer) this.toggleFilter();
 
+    this.set('searchResultTypes', searchResultTypes);
     // this.dispatch({ type: CHI_STATE.QUERY_RESULTS, queryResults });
-    console.log(store)
-  
+
+    store.search = this.params.search;
+
     window.dispatchEvent(new window.CustomEvent('chi-update-query'));
-  } 
-  
+  }
 }
 
 !customElements.get(Component.is)

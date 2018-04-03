@@ -3,8 +3,112 @@
 
 <chi-header class="on-top"></chi-header>
 <chi-header class="fixed"></chi-header>
-<chi-search></chi-search>
+<chi-search show-filter-warning="{{showFilterWarning}}" searching="{{searching}}" hits-number="{{hitsNumber}}" search="{{search}}" search-result-types="{{searchResultTypes}}"></chi-search>
 <section class="container">
+
+  <template is="dom-if" if="[[searching]]">
+    <div class="searching">
+      <img class="loader" src="[[_baseUrl]]assets/loader.gif"><br/>
+      Searching...
+    </div>
+  </template>
+
+  <template is="dom-if" if="[[!showFilterWarning]]">
+    <template is="dom-if" if="[[search]]">
+      <template is="dom-if" if="[[!searching]]">
+        <template is="dom-if" if="[[hitsNumber]]">
+          <div class="center-container">
+            <p>
+              Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> result(s).
+              <ul>
+                <template is="dom-if" if="[[searchResultTypes.author]]">
+                  <li>
+                    [[searchResultTypes.author]] Author(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.displayNameList]]" as="displayName">
+                        <li>
+                          [[displayName.displayName]]: [[displayName.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
+                </template>
+                <template is="dom-if" if="[[searchResultTypes.primaryInstitution]]">
+                  <li>
+                    [[searchResultTypes.primaryInstitution]] Primary Institution(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.primaryInstitutionList]]" as="primaryInstitution">
+                        <li>
+                          [[primaryInstitution.institution]]: [[primaryInstitution.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
+                </template>
+
+                <template is="dom-if" if="[[searchResultTypes.secondaryInstitution]]">
+                  <li>
+                    [[searchResultTypes.secondaryInstitution]] Secondary Institution(s)
+                    <ul>
+                      <template is="dom-repeat" items="[[searchResultTypes.secondaryInstitutionList]]" as="secondaryInstitution">
+                        <li>
+                          [[secondaryInstitution.institution]]: [[secondaryInstitution.publications.length]] Paper(s)
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
+                </template>
+                <template is="dom-if" if="[[searchResultTypes.publication]]">
+                  <li>[[searchResultTypes.publication]] Paper(s)</li>
+                </template>
+                <template is="dom-if" if="[[searchResultTypes.session]]">
+                  <li>[[searchResultTypes.session]] Session(s)</li>
+                </template>
+              </ul>
+            </p>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[!hitsNumber]]">
+          <div class="center-container">
+            <p>
+              Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. Please choose another term.
+            </p>
+          </div>
+        </template>
+      </template>
+    </template>
+  </template>
+
+  <template is="dom-if" if="[[showFilterWarning]]">
+    <div class="center-container">
+      <p>
+        Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. <br>
+        To improve performance, query results will not show up on the schedule.
+        <ul>
+          <template is="dom-if" if="[[searchResultTypes.author]]">
+            <li>[[searchResultTypes.author]] Author(s)</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.primaryInstitution]]">
+            <li>[[searchResultTypes.primaryInstitution]] Primary Institution(s)</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.secondaryInstitution]]">
+            <li>[[searchResultTypes.secondaryInstitution]] Secondary Institution(s)</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.publication]]">
+            <li>[[searchResultTypes.publication]] Paper(s)</li>
+          </template>
+          <template is="dom-if" if="[[searchResultTypes.session]]">
+            <li>[[searchResultTypes.session]] Session(s)</li>
+          </template>
+        </ul>
+      </p>
+      <p>
+        Please use more specific search terms or use the "Filter Search" above to narrow down results.
+      </p>
+    </div>
+  </template>
+
   <template is="dom-repeat" items="[[schedule]]">
     <chi-day class="chi-day-item" day="[[item]]" schedule-index="[[index]]"></chi-day>
   </template>

@@ -26,8 +26,22 @@ class Component extends LittleQStoreMixin(Element) {
         value: []
       },
       searchResultTypes: {
-        type: Object,
-        statePath: 'chiState.searchResultTypes'
+        type: Object
+      },
+      showFilterWarning: {
+        type: Boolean,
+        value: false
+      },
+      searching: {
+        type: Boolean,
+        value: false
+      },
+      hitsNumber: {
+        type: Number,
+        value: 0
+      },
+      search: {
+        type: String
       }
     };
   }

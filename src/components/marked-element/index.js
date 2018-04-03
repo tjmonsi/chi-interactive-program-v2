@@ -4,6 +4,7 @@ import { customElements, requestAnimationFrame } from 'global/window';
 import css from './style.styl';
 import template from './template.html';
 import marked from 'marked';
+import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-if';
 
 class Component extends LittleQStoreMixin(Element) {
@@ -32,40 +33,59 @@ class Component extends LittleQStoreMixin(Element) {
 
   static get observers () {
     return [
-      '_checkMarked(marked, queryResults)'
+      '_checkMarked(marked)'
     ];
   }
 
-  _checkMarked (string, queryResults) {
+  constructor () {
+    super();
+    this._boundStoreUpdate = this._storeUpdate.bind(this);
+  }
+
+  connectedCallback () {
+    super.connectedCallback();
+    window.addEventListener('chi-update-query', this._boundStoreUpdate);
+  }
+
+  disconnectedCallback () {
+    super.disconnectedCallback();
+    window.removeEventListener('chi-update-query', this._boundStoreUpdate);
+  }
+
+  _storeUpdate () {
+    this._checkMarked(this.marked);
+  }
+
+  _checkMarked (string) {
     requestAnimationFrame(() => {
       setTimeout(() => {
         let newString = string || '';
-        const search = [];
-        if (queryResults) {
-          for (let hit of queryResults) {
-            let keys = Object.keys(hit._highlightResult);
+        const search = store.keywords || [];
+        // if (store.keywords.length) {
+        //   for (let word of store.keywords) {
+        //     let keys = Object.keys(hit._highlightResult);
 
-            for (let i = 0, l = keys.length; i < l; i++) {
-              let key = keys[i];
-              let value = hit._highlightResult[key];
-              if (value.matchedWords && value.matchedWords.length) {
-                value.value.split('<em>').forEach(node => {
-                  const term = node.split('</em>')[0];
-                  if (node.indexOf('</em>') >= 0 && term && search.findIndex(item => item[1] === term.toLowerCase()) < 0) search.push([term, term.toLowerCase()]);
-                });
-              } else {
-                Object.entries(value).forEach(([subkey, subvalue]) => {
-                  if (subvalue.matchedWords && subvalue.matchedWords.length) {
-                    subvalue.value.split('<em>').forEach(node => {
-                      const term = node.split('</em>')[0];
-                      if (node.indexOf('</em>') >= 0 && term && search.findIndex(item => item[1] === term.toLowerCase()) < 0) search.push([term, term.toLowerCase()]);
-                    });
-                  }
-                });
-              }
-            }
-          }
-        }
+        //     for (let i = 0, l = keys.length; i < l; i++) {
+        //       let key = keys[i];
+        //       let value = hit._highlightResult[key];
+        //       if (value.matchedWords && value.matchedWords.length) {
+        //         value.value.split('<em>').forEach(node => {
+        //           const term = node.split('</em>')[0];
+        //           if (node.indexOf('</em>') >= 0 && term && search.findIndex(item => item[1] === term.toLowerCase()) < 0) search.push([term, term.toLowerCase()]);
+        //         });
+        //       } else {
+        //         Object.entries(value).forEach(([subkey, subvalue]) => {
+        //           if (subvalue.matchedWords && subvalue.matchedWords.length) {
+        //             subvalue.value.split('<em>').forEach(node => {
+        //               const term = node.split('</em>')[0];
+        //               if (node.indexOf('</em>') >= 0 && term && search.findIndex(item => item[1] === term.toLowerCase()) < 0) search.push([term, term.toLowerCase()]);
+        //             });
+        //           }
+        //         });
+        //       }
+        //     }
+        //   }
+        // }
         for (let searchIndex = 0, len = search.length; searchIndex < len; searchIndex++) {
           let [term] = search[searchIndex];
           if (term.length > 1) {

@@ -53,7 +53,7 @@
   .chi-session-item[hidden-for-now]
     display: none;
 
-  .chi-session-item[show-publications]
+  .chi-session-item[show-publications], .chi-session-item[force-show-publications]
     grid-column: 1 / 7;
     width: 100%;
 
@@ -144,30 +144,30 @@
 
 .chi-session-item
   // cursor: pointer;
-  &:not([show-publications])
+  &:not([show-publications]):not([force-show-publications])
     cursor: pointer
 
-  &.grey-item:hover:not([show-publications]), &.grey-item[force-close]
+  &.grey-item:hover:not([show-publications]):not([force-show-publications]), &.grey-item[force-close]
     background: $brand-grey;
     color: $light;
 
-  &.blue-item:hover:not([show-publications]), &.blue-item[force-close]
+  &.blue-item:hover:not([show-publications]):not([force-show-publications]), &.blue-item[force-close]
     background: $brand-blue;
     color: $light;
 
-  &.green-item:hover:not([show-publications]), &.green-item[force-close]
+  &.green-item:hover:not([show-publications]):not([force-show-publications]), &.green-item[force-close]
     background: $brand-green;
     color: $light;
 
-  &.yellow-item:hover:not([show-publications]), &.yellow-item[force-close]
+  &.yellow-item:hover:not([show-publications]):not([force-show-publications]), &.yellow-item[force-close]
     background: $brand-yellow;
     color: $light;
 
-  &.orange-item:hover:not([show-publications]), &.orange-item[force-close]
+  &.orange-item:hover:not([show-publications]):not([force-show-publications]), &.orange-item[force-close]
     background: $brand-orange;
     color: $light;
 
-  &.pink-item:hover:not([show-publications]), &.pink-item[force-close]
+  &.pink-item:hover:not([show-publications]):not([force-show-publications]), &.pink-item[force-close]
     background: $brand-pink;
     color: $light;
 

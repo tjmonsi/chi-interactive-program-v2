@@ -8,6 +8,7 @@ import '@polymer/polymer/lib/elements/dom-if';
 import 'marked-element';
 import 'chi-publication-2';
 import 'chi-room';
+import { toastr } from 'toastr-component';
 
 // define style and template
 import style from './style.styl';
@@ -32,6 +33,11 @@ class Component extends LittleQStoreMixin(Element) {
         value: false,
         reflectToAttribute: true,
         observer: '_showPub'
+      },
+      forceShowPublications: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
       },
       forceClose: {
         type: Boolean,
@@ -87,12 +93,14 @@ class Component extends LittleQStoreMixin(Element) {
     if (store.session[sessionId]) {
       this.session = store.session[sessionId];
       this.hidden = store.session[sessionId].hidden;
-      // this.showPublications = store.session[sessionId].expand;
+      this.forceShowPublications = store.session[sessionId].expand;
+      // console.log(!!store.search && store.session[sessionId].expand)
+      // this.showPublications = !!store.search && store.session[sessionId].expand;
     }
   }
 
   _showPub () {
-    console.log(this.showPublications, this.sessionId)
+    // console.log(this.showPublications, this.sessionId)
     if (this.showPublications && this.params.sessionId === this.sessionId && !this.params.publicationId) {
       requestAnimationFrame(() => {
         this.shadowRoot.querySelector(`.invi-anchor-session-${this.sessionId}`)
@@ -132,7 +140,7 @@ class Component extends LittleQStoreMixin(Element) {
   _setClass (venue) { if (venue) this.classList.add(this._slugifyClass(venue)); }
 
   _showSession () {
-    if (!this.showPublications && !this.forceClose) {
+    if (!this.showPublications && !this.forceClose && !this.forceShowPublications) {
       this.dispatchEvent(new CustomEvent('open-duplicate'));
     } else if (this.forceClose) {
       this.dispatchEvent(new CustomEvent('close-duplicate'));
@@ -153,6 +161,10 @@ class Component extends LittleQStoreMixin(Element) {
         dispatchEvent(new CustomEvent('location-changed'));
       }, 5000);
     }
+  }
+
+  _openPublications (showPublications, forceShowPublications) {
+    return showPublications || forceShowPublications;
   }
 
   getVenueTitle (venue) {
@@ -194,6 +206,21 @@ class Component extends LittleQStoreMixin(Element) {
           return venue.charAt(0).toUpperCase() + venue.slice(1);
       }
     }
+  }
+
+  copyLink () {
+    const copyText = document.createElement('input');
+    const { location: { protocol, host, pathname } } = window;
+    copyText.value = `${protocol}//${host}${pathname}?timeslotId=${encodeURI(this.timeslotId)}&sessionId=${encodeURI(this.sessionId)}`;
+    copyText.style.display = 'inline';
+    copyText.style.position = 'fixed';
+    copyText.style.opacity = 0;
+    this.shadowRoot.appendChild(copyText);
+    copyText.select();
+    document.execCommand('copy');
+    this.shadowRoot.removeChild(copyText);
+    console.log('copied');
+    toastr.info(`Copied Session link: "${this.session.title}" to the clipboard`);
   }
 }
 

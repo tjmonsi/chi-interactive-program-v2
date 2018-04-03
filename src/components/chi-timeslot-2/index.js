@@ -34,6 +34,10 @@ class Component extends Element {
         type: Boolean,
         value: false,
         reflectToAttribute: true
+      },
+      showTimeslot: {
+        type: Boolean,
+        value: false
       }
     };
   }
@@ -60,7 +64,21 @@ class Component extends Element {
     if (store.timeslot[timeslotId]) {
       this.timeslot = store.timeslot[timeslotId];
       this.hidden = store.timeslot[timeslotId].hidden;
+      console.log(store.search)
+      if (store.search) {
+        this.showTimeslot = !this.hidden;
+      } else {
+        this.showTimeslot = false;
+      }
+      // if (!this.hidden) {
+      //   this.showTimeslot = true;
+      // }
     }
+  }
+
+  _toggleTimeslot () {
+    this.showTimeslot = !this.showTimeslot;
+    console.log(this.showTimeslot)
   }
 
   _timeslotChange (timeslot) {
@@ -84,27 +102,48 @@ class Component extends Element {
 
   _duplicate ({target: el}) {
     const { index, sessionId: $key } = el;
+    const array = [];
     const obj = {
       $key,
       forceClose: true
     };
-    if (index === 0) {
-      this.unshift('sessions', obj);
-    } else {
-      this.splice('sessions', el.index, 0, obj);
+    for (let i = 0; i < this.sessions.length; i++) {
+      if (i === index) {
+        array.push(obj);
+        array.push(Object.assign({}, this.sessions[i], { showPublications: true }));
+      } else {
+        array.push(this.sessions[i]);
+      }
     }
-    const newIndex = this.sessions.findIndex(item => item.forceClose !== true && item.showPublications !== true && item.$key === $key);
-    this.set(`sessions.${newIndex}.showPublications`, true);
-    this.shadowRoot.querySelectorAll('chi-session')[newIndex].showPublications = true;
+    this.sessions = array;
+
+    // if (index === 0) {
+    //   this.unshift('sessions', obj);
+    // } else {
+    //   this.splice('sessions', el.index, 0, obj);
+    // }
+    // const newIndex = this.sessions.findIndex(item => item.forceClose !== true && item.showPublications !== true && item.$key === $key);
+    // this.set(`sessions.${newIndex}.showPublications`, true);
+    // this.shadowRoot.querySelectorAll('chi-session')[newIndex].showPublications = true;
   }
 
   _closeDuplicate ({target: el}) {
     const { sessionId: $key } = el;
-    const duplicateIndex = this.sessions.findIndex(item => item.forceClose === true && item.$key === $key);
-    const index = this.sessions.findIndex(item => item.showPublications === true && item.$key === $key);
-    this.shadowRoot.querySelectorAll('chi-session')[index].showPublications = false;  
-    this.splice('sessions', duplicateIndex, 1);
-    this.set(`sessions.${index}.showPublications`, false);
+    const array = [];
+    for (let i = 0; i < this.sessions.length; i++) {
+      if (this.sessions[i].$key === $key && !this.sessions[i].forceClose && this.sessions[i].showPublications) {
+        array.push(Object.assign({}, this.sessions[i], { showPublications: false }));
+      } else if (this.sessions[i].$key !== $key) {
+        array.push(this.sessions[i]);
+      }
+    }
+    this.sessions = array;
+
+    // const duplicateIndex = this.sessions.findIndex(item => item.forceClose === true && item.$key === $key);
+    // const index = this.sessions.findIndex(item => item.showPublications === true && item.$key === $key);
+    // this.shadowRoot.querySelectorAll('chi-session')[index].showPublications = false;
+    // this.splice('sessions', duplicateIndex, 1);
+    // this.set(`sessions.${index}.showPublications`, false);
   }
 
   _timeslotColorClass (index) {
