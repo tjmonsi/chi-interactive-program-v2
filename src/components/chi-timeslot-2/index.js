@@ -28,6 +28,9 @@ class Component extends LittleQStoreMixin(Element) {
       sessions: {
         type: Array
       },
+      sessionsRef: {
+        type: Array
+      },
       scheduleIndex: {
         type: Number
       },
@@ -114,10 +117,12 @@ class Component extends LittleQStoreMixin(Element) {
     const keys = Object.keys(timeslot.sessions);
     const { className } = timeslot;
     const sessions = [];
+    const sessionsRef = [];
     for (let i = 0, l = keys.length; i < l; i++) {
       const key = keys[i];
       const obj = { ...timeslot.sessions[key], $key: key };
       sessions.push(obj);
+      sessionsRef.push(obj);
     }
 
     sessions.sort((a, b) => {
@@ -126,7 +131,14 @@ class Component extends LittleQStoreMixin(Element) {
       if (a[attr] > b[attr]) return 1;
       return 0;
     });
+    sessionsRef.sort((a, b) => {
+      const attr = className === 'workshops' ? 'title' : 'room';
+      if (a[attr] < b[attr]) return -1;
+      if (a[attr] > b[attr]) return 1;
+      return 0;
+    });
     this.sessions = sessions;
+    this.sessionsRef = sessionsRef;
   }
 
   _checkForceOpen (forceOpen) {
@@ -139,18 +151,47 @@ class Component extends LittleQStoreMixin(Element) {
     }
   }
 
+  // _resetOpenings () {
+  //   const array = [];
+  //   for (let i = 0; i < this.sessions.length; i++) {
+  //     if (!this.sessions[i].forceOpen) {
+  //       array.push(Object.assign({}, this.sessions[i], { showPublications: false }));
+  //     }
+  //   }
+  //   this.sessions = array;
+  // }
+
   _duplicate ({target: el}) {
     const { index, sessionId: $key } = el;
     const array = [];
+    const close = [];
     const obj = {
       $key,
       forceClose: true
     };
+
+    const v = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+    let c = 6;
+    if (v < 450) c = 1;
+    else if (v < 600) c = 2;
+    else if (v < 850) c = 3;
+    else if (v <= 1200) c = 5;
+
+    const indexRef = this.sessionsRef.findIndex(item => item.$key === $key);
+    const rowRef = parseInt(indexRef / c);
+
+    for (let i = 0; i < this.sessionsRef.length; i++) {
+      if (rowRef === parseInt(i / c)) close.push(this.sessionsRef[i].$key);
+    }
+
     for (let i = 0; i < this.sessions.length; i++) {
       if (i === index) {
         array.push(obj);
         array.push(Object.assign({}, this.sessions[i], { showPublications: true }));
-      } else {
+      } else if (close.indexOf(this.sessions[i].$key) >= 0 && !this.sessions[i].forceClose) {
+        array.push(Object.assign({}, this.sessions[i], { showPublications: false }));
+      } else if (close.indexOf(this.sessions[i].$key) < 0) {
         array.push(this.sessions[i]);
       }
     }

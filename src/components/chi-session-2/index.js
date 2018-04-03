@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, CustomEvent, dispatchEvent, history, requestAnimationFrame } from 'global/window';
+import { customElements, CustomEvent, requestAnimationFrame } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-repeat';
