@@ -41,6 +41,10 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
       defaultFilteredSearch: {
         type: Array,
         value: defaultFilteredSearch
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }

@@ -42,6 +42,10 @@ class Component extends LittleQStoreMixin(Element) {
       },
       search: {
         type: String
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }

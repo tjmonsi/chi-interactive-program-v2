@@ -1,6 +1,7 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { customElements } from 'global/window';
+import { LittleQStoreMixin } from '@littleq/state-manager';
 import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
@@ -10,7 +11,7 @@ import 'chi-session-2';
 import style from './style.styl';
 import template from './template.html';
 
-class Component extends Element {
+class Component extends LittleQStoreMixin(Element) {
   static get is () { return 'chi-timeslot'; }
   static get template () { return `<style>${style}</style>${template}`; }
 
@@ -38,8 +39,24 @@ class Component extends Element {
       showTimeslot: {
         type: Boolean,
         value: false
+      },
+      forceOpen: {
+        type: Boolean,
+        value: false
+      },
+      params: {
+        type: Object,
+        value: {},
+        statePath: 'littleqQueryParams.params'
       }
     };
+  }
+
+  static get observers () {
+    return [
+      '_timeslotIdChange(timeslotId, params, params.*)',
+      '_checkForceOpen(forceOpen)'
+    ];
   }
 
   constructor () {
@@ -64,21 +81,33 @@ class Component extends Element {
     if (store.timeslot[timeslotId]) {
       this.timeslot = store.timeslot[timeslotId];
       this.hidden = store.timeslot[timeslotId].hidden;
-      console.log(store.search)
       if (store.search) {
         this.showTimeslot = !this.hidden;
+      } else if (this.params && this.params.publicationId && this.params.sessionId) {
+        this.showTimeslot = true;
       } else {
         this.showTimeslot = false;
       }
-      // if (!this.hidden) {
-      //   this.showTimeslot = true;
-      // }
     }
   }
 
   _toggleTimeslot () {
     this.showTimeslot = !this.showTimeslot;
-    console.log(this.showTimeslot)
+  }
+
+  _showAll () {
+    this.showTimeslot = true;
+    this.forceOpen = true;
+  }
+
+  _showSummary () {
+    this.showTimeslot = true;
+    this.forceOpen = false;
+  }
+
+  _collapseAll () {
+    this.showTimeslot = false;
+    this.forceOpen = false;
   }
 
   _timeslotChange (timeslot) {
@@ -98,6 +127,16 @@ class Component extends Element {
       return 0;
     });
     this.sessions = sessions;
+  }
+
+  _checkForceOpen (forceOpen) {
+    if (this.sessions) {
+      const array = [];
+      for (let i = 0; i < this.sessions.length; i++) {
+        array.push(Object.assign({}, this.sessions[i], { showPublications: forceOpen }));
+      }
+      this.sessions = array;
+    }
   }
 
   _duplicate ({target: el}) {

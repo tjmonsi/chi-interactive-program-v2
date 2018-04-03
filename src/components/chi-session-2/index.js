@@ -53,6 +53,10 @@ class Component extends LittleQStoreMixin(Element) {
         value: false,
         reflectToAttribute: true
       },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
+      },
       params: {
         type: Object,
         value: {},
@@ -156,10 +160,10 @@ class Component extends LittleQStoreMixin(Element) {
   _checkParams (params, sessionId, session) {
     if (sessionId && session && params.sessionId === this.sessionId) {
       this._showSession();
-      setTimeout(() => {
-        history.pushState({}, '', `?`);
-        dispatchEvent(new CustomEvent('location-changed'));
-      }, 5000);
+      // setTimeout(() => {
+      //   history.pushState({}, '', `?`);
+      //   dispatchEvent(new CustomEvent('location-changed'));
+      // }, 5000);
     }
   }
 
@@ -185,7 +189,7 @@ class Component extends LittleQStoreMixin(Element) {
         case 'game jam':
           return '';
         case 'symposia':
-          return 'Symposium';
+          return '';
         case 'keynote':
           return '';
         case 'paper':

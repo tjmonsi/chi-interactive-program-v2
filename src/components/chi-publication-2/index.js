@@ -51,17 +51,17 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
       '_showPublication(publication)'
     ];
   }
-  
+
   constructor () {
     super();
     this._boundShowPublication = this._showPublication.bind(this);
   }
-  
+
   connectedCallback () {
     super.connectedCallback();
     window.addEventListener('chi-update-query', this._boundShowPublication);
   }
-  
+
   disconnectedCallback () {
     super.connectedCallback();
     window.removeEventListener('chi-update-query', this._boundShowPublication);
@@ -84,17 +84,14 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
   }
 
   _showInfo () {
-    if (this.showInformation) {
+    if (this.showInformation && this.params.publicationId) {
       requestAnimationFrame(() => {
         this.shadowRoot.querySelector(`.invi-anchor-pub-${this.publicationId}`)
-          .scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+          .scrollIntoView(true);
       });
     }
   }
-  
+
   _showPublication () {
     if (store.showPublications && store.showPublications.length === 0) {
       this.hidden = false;
