@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, requestAnimationFrame } from 'global/window';
+import { customElements, requestAnimationFrame, history } from 'global/window';
 import { ChiPublicationMixin } from 'chi-publication-mixin';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { toastr } from 'toastr-component';
@@ -122,6 +122,7 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
     this.shadowRoot.removeChild(copyText);
     console.log('copied');
     toastr.info(`Copied Publication link: "${this.publication.title}" to the clipboard`);
+    history.pushState({}, '', `?sessionId=${encodeURI(this.sessionId)}&publicationId=${encodeURI(this.publicationId)}`);
   }
 }
 

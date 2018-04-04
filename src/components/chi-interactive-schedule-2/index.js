@@ -66,7 +66,18 @@ class Component extends LittleQStoreMixin(Element) {
 
     this._observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(({target: entryTarget, isIntersecting}) => {
-        if (entryTarget) fixed.style.display = isIntersecting ? 'none' : 'block';
+        if (entryTarget) {
+          fixed.style.display = isIntersecting ? 'none' : 'block';
+          if (target._filterContainer || fixed._filterContainer) {
+            if (!isIntersecting) {
+              fixed.openFilter();
+              target.closeFilter();
+            } else {
+              target.openFilter();
+              fixed.closeFilter();
+            }
+          }
+        }
       });
     }, options);
 

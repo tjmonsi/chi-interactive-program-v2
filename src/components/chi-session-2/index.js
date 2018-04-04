@@ -1,6 +1,6 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
-import { customElements, CustomEvent, requestAnimationFrame } from 'global/window';
+import { customElements, CustomEvent, requestAnimationFrame, history } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
 import { store } from 'chi-store';
 import '@polymer/polymer/lib/elements/dom-repeat';
@@ -215,7 +215,7 @@ class Component extends LittleQStoreMixin(Element) {
   copyLink () {
     const copyText = document.createElement('input');
     const { location: { protocol, host, pathname } } = window;
-    copyText.value = `${protocol}//${host}${pathname}?timeslotId=${encodeURI(this.timeslotId)}&sessionId=${encodeURI(this.sessionId)}`;
+    copyText.value = `${protocol}//${host}${pathname}?sessionId=${encodeURI(this.sessionId)}`;
     copyText.style.display = 'inline';
     copyText.style.position = 'fixed';
     copyText.style.opacity = 0;
@@ -225,6 +225,7 @@ class Component extends LittleQStoreMixin(Element) {
     this.shadowRoot.removeChild(copyText);
     console.log('copied');
     toastr.info(`Copied Session link: "${this.session.title}" to the clipboard`);
+    history.pushState({}, '', `?sessionId=${encodeURI(this.sessionId)}`);
   }
 }
 

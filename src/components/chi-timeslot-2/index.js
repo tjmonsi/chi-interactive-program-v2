@@ -26,7 +26,8 @@ class Component extends LittleQStoreMixin(Element) {
         observer: '_timeslotIdChange'
       },
       sessions: {
-        type: Array
+        type: Array,
+        value: []
       },
       sessionsRef: {
         type: Array
@@ -86,10 +87,8 @@ class Component extends LittleQStoreMixin(Element) {
       this.hidden = store.timeslot[timeslotId].hidden;
       if (store.search) {
         this.showTimeslot = !this.hidden;
-      } else if (this.params && this.params.publicationId && this.params.sessionId) {
+      } else if (this.params && (this.params.publicationId || this.params.sessionId)) {
         this.showTimeslot = true;
-      } else {
-        this.showTimeslot = false;
       }
     }
   }
@@ -114,9 +113,12 @@ class Component extends LittleQStoreMixin(Element) {
   }
 
   _timeslotChange (timeslot) {
+    // console.log(timeslot)
+    if (!timeslot.sessions) return;
     const keys = Object.keys(timeslot.sessions);
     const { className } = timeslot;
     const sessions = [];
+    const newSessions = [];
     const sessionsRef = [];
     for (let i = 0, l = keys.length; i < l; i++) {
       const key = keys[i];
@@ -137,7 +139,20 @@ class Component extends LittleQStoreMixin(Element) {
       if (a[attr] > b[attr]) return 1;
       return 0;
     });
-    this.sessions = sessions;
+
+    for (let i in sessions) {
+      if (this.sessions.findIndex(item => item.$key === sessions[i].$key) < 0) {
+        newSessions.push(sessions[i]);
+        continue;
+      }
+      for (let j in this.sessions) {
+        if (this.sessions[i].$key === sessions[j].$key) {
+          newSessions.push(Object.assign({}, this.sessions[j], sessions[i]));
+        }
+      }
+    }
+
+    this.sessions = newSessions;
     this.sessionsRef = sessionsRef;
   }
 
@@ -150,16 +165,6 @@ class Component extends LittleQStoreMixin(Element) {
       this.sessions = array;
     }
   }
-
-  // _resetOpenings () {
-  //   const array = [];
-  //   for (let i = 0; i < this.sessions.length; i++) {
-  //     if (!this.sessions[i].forceOpen) {
-  //       array.push(Object.assign({}, this.sessions[i], { showPublications: false }));
-  //     }
-  //   }
-  //   this.sessions = array;
-  // }
 
   _duplicate ({target: el}) {
     const { index, sessionId: $key } = el;
@@ -229,13 +234,13 @@ class Component extends LittleQStoreMixin(Element) {
   _timeslotColorClass (index) {
     switch (index) {
       case 0:
-        return 'blue';
+        return 'yellow';
       case 1:
         return 'grey';
       case 2:
-        return 'green';
+        return 'blue';
       case 3:
-        return 'yellow';
+        return 'green';
       case 4:
         return 'orange';
       case 5:

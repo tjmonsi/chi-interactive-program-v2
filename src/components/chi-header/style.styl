@@ -118,7 +118,6 @@
   cursor: pointer;
   padding: 5px 10px;
   font-size: 90%;
-  margin-top: 20px;
   float: right;
 
 .search-button
@@ -185,17 +184,33 @@
     padding: 0
 
 .filter-container
-  padding: 20px
-  position: fixed;
+
+  position: absolute;
   top: 72px;
-  left: 20px;
-  right: 20px;
+  left: 30px;
+  right: 30px;
+  // bottom: 20px;
+  overflow: hidden;
   max-height: calc(100vh - 150px);
   background: white;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   z-index: 5000;
   display: none;
-  overflow: auto;
+
+  .filter-bottom-area
+    position: absolute;
+    background: white;
+    padding: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translate3D(0px, 0px, 1px);
+
+  .filter-content
+    padding: 20px
+    padding-bottom: 120px;
+    max-height: calc(100vh - 150px);
+    overflow: auto;
 
   .filter-title
     margin: 0

@@ -170,6 +170,16 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     this.dispatch({ type: CHI_STATE.FILTER_SEARCH, filteredSearch: ['all'] });
   }
 
+  openFilter () {
+    this._filterContainer = true;
+    this.toggleFilter();
+  }
+
+  closeFilter () {
+    this._filterContainer = false;
+    this.toggleFilter();
+  }
+
   filter () {
     this._filterContainer = !this._filterContainer;
     this.toggleFilter();

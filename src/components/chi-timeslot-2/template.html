@@ -11,12 +11,7 @@
           <a class="header-anchor time-anchor" on-click="_toggleTimeslot">[[timeslot.name]]</a>
 
           <template is="dom-if" if="[[showTimeslot]]">
-            <a class="header-anchor-icon" on-click="_collapseAll">
-              <svg class="header-icon">
-                <title>Collapse</title>
-                <path d="M19.78,11.78L18.36,13.19L12,6.83L5.64,13.19L4.22,11.78L12,4L19.78,11.78Z" />
-              </svg>
-            </a>
+
             <template is="dom-if" if="[[forceOpen]]">
               <a class="header-anchor-icon" on-click="_showSummary">
                 <svg class="header-icon">
@@ -24,8 +19,20 @@
                   <path d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
                 </svg>
               </a>
+              <a class="header-anchor-icon" on-click="_collapseAll">
+                <svg class="header-icon">
+                  <title>Collapse</title>
+                  <path d="M19.78,11.78L18.36,13.19L12,6.83L5.64,13.19L4.22,11.78L12,4L19.78,11.78Z" />
+                </svg>
+              </a>
             </template>
             <template is="dom-if" if="[[!forceOpen]]">
+              <a class="header-anchor-icon" on-click="_collapseAll">
+                <svg class="header-icon">
+                  <title>Collapse</title>
+                  <path d="M19.78,11.78L18.36,13.19L12,6.83L5.64,13.19L4.22,11.78L12,4L19.78,11.78Z" />
+                </svg>
+              </a>
               <a class="header-anchor-icon" on-click="_showAll">
                 <svg class="header-icon">
                   <title>Show All</title>
@@ -33,6 +40,7 @@
                 </svg>
               </a>
             </template>
+
           </template>
           <template is="dom-if" if="[[!showTimeslot]]">
             <a class="header-anchor-icon" on-click="_showSummary">
