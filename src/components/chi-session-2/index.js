@@ -109,7 +109,7 @@ class Component extends LittleQStoreMixin(Element) {
       requestAnimationFrame(() => {
         this.shadowRoot.querySelector(`.invi-anchor-session-${this.sessionId}`)
           .scrollIntoView({
-            behavior: 'smooth',
+            behavior: 'auto',
             block: 'start'
           });
       });

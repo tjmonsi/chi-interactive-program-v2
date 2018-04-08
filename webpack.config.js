@@ -6,7 +6,7 @@ const moduleConf = require('./webpack-module.config');
 const nomoduleConf = require('./webpack-nomodule.config');
 const getHtmlOptions = require('./src/utils/html-webpack/get-html-options');
 const IS_DEV_SERVER = !!process.argv.find(arg => arg.includes('--mode=development'));
-const version = 'v2.0.3';
+const version = 'v2.0.4';
 
 const copyStatics = {
   copyPolyfills: [

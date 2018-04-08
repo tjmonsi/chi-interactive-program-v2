@@ -18,8 +18,11 @@ class Component extends ChiAuthorMixin(Element) {
     const primaryArray = [];
     const secondaryArray = [];
     const institutions = [];
+    console.log(primaryArray, secondaryArray)
     if (primary.institution) {
       primaryArray.push(primary.institution);
+    } else if (primary.dept) {
+      primaryArray.push(primary.dept);
     }
     // if (primary.city) {
     //   primaryArray.push(primary.city);
@@ -29,6 +32,8 @@ class Component extends ChiAuthorMixin(Element) {
     // }
     if (secondary.institution) {
       secondaryArray.push(secondary.institution);
+    } else if (secondary.dept) {
+      secondaryArray.push(secondary.dept);
     }
     // if (secondary.city) {
     //   secondaryArray.push(secondary.city);

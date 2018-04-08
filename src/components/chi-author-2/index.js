@@ -20,22 +20,14 @@ class Component extends ChiAuthorMixin(Element) {
     const institutions = [];
     if (primary.institution) {
       primaryArray.push(primary.institution);
+    } else if (primary.dept) {
+      primaryArray.push(primary.dept);
     }
-    // if (primary.city) {
-    //   primaryArray.push(primary.city);
-    // }
-    // if (primary.country) {
-    //   primaryArray.push(primary.country);
-    // }
     if (secondary.institution) {
       secondaryArray.push(secondary.institution);
+    } else if (secondary.dept) {
+      secondaryArray.push(secondary.dept);
     }
-    // if (secondary.city) {
-    //   secondaryArray.push(secondary.city);
-    // }
-    // if (secondary.country) {
-    //   secondaryArray.push(secondary.country);
-    // }
     const primaryString = primaryArray.length ? primaryArray.join(', ') : '';
     const secondaryString = secondaryArray.length ? secondaryArray.join(', ') : '';
     if (primaryString) {
