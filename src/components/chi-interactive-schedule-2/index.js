@@ -43,6 +43,10 @@ class Component extends LittleQStoreMixin(Element) {
       search: {
         type: String
       },
+      params: {
+        type: Boolean,
+        statePath: 'littleqQueryParams.params'
+      },
       _baseUrl: {
         type: String,
         value: window.baseURL || '/'

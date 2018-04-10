@@ -19,7 +19,7 @@
         <template is="dom-if" if="[[hitsNumber]]">
           <div class="center-container">
             <p>
-              Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> result(s).
+              Your search term "<b>[[search]]</b>" has returned <b>[[hitsNumber]]</b> result(s).
               <ul>
                 <template is="dom-if" if="[[searchResultTypes.author]]">
                   <li>
@@ -72,7 +72,7 @@
         <template is="dom-if" if="[[!hitsNumber]]">
           <div class="center-container">
             <p>
-              Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. Please choose another term.
+              Your search term "<b>[[search]]</b>" has returned <b>[[hitsNumber]]</b> results. Please choose another term.
             </p>
           </div>
         </template>
@@ -83,7 +83,7 @@
   <template is="dom-if" if="[[showFilterWarning]]">
     <div class="center-container">
       <p>
-        Your search term "<b>[[params.search]]</b>" has returned <b>[[hitsNumber]]</b> results. <br>
+        Your search term "<b>[[search]]</b>" has returned <b>[[hitsNumber]]</b> results. <br>
         To improve performance, query results will not show up on the schedule.
         <ul>
           <template is="dom-if" if="[[searchResultTypes.author]]">

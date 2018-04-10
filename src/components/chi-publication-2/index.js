@@ -96,9 +96,9 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
     if (store.showPublications && store.showPublications.length === 0) {
       this.hidden = false;
     } else if (store.showPublications && store.showPublications.indexOf(this.publicationId) < 0) {
-      this.hidden = true
+      this.hidden = true;
     } else {
-      this.hidden = false
+      this.hidden = false;
     }
     // console.log(this.hidden, this.publicationId)
   }

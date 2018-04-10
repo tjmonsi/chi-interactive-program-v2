@@ -30,10 +30,20 @@
   .anchor:hover
     text-decoration: underline;
 
+  .anchor-icon:hover
+    text-decoration none
+
   .img-icon, .icon
     vertical-align: middle;
     height: 32px;
     width: 32px;
+
+  .icon.small
+    height: 18px;
+    width: 18px;
+
+  .icon.align
+    vertical-align: text-top;
 
   .icon
     margin-left: 10px;
@@ -69,6 +79,7 @@
 .abstract-anchor
   font-size: 80%
   color: $brand-green;
+  cursor pointer;
 
 .circle
   border: 1px solid $dark
