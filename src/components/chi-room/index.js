@@ -11,6 +11,15 @@ import template from './template.html';
 class Component extends ChiRoomMixin(Element) {
   static get is () { return 'chi-room'; }
   static get template () { return `<style>${style}</style>${template}`; }
+
+  static get properties () {
+    return {
+      room: {
+        type: String,
+        notify: true
+      }
+    };
+  }
 }
 
 !customElements.get(Component.is)

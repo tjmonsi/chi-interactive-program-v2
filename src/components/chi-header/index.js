@@ -133,6 +133,7 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'block';
     // this.shadowRoot.querySelector('.filter-container').style.display = 'none';
     this._filterContainer = false;
+    this._navigationContainer = true;
   }
 
   closeNavigation () {
@@ -141,6 +142,7 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
     // this.shadowRoot.querySelector('.filter-container').style.display = 'none';
     this._filterContainer = false;
+    this._navigationContainer = false;
   }
 
   showClear (search, filteredSearch, filteredVenues) {
@@ -190,6 +192,7 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     this.shadowRoot.querySelectorAll('.nav-button.close').forEach(node => (node.style.display = 'none'));
     this.shadowRoot.querySelector('.fixed-phone').style.display = 'none';
     this.shadowRoot.querySelector('.filter-container').style.display = this._filterContainer ? 'block' : 'none';
+    this._navigationContainer = false;
   }
 
   toggleVenueFilter ({ target: el }) {

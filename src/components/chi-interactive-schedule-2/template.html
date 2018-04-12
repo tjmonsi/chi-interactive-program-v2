@@ -3,7 +3,7 @@
 
 <chi-header class="on-top"></chi-header>
 <chi-header class="fixed"></chi-header>
-<chi-search show-filter-warning="{{showFilterWarning}}" searching="{{searching}}" hits-number="{{hitsNumber}}" search="{{search}}" search-result-types="{{searchResultTypes}}"></chi-search>
+<chi-search maps="{{maps}}" room="{{room}}" show-filter-warning="{{showFilterWarning}}" searching="{{searching}}" hits-number="{{hitsNumber}}" search="{{search}}" search-result-types="{{searchResultTypes}}"></chi-search>
 <section class="container">
 
   <template is="dom-if" if="[[searching]]">
@@ -109,8 +109,30 @@
     </div>
   </template>
 
-  <template is="dom-repeat" items="[[schedule]]">
-    <chi-day class="chi-day-item" day="[[item]]" schedule-index="[[index]]"></chi-day>
+  <template is="dom-if" if="[[!maps]]">
+    <template is="dom-repeat" items="[[schedule]]">
+      <chi-day class="chi-day-item" day="[[item]]" schedule-index="[[index]]"></chi-day>
+    </template>
+  </template>
+
+  <template is="dom-if" if="[[maps]]">
+    <section class="maps-container">
+      <h2>Level 5</h2>
+      <img class="level-5 map" src="/assets/level-5.svg">
+      <h2>Level 2</h2>
+      <img class="level-2 map" src="/assets/level-2.svg">
+      <h2>Exhibit Hall on Monday</h2>
+      <img class="exhibit-mon map" src="/assets/exhibit-hall-mon.svg">
+      <h2>Exhibit Hall on Tuesday</h2>
+      <img class="exhibit-tue map"src="/assets/exhibit-hall-tue.svg">
+      <h2>Societe Des Arts Technologique</h2>
+      <div class="mapouter la-sat">
+        <div class="gmap_canvas">
+          <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=Societe Des Arts Technologique&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        </div>
+        <a href="https://www.embedgooglemap.net">embedgooglemap.net</a>
+      </div>
+    </section>
   </template>
 
   <div style="height: 300px"></div>

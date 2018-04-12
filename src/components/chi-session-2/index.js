@@ -20,6 +20,15 @@ class Component extends LittleQStoreMixin(Element) {
 
   static get properties () {
     return {
+      dayString: {
+        type: String
+      },
+      dateString: {
+        type: String
+      },
+      timeString: {
+        type: String
+      },
       sessionId: {
         type: String,
         observer: '_sessionIdChange'
@@ -210,6 +219,10 @@ class Component extends LittleQStoreMixin(Element) {
           return venue.charAt(0).toUpperCase() + venue.slice(1);
       }
     }
+  }
+
+  _getDateTime (dayString, dateString, time) {
+    return `${dayString}, ${dateString} - ${time.split('-')[0]}`;
   }
 
   copyLink () {

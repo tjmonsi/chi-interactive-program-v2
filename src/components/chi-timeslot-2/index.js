@@ -17,6 +17,12 @@ class Component extends LittleQStoreMixin(Element) {
 
   static get properties () {
     return {
+      dateString: {
+        type: String
+      },
+      dayString: {
+        type: String
+      },
       timeslot: {
         type: Object,
         observer: '_timeslotChange'

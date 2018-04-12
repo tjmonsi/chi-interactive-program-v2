@@ -66,6 +66,16 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         type: String,
         value: '',
         notify: true
+      },
+      maps: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+      room: {
+        type: String,
+        value: '',
+        notify: true
       }
     };
   }
@@ -137,6 +147,8 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
   }
 
   _checkParams (params, filteredSearch, currentScheduleId) {
+    this.maps = !!params.maps;
+    this.room = params.room || null;
     this.search = params.search;
     this._queryChanged(params.search, filteredSearch);
   }
@@ -144,6 +156,7 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
   async _queryChanged (query, filteredSearch) {
     this.searching = true;
     this.showFilterWarning = false;
+    if (query) window.scroll(0, 0);
     const settings = {
       query,
       hitsPerPage: 100,

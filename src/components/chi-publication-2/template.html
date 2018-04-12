@@ -4,29 +4,28 @@
 </template>
 <template is="dom-if" if="[[!loading]]">
   <h4 class="title">
+    <template is="dom-if" if="[[publication.hm]]">
+      <img class="icon img-icon" title="Honorable Mention" alt="Honorable Mention" src="[[_baseUrl]]assets/honorable.png">
+    </template>
+    <template is="dom-if" if="[[publication.award]]">
+      <img class="icon img-icon" title="Best Paper" alt="Best Paper" src="[[_baseUrl]]assets/best.png">
+    </template>
+
     <a class="anchor" on-click="_toggleAbstract">
       <marked-element marked="[[publication.title]]"></marked-element>
     </a>
 
     <template is="dom-if" if="[[publication.acmLink]]">
-      <a class="anchor anchor-icon" href="[[publication.acmLink]]" target="_blank" rel="noopener noreferrer">
+      <a class="anchor anchor-icon" title="ACM Link" href="[[publication.acmLink]]" target="_blank" rel="noopener noreferrer">
         <img class="icon" src="/assets/acm.svg">
       </a>
     </template>
 
     <template is="dom-if" if="[[publication.youtubeId]]">
-      <a class="anchor anchor-icon" href="https://[[publication.youtubeUrl]]" target="_blank" rel="noopener noreferrer">
+      <a class="anchor anchor-icon" title="Video showcase" href="https://[[publication.youtubeUrl]]" target="_blank" rel="noopener noreferrer">
         <img class="icon small" src="/assets/videoshowcase_black.svg">
       </a>
     </template>
-
-    <!-- <template is="dom-if" if="[[publication.youtubeId]]">
-      <a class="anchor anchor-icon" href="https://[[publication.youtubeId]]" target="_blank" rel="noopener noreferrer">
-        <svg class="icon align">
-          <path d="M18,9H16V7H18M18,13H16V11H18M18,17H16V15H18M8,9H6V7H8M8,13H6V11H8M8,17H6V15H8M18,3V5H16V3H8V5H6V3H4V21H6V19H8V21H16V19H18V21H20V3H18Z" />
-        </svg>
-      </a>
-    </template> -->
 
     <a class="anchor anchor-icon" on-click="copyLink">
       <svg class="icon align">
@@ -35,12 +34,7 @@
       </svg>
     </a>
 
-    <template is="dom-if" if="[[publication.hm]]">
-      <img class="icon img-icon" title="Honorable Mention" alt="Honorable Mention" src="[[_baseUrl]]assets/honorable.png">
-    </template>
-    <template is="dom-if" if="[[publication.award]]">
-      <img class="icon img-icon" title="Best Paper" alt="Best Paper" src="[[_baseUrl]]assets/best.png">
-    </template>
+
   </h4>
   <section class="pub-body">
     <p>

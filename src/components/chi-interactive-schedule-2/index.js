@@ -1,7 +1,7 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-import { customElements, IntersectionObserver } from 'global/window';
+import { customElements, IntersectionObserver, requestAnimationFrame } from 'global/window';
 import { store } from 'chi-store';
 // import { conf } from 'chi-conference-config';
 import '@littleq/path-fetcher';
@@ -44,14 +44,27 @@ class Component extends LittleQStoreMixin(Element) {
         type: String
       },
       params: {
-        type: Boolean,
+        type: Object,
         statePath: 'littleqQueryParams.params'
+      },
+      maps: {
+        type: Boolean,
+        value: false
+      },
+      room: {
+        type: String
       },
       _baseUrl: {
         type: String,
         value: window.baseURL || '/'
       }
     };
+  }
+
+  static get observers () {
+    return [
+      '_setMapRoom(maps, room)'
+    ];
   }
 
   constructor () {
@@ -81,6 +94,16 @@ class Component extends LittleQStoreMixin(Element) {
               fixed.closeFilter();
             }
           }
+
+          if (target._navigationContainer || fixed._navigationContainer) {
+            if (!isIntersecting) {
+              fixed.openNavigation();
+              target.closeNavigation();
+            } else {
+              target.openNavigation();
+              fixed.closeNavigation();
+            }
+          }
         }
       });
     }, options);
@@ -105,6 +128,38 @@ class Component extends LittleQStoreMixin(Element) {
     schedule.sort((i, j) => (i.index - j.index));
     this.schedule = schedule;
     document.querySelector('#loading-screen').style.display = 'none';
+  }
+
+  _setMapRoom (maps, room) {
+    if (maps) {
+      requestAnimationFrame(() => {
+        const level2 = this.shadowRoot.querySelector('.level-2');
+        const level5 = this.shadowRoot.querySelector('.level-5');
+        // const exmon = this.shadowRoot.querySelector('.exhibit-mon');
+        // const extue = this.shadowRoot.querySelector('.exhibit-tue');
+        const sat = this.shadowRoot.querySelector('.la-sat');
+
+        if (room) {
+          if (room.indexOf('SAT') >= 0 && sat) {
+            setTimeout(() => {
+              sat.scrollIntoView(true);
+            }, 200);
+          } else if (parseInt(room[0], 10) === 5 && level5) {
+            setTimeout(() => {
+              level5.scrollIntoView(true);
+            }, 200);
+          } else if (parseInt(room[0], 10) === 2 && level2) {
+            setTimeout(() => {
+              level2.scrollIntoView(true);
+            }, 200);
+          } else {
+            setTimeout(() => {
+              window.scroll(0, 0);
+            }, 200);
+          }
+        }
+      });
+    }
   }
 }
 
