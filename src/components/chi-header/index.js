@@ -120,6 +120,8 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         return 'Video Showcase';
       case 'awards':
         return 'Awards';
+      case 'art':
+        return 'Art';
       case 'lbw':
         return 'Late-breaking Work';
       default:

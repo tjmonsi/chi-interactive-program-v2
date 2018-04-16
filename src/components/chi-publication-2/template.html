@@ -17,13 +17,13 @@
 
     <template is="dom-if" if="[[publication.acmLink]]">
       <a class="anchor anchor-icon" title="ACM Link" href="[[publication.acmLink]]" target="_blank" rel="noopener noreferrer">
-        <img class="icon" src="/assets/acm.svg">
+        <img class="icon" src="[[_baseUrl]]assets/acm.svg">
       </a>
     </template>
 
     <template is="dom-if" if="[[publication.youtubeId]]">
       <a class="anchor anchor-icon" title="Video showcase" href="https://[[publication.youtubeUrl]]" target="_blank" rel="noopener noreferrer">
-        <img class="icon small" src="/assets/videoshowcase_black.svg">
+        <img class="icon small" src="[[_baseUrl]]assets/videoshowcase_black.svg">
       </a>
     </template>
 

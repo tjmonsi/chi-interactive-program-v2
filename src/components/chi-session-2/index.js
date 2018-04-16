@@ -70,6 +70,9 @@ class Component extends LittleQStoreMixin(Element) {
         type: Object,
         value: {},
         statePath: 'littleqQueryParams.params'
+      },
+      room: {
+        type: String
       }
     };
   }
@@ -210,6 +213,10 @@ class Component extends LittleQStoreMixin(Element) {
         case 'awards':
           return '';
         case 'videoshowcase':
+          return '';
+        case 'art':
+          return 'Art';
+        case 'break':
           return '';
         case 'lbw':
           return 'Late-breaking Work';
