@@ -19,7 +19,7 @@ class Component extends LittleQStoreMixin(Element) {
   static get is () { return 'chi-interactive-schedule'; }
   static get template () { return `<style>${style}</style>${template}`; }
 
-  static properties () {
+  static get properties () {
     return {
       schedule: {
         type: Array,
