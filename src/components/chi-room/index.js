@@ -18,6 +18,9 @@ class Component extends ChiRoomMixin(Element) {
       room: {
         type: String,
         notify: true
+      },
+      dayString: {
+        type: String
       }
     };
   }
@@ -36,9 +39,17 @@ class Component extends ChiRoomMixin(Element) {
     if (room) {
       if (room.indexOf('SAT') >= 0) {
         this.shadowRoot.querySelector('#map-box-sat').show();
-      } else if (parseInt(room[0], 10) === 5) {
+      } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Monday') {
+        this.shadowRoot.querySelector('#map-box-exhibit-monday').show();
+      } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Tuesday') {
+        this.shadowRoot.querySelector('#map-box-exhibit-tuesday').show();
+      } else if (room.indexOf('220BC') >= 0) {
+        this.shadowRoot.querySelector('#map-box-exhibit').show();
+      } else if (room === 'N/A') {
+        console.log('none');
+      } else if (parseInt(room[0], 10) === 5 || parseInt(room.replace('Foyer ', '')[0], 10) === 5) {
         this.shadowRoot.querySelector('#map-box-level-5').show();
-      } else if (parseInt(room[0], 10) === 2) {
+      } else if (parseInt(room[0], 10) === 2 || parseInt(room.replace('Foyer ', '')[0], 10) === 2) {
         this.shadowRoot.querySelector('#map-box-level-2').show();
       } else {
         this.shadowRoot.querySelector('#map-box-exhibit').show();
