@@ -255,6 +255,12 @@ class Component extends LittleQStoreMixin(Element) {
         return 'pink';
     }
   }
+
+  _getTimeslotRealId (timeslot) {
+    if (timeslot && timeslot.split('::').length === 2) {
+      return timeslot.split('::')[1];
+    }
+  }
 }
 
 !customElements.get(Component.is)

@@ -8,6 +8,7 @@ import '@polymer/polymer/lib/elements/dom-if';
 import 'marked-element';
 import 'chi-publication-2';
 import 'chi-room';
+import 'dialog-box';
 import { toastr } from 'toastr-component';
 
 // define style and template
@@ -27,6 +28,9 @@ class Component extends LittleQStoreMixin(Element) {
         type: String
       },
       timeString: {
+        type: String
+      },
+      timeslotRealId: {
         type: String
       },
       sessionId: {
@@ -73,6 +77,10 @@ class Component extends LittleQStoreMixin(Element) {
       },
       room: {
         type: String
+      },
+      showVideo: {
+        type: Boolean,
+        value: false
       }
     };
   }
@@ -246,6 +254,20 @@ class Component extends LittleQStoreMixin(Element) {
     console.log('copied');
     toastr.info(`Copied Session link: "${this.session.title}" to the clipboard`);
     history.pushState({}, '', `?sessionId=${encodeURI(this.sessionId)}`);
+  }
+
+  openVideo () {
+    if (window.innerWidth <= 650) {
+      return window.open(`https://chi2018.acm.org/attending/stream/?timeslot=${this.timeslotRealId}&room=${this.session.roomName}`, '_blank');
+      // return window.open(`https://${this.publication.youtubeUrl}`, '_blank');
+    }
+    this.shadowRoot.querySelector('#session-video').show();
+    this.showVideo = true;
+  }
+
+  closeVideo () {
+    this.shadowRoot.querySelector('#session-video').close();
+    this.showVideo = false;
   }
 }
 

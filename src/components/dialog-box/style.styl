@@ -1,0 +1,29 @@
+*
+  box-sizing: border-box;
+
+
+:host
+  display: none;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.5);
+
+
+.dialog
+  position: absolute;
+  margin: auto auto;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;

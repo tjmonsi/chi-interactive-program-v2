@@ -22,8 +22,9 @@
         </svg>
       </a>
 
-      <template is="dom-if" if="[[session.liveStream]]">
-        <a class="copy-anchor" title="Play Livestream" href="https://[[session.liveStream]]" target="_blank" rel="noopener noreferrer">
+      <template is="dom-if" if="[[session.youtubeId]]">
+        <a class="copy-anchor" title="Play Livestream" on-click="openVideo">
+        <!-- <a class="copy-anchor" title="Play Livestream" href="https://chi2018.acm.org/attending/stream/?timeslot=[[timeslotRealId]]&room=[[session.roomName]]" target="_blank" rel="noopener noreferrer"> -->
           <svg class="copy-icon">
             <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
           </svg>
@@ -80,3 +81,17 @@
     </template>
   </section>
 </template>
+
+<dialog-box id="session-video" class="session-video">
+  <button type="button" class="dialog-button" on-click="closeVideo">
+    <svg class="icon">
+      <title>Close Video</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <template is="dom-if" if="[[showVideo]]">
+    <template is="dom-if" if="[[session.youtubeId]]">
+      <iframe class="session-video-frame" src="https://www.youtube.com/embed/live_stream?enablejsapi=1&modestbranding=1&showinfo=0&color=white&channel=[[session.youtubeId]]" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    </template>
+  </template>
+</dialog-box>

@@ -9,6 +9,7 @@ import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 import 'marked-element';
 import 'chi-author-2';
+import 'dialog-box';
 
 // define style and template
 import style from './style.styl';
@@ -123,6 +124,17 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
     console.log('copied');
     toastr.info(`Copied Publication link: "${this.publication.title}" to the clipboard`);
     history.pushState({}, '', `?sessionId=${encodeURI(this.sessionId)}&publicationId=${encodeURI(this.publicationId)}`);
+  }
+
+  openVideo () {
+    if (window.innerWidth <= 650) {
+      return window.open(`https://${this.publication.youtubeUrl}`, '_blank');
+    }
+    this.shadowRoot.querySelector('#publication-video').show();
+  }
+
+  closeVideo () {
+    this.shadowRoot.querySelector('#publication-video').close();
   }
 }
 

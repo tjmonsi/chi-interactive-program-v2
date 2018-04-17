@@ -22,7 +22,7 @@
     </template>
 
     <template is="dom-if" if="[[publication.youtubeId]]">
-      <a class="anchor anchor-icon" title="Video showcase" href="https://[[publication.youtubeUrl]]" target="_blank" rel="noopener noreferrer">
+      <a class="anchor anchor-icon" title="Video showcase" on-click="openVideo">
         <img class="icon small" src="[[_baseUrl]]assets/videoshowcase_black.svg">
       </a>
     </template>
@@ -73,3 +73,15 @@
     </template>
   </section>
 </template>
+
+<dialog-box id="publication-video" class="publication-video">
+  <button type="button" class="dialog-button" on-click="closeVideo">
+    <svg class="icon">
+      <title>Close Session</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <template is="dom-if" if="[[publication.youtubeId]]">
+    <iframe class="publication-video-frame" src="https://www.youtube.com/embed/[[publication.youtubeId]]" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+  </template>
+</dialog-box>

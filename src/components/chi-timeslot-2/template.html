@@ -64,7 +64,7 @@
   <template is="dom-if" if="[[showTimeslot]]">
     <section class$="grid [[_timeslotColorClass(scheduleIndex)]]-border">
       <template is="dom-repeat" id="chi-session-list" items="{{sessions}}" class="sessions">
-        <chi-session session-id="[[item.$key]]" index=[[index]] class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" timeslot-id="[[timeslotId]]" force-close="[[item.forceClose]]" show-publications="[[item.showPublications]]" target-el="[[item.targetEl]]" on-open-duplicate="_duplicate" on-close-duplicate="_closeDuplicate" day-string="[[dayString]]" date-string="[[dateString]]" time-string="[[timeslot.time]]"></chi-session>
+        <chi-session session-id="[[item.$key]]" index=[[index]] class$="chi-session-item [[_timeslotColorClass(scheduleIndex)]]-item" timeslot-id="[[timeslotId]]" force-close="[[item.forceClose]]" show-publications="[[item.showPublications]]" target-el="[[item.targetEl]]" on-open-duplicate="_duplicate" on-close-duplicate="_closeDuplicate" day-string="[[dayString]]" date-string="[[dateString]]" time-string="[[timeslot.time]]" timeslot-real-id="[[_getTimeslotRealId(timeslot.conferenceTimeslotId)]]"></chi-session>
       </template>
     </section>
   </template>

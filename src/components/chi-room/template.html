@@ -1,3 +1,51 @@
 <template is="dom-if" if="[[room.room]]">
-  <a class="anchor" href="?maps=true&room=[[room.room]]">Room: [[room.room]]</a>
+  <a class="anchor" on-click="openMap">Room: [[room.room]]</a>
 </template>
+
+<dialog-box id="map-box-level-5" class="map-box">
+  <button type="button" class="dialog-button" on-click="closeMap">
+    <svg class="icon">
+      <title>Close Map</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <img class="map" src="[[_baseUrl]]assets/level-5.svg">
+</dialog-box>
+
+<dialog-box id="map-box-level-2" class="map-box">
+  <button type="button" class="dialog-button" on-click="closeMap">
+    <svg class="icon">
+      <title>Close Map</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <img class="map" src="[[_baseUrl]]assets/level-2.svg">
+</dialog-box>
+
+<dialog-box id="map-box-sat" class="map-box">
+  <button type="button" class="dialog-button" on-click="closeMap">
+    <svg class="icon">
+      <title>Close Map</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <div class="mapouter la-sat">
+    <div class="gmap_canvas">
+      <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=Societe Des Arts Technologique&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+    </div>
+    <a href="https://www.embedgooglemap.net">embedgooglemap.net</a>
+  </div>
+</dialog-box>
+
+<dialog-box id="map-box-exhibit" class="map-box">
+  <button type="button" class="dialog-button" on-click="closeMap">
+    <svg class="icon">
+      <title>Close Map</title>
+      <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+    </svg>
+  </button>
+  <h2>Exhibit Hall on Monday</h2>
+  <img class="exhibit-mon map" src="[[_baseUrl]]assets/exhibit-hall-mon.svg">
+  <h2>Exhibit Hall on Tuesday</h2>
+  <img class="exhibit-tue map"src="[[_baseUrl]]assets/exhibit-hall-tue.svg">
+</dialog-box>
