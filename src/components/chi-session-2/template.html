@@ -25,9 +25,10 @@
       <template is="dom-if" if="[[session.youtubeId]]">
         <a class="copy-anchor" title="Play Livestream" on-click="openVideo">
         <!-- <a class="copy-anchor" title="Play Livestream" href="https://chi2018.acm.org/attending/stream/?timeslot=[[timeslotRealId]]&room=[[session.roomName]]" target="_blank" rel="noopener noreferrer"> -->
-          <svg class="copy-icon">
+          <img src="[[_baseUrl]]assets/livestream-icon.png" class="livestream-icon">
+          <!-- <svg class="copy-icon">
             <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
-          </svg>
+          </svg> -->
         </a>
       </template>
     </a>
@@ -54,7 +55,7 @@
     <template is="dom-if" if="[[session.hasHonorableMention]]">
       <img class="venue-icon-2" title="Session has Honorable Mention Award" alt="Session has Honorable Mention Award" src="[[_baseUrl]]assets/honorable.png">
     </template>
-    <chi-room class="chi-room-item" room-id="[[session.roomId]]"></chi-room>
+    <chi-room class="chi-room-item" room-id="[[session.roomId]]" day-string="[[dayString]]" venue="[[session.venue]]"></chi-room>
   </p>
 </template>
 
@@ -69,7 +70,7 @@
     </template>
     [[_getDateTime(dayString, dateString, timeString)]]<br>
 
-    <chi-room class="chi-room-item" room-id="[[session.roomId]]" day-string="[[dayString]]"></chi-room>
+    <chi-room class="chi-room-item" room-id="[[session.roomId]]" day-string="[[dayString]]" venue="[[session.venue]]"></chi-room>
 
   </p>
 

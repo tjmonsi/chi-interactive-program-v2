@@ -21,6 +21,13 @@ class Component extends ChiRoomMixin(Element) {
       },
       dayString: {
         type: String
+      },
+      venue: {
+        type: String
+      },
+      _baseUrl: {
+        type: String,
+        value: window.baseURL || '/'
       }
     };
   }
@@ -39,9 +46,15 @@ class Component extends ChiRoomMixin(Element) {
     if (room) {
       if (room.indexOf('SAT') >= 0) {
         this.shadowRoot.querySelector('#map-box-sat').show();
+      } else if (room.indexOf('220BC') >= 0 && this.venue === 'break') {
+        this.shadowRoot.querySelector('#map-box-level-2').show();
       } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Monday') {
         this.shadowRoot.querySelector('#map-box-exhibit-monday').show();
       } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Tuesday') {
+        this.shadowRoot.querySelector('#map-box-exhibit-tuesday').show();
+      } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Wednesday') {
+        this.shadowRoot.querySelector('#map-box-exhibit-tuesday').show();
+      } else if (room.indexOf('220BC') >= 0 && this.dayString === 'Thursday') {
         this.shadowRoot.querySelector('#map-box-exhibit-tuesday').show();
       } else if (room.indexOf('220BC') >= 0) {
         this.shadowRoot.querySelector('#map-box-exhibit').show();
