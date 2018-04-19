@@ -90,7 +90,7 @@
       <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
     </svg>
   </button>
-  <template is="dom-if" if="[[showVideo]]">
+  <template is="dom-if" if="[[showVideo]]" restamp>
     <template is="dom-if" if="[[session.youtubeId]]">
       <iframe class="session-video-frame" src="https://www.youtube.com/embed/live_stream?enablejsapi=1&modestbranding=1&showinfo=0&color=white&channel=[[session.youtubeId]]" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </template>

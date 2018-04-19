@@ -1,9 +1,9 @@
 // define root dependencies
 import { Element } from '@polymer/polymer/polymer-element';
 import { ChiScheduleMixin } from 'chi-schedule-mixin';
-import { customElements } from 'global/window';
+import { customElements, history, dispatchEvent, CustomEvent } from 'global/window';
 import { LittleQStoreMixin } from '@littleq/state-manager';
-import { defaultFilteredSearch } from 'chi-interactive-schedule-2/reducer';
+import { CHI_STATE, defaultFilteredSearch } from 'chi-interactive-schedule-2/reducer';
 import { toastr } from 'toastr-component';
 import { conf } from 'chi-conference-config';
 import { store } from 'chi-store';
@@ -97,18 +97,12 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     window.addEventListener('chi-update-session', this._boundStoreUpdate);
   }
 
-  _checkFilteredVenues (filteredVenues) {
-    if (this.queryResults.length) {
-      this._queryResultChanged(this.queryResults);
-    } else {
-      this._hideAll();
-      if (filteredVenues.indexOf('all') >= 0) {
-        this._showAll();
-        return;
-      }
-      this._filterVenues(filteredVenues);
-      window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+  _checkFilteredVenues (filteredVenues, splices, flag) {
+    if (!flag && filteredVenues.indexOf('all') < 0) {
+      history.pushState({}, '', `?${this.params.search ? `search=${encodeURI(this.params.search)}&` : ''}filteredVenues=${encodeURI(filteredVenues.join(','))}`);
+      dispatchEvent(new CustomEvent('location-changed'));
     }
+    this._storeUpdate();
   }
 
   _filterVenues (filteredVenues) {
@@ -142,14 +136,34 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
     }
   }
 
+  _updateFilteredVenues (filteredVenues) {
+    if (this.filteredVenues.join(',') !== filteredVenues.join(',')) {
+      this.dispatch({ type: CHI_STATE.FILTER_VENUE, filteredVenues });
+    }
+  }
+
   _storeUpdate () {
-    this._queryResultChanged(this.queryResults);
+    if (this.queryResults.length) {
+      this._queryResultChanged(this.queryResults);
+    } else {
+      this._hideAll();
+      if (this.filteredVenues.indexOf('all') >= 0) {
+        this._showAll();
+        return;
+      }
+      this._filterVenues(this.filteredVenues);
+      window.dispatchEvent(new window.CustomEvent('chi-update-query'));
+    }
+    // this._queryResultChanged(this.queryResults);
   }
 
   _checkParams (params, filteredSearch, currentScheduleId) {
     this.maps = !!params.maps;
     this.room = params.room || null;
     this.search = params.search;
+    if (params.filteredVenues) {
+      this._updateFilteredVenues(params.filteredVenues.split(','));
+    }
     this._queryChanged(params.search, filteredSearch);
   }
 
@@ -332,10 +346,14 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
           store.session[sessionId].hidden = false;
           store.session[sessionId].expand = true;
           if (store.showPublications.indexOf(objectID) < 0) store.showPublications.push(objectID);
-          store.timeslot[store.session[sessionId].timeslotId].hidden = false;
-          store.timeslot[store.session[sessionId].timeslotId].expand = true;
-          store.schedule[store.session[sessionId].scheduleId].hidden = false;
-          store.schedule[store.session[sessionId].scheduleId].expand = true;
+          if (store.timeslot[store.session[sessionId].timeslotId]) {
+            store.timeslot[store.session[sessionId].timeslotId].hidden = false;
+            store.timeslot[store.session[sessionId].timeslotId].expand = true;
+          }
+          if (store.schedule[store.session[sessionId].scheduleId]) {
+            store.schedule[store.session[sessionId].scheduleId].hidden = false;
+            store.schedule[store.session[sessionId].scheduleId].expand = true;
+          }
         }
       }
 
@@ -343,7 +361,6 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         const { displayName, primary, secondary } = _highlightResult;
         const { institution } = primary;
         const { institution: institution2 } = secondary;
-
 
         let value = institution;
         if (value.matchedWords && value.matchedWords.length) {

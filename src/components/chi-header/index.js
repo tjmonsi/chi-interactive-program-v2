@@ -165,7 +165,7 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
   clear () {
     const queryParams = [];
     for (let q in this.params) {
-      if (q !== 'search') queryParams.push(`${q}=${this.params[q]}`);
+      if (q !== 'search' && q !== 'filteredVenues') queryParams.push(`${q}=${this.params[q]}`);
     }
     history.pushState({}, '', `?${queryParams.join('&')}`);
     dispatchEvent(new CustomEvent('location-changed'));

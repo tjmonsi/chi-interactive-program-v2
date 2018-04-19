@@ -42,6 +42,10 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
         type: Boolean,
         value: false,
         reflectToAttribute: true
+      },
+      showVideo: {
+        type: Boolean,
+        value: false
       }
     };
   }
@@ -130,10 +134,12 @@ class Component extends LittleQStoreMixin(ChiPublicationMixin(Element)) {
     if (window.innerWidth <= 650) {
       return window.open(`https://${this.publication.youtubeUrl}`, '_blank');
     }
+    this.showVideo = true;
     this.shadowRoot.querySelector('#publication-video').show();
   }
 
   closeVideo () {
+    this.showVideo = false;
     this.shadowRoot.querySelector('#publication-video').close();
   }
 }
