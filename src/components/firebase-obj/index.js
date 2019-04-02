@@ -1,14 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
-const conferenceId = '-L6UuuMqtIizEXWrUZhD';
-const version = 'v5';
+const conferenceId = 'chi2019';
+const version = 'v1';
 const config = {
-  apiKey: 'AIzaSyD9nU_bxcZQdAN0eGtbGqrZ099_wlbPAKY',
-  authDomain: 'chi-conference-data.firebaseapp.com',
-  databaseURL: 'https://chi-conference-data.firebaseio.com',
-  projectId: 'chi-conference-data',
-  storageBucket: 'chi-conference-data.appspot.com',
-  messagingSenderId: '150866590334'
+  apiKey: 'AIzaSyDsNgKL7EPmtc9l547p__f5n2xW4vQdse0',
+  authDomain: 'conference-schedule-system.firebaseapp.com',
+  databaseURL: 'https://conference-schedule-system.firebaseio.com',
+  projectId: 'conference-schedule-system',
+  storageBucket: 'conference-schedule-system.appspot.com',
+  messagingSenderId: '827172655047'
 };
 
 firebase.initializeApp(config);

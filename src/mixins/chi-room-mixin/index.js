@@ -35,7 +35,7 @@ export const ChiRoomMixin = dedupingMixin(base => {
     async _getRoom (roomId) {
       if (roomId) {
         this._closeRoom();
-        this._roomRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${roomId}`);
+        this._roomRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${roomId}`);
         this._roomRef.on('value', this._boundSetRoom);
       }
     }

@@ -11,17 +11,17 @@ const store = {
 const db = firebase.database();
 
 const _scheduleRef = db
-  .ref(`${version}/scheduleModel/schedule`)
+  .ref(`${version}/schedule-model/schedule`)
   .equalTo(conferenceId)
   .orderByChild('conferenceId');
 
 const _timeslotRef = db
-  .ref(`${version}/timeslotModel/timeslot`)
+  .ref(`${version}/timeslot-model/timeslot`)
   .equalTo(conferenceId)
   .orderByChild('conferenceId');
 
 const _sessionRef = db
-  .ref(`${version}/sessionModel/session`)
+  .ref(`${version}/session-model/session`)
   .equalTo(conferenceId)
   .orderByChild('conferenceId');
 

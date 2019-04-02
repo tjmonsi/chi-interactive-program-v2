@@ -44,7 +44,7 @@ export const ChiScheduleMixin = dedupingMixin(base => {
       this.loading = true;
       this._scheduleRef = firebase
         .database()
-        .ref(`${version}/${collection}Model/${collection}`)
+        .ref(`${version}/${collection}-model/${collection}`)
         .equalTo(conferenceId)
         .orderByChild('conferenceId');
       this._scheduleRef.on('value', this._boundSetSchedule);

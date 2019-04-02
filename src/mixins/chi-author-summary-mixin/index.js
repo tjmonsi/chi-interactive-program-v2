@@ -35,7 +35,7 @@ export const ChiAuthorSummaryMixin = dedupingMixin(base => {
     _getAuthorName (authorId) {
       if (authorId) {
         this._closeAuthorName();
-        this._authorNameRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${authorId}/displayName`);
+        this._authorNameRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${authorId}/displayName`);
         this._authorNameRef.on('value', this._boundSetAuthorName);
       }
     }

@@ -1,1 +1,1 @@
-export const conf = 'chi2018';
+export const conf = 'chi2019';

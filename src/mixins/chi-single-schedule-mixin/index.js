@@ -35,7 +35,7 @@ export const ChiSingleScheduleMixin = dedupingMixin(base => {
     async _getSchedule (scheduleId) {
       if (scheduleId) {
         this._closeSchedule();
-        this._scheduleRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${scheduleId}`);
+        this._scheduleRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${scheduleId}`);
         this._scheduleRef.on('value', this._boundSetSchedule);
       }
     }

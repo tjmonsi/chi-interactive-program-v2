@@ -58,7 +58,7 @@ export const ChiSessionMixin = dedupingMixin(base => {
         this._closeSession();
         this.loading = true;
 
-        this._sessionRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${sessionId}`);
+        this._sessionRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${sessionId}`);
         this._sessionRef.on('value', this._boundSetSession);
       }
     }

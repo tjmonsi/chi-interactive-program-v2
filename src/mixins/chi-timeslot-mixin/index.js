@@ -51,7 +51,7 @@ export const ChiTimeslotMixin = dedupingMixin(base => {
     async _getTimeslot (timeslotId) {
       if (timeslotId) {
         this._closeTimeslot();
-        this._timeslotRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${timeslotId}`);
+        this._timeslotRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${timeslotId}`);
         this._timeslotRef.on('value', this._boundSetTimeslot);
       }
     }

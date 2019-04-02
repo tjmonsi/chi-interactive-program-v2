@@ -50,7 +50,7 @@ export const ChiPublicationMixin = dedupingMixin(base => {
       if (publicationId) {
         this.loading = true;
         this._closePublication();
-        this._publicationRef = firebase.database().ref(`${version}/${collection}Model/${collection}/${publicationId}`);
+        this._publicationRef = firebase.database().ref(`${version}/${collection}-model/${collection}/${publicationId}`);
         this._publicationRef.on('value', this._boundSetPublication);
       }
     }

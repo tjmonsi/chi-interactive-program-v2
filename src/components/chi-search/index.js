@@ -9,7 +9,7 @@ import { conf } from 'chi-conference-config';
 import { store } from 'chi-store';
 import algoliasearch from 'algoliasearch/lite';
 
-const client = algoliasearch('3QB5G30QFN', '67be59962960c0eb7aec182885ef1b3f');
+const client = algoliasearch('H5CTKT5Q2T', '63c3aaf1f73c07be6cb9e171ef72dc23');
 const index = client.initIndex(`chi-index-${conf}`);
 
 class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
@@ -357,18 +357,19 @@ class Component extends LittleQStoreMixin(ChiScheduleMixin(Element)) {
         }
       }
 
-      if (searchType === 'author') {
+      // console.log(_highlightResult);
+      if (searchType === 'author' && _highlightResult.primary) {
         const { displayName, primary, secondary } = _highlightResult;
-        const { institution } = primary;
-        const { institution: institution2 } = secondary;
+        const { institution } = primary || {};
+        const { institution: institution2 } = secondary || {};
 
         let value = institution;
-        if (value.matchedWords && value.matchedWords.length) {
+        if (value && value.matchedWords && value.matchedWords.length) {
           value.value.split('<em>').forEach(node => {
             const term = node.split('</em>')[0];
             if (node.indexOf('</em>') >= 0 && term && store.keywords.findIndex(item => item[1] === term.toLowerCase()) < 0) store.keywords.push([term, term.toLowerCase()]);
           });
-        } else {
+        } else if (value) {
           Object.entries(value).forEach(([subkey, subvalue]) => {
             if (subvalue.matchedWords && subvalue.matchedWords.length) {
               subvalue.value.split('<em>').forEach(node => {
