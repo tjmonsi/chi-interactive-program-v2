@@ -15,7 +15,11 @@ const monthNames = [
   'August', 'September', 'October',
   'November', 'December'
 ];
-const formatDate = (date) => `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+const formatDate = (date) => {
+  const array = date.split('-');
+  return monthNames[parseInt(array[1], 10) - 1] + ' ' + array[2] + ', ' + array[0];
+  // ```${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+};
 
 class Component extends LittleQStoreMixin(Element) {
   static get is () { return 'chi-day'; }
@@ -53,7 +57,7 @@ class Component extends LittleQStoreMixin(Element) {
   }
 
   _getDateString (dateString) {
-    return formatDate(new Date(dateString));
+    return formatDate(dateString);
   }
 
   _dayChanged (day) {
