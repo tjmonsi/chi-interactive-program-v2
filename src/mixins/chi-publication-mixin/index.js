@@ -66,16 +66,18 @@ export const ChiPublicationMixin = dedupingMixin(base => {
     }
 
     _getAuthors (authors) {
-      const array = [];
-      const keys = Object.keys(authors);
-      for (let i = 0, l = keys.length; i < l; i++) {
-        array.push({
-          $key: keys[i],
-          value: authors[keys[i]].value
-        });
+      if (authors) {
+        const array = [];
+        const keys = Object.keys(authors);
+        for (let i = 0, l = keys.length; i < l; i++) {
+          array.push({
+            $key: keys[i],
+            value: authors[keys[i]].value
+          });
+        }
+        array.sort((i, j) => i.value - j.value);
+        this.set('authors', array);
       }
-      array.sort((i, j) => i.value - j.value);
-      this.set('authors', array);
     }
   }
   return ElementMixin;

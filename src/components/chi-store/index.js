@@ -57,7 +57,7 @@ _sessionRef.on('value', snapshot => {
     const key = keys[i];
     store.session[key] = Object.assign({}, store.session[key] || {}, obj[key]);
     const { venue } = store.session[key];
-    if (store.venueList.indexOf(venue.toLowerCase()) < 0) store.venueList.push(venue.toLowerCase());
+    if (store.venueList.indexOf(venue.toLowerCase()) < 0 && venue.toLowerCase() !== 'placeholder') store.venueList.push(venue.toLowerCase());
     window.dispatchEvent(new window.CustomEvent(`chi-update-session-${key}`));
   }
   window.dispatchEvent(new window.CustomEvent('chi-update-session'));
