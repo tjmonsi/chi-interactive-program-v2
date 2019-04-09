@@ -57,6 +57,10 @@ class Component extends ChiRoomMixin(Element) {
   }
 
   openMap () {
+    const flag = true;
+    if (flag) {
+      return;
+    }
     if (window.innerWidth <= 650) {
       history.pushState({}, '', `?maps=true&room=${this.room.room}`);
       dispatchEvent(new CustomEvent('location-changed'));
