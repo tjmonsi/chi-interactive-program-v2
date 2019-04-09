@@ -57,16 +57,18 @@ class Component extends LittleQStoreMixin(Element) {
   }
 
   _dayChanged (day) {
-    const keys = Object.keys(day.timeslots);
-    const timeslots = [];
-    for (let i = 0, l = keys.length; i < l; i++) {
-      const key = keys[i];
-      const obj = { ...day.timeslots[key], $key: key };
-      timeslots.push(obj);
+    if (day) {
+      const keys = Object.keys(day.timeslots);
+      const timeslots = [];
+      for (let i = 0, l = keys.length; i < l; i++) {
+        const key = keys[i];
+        const obj = { ...day.timeslots[key], $key: key };
+        timeslots.push(obj);
+      }
+      timeslots.sort((i, j) => (i.value - j.value));
+      this.timeslots = timeslots;
+      this.hidden = day.hidden;
     }
-    timeslots.sort((i, j) => (i.value - j.value));
-    this.timeslots = timeslots;
-    this.hidden = day.hidden;
   }
 
   _showDay () {

@@ -118,6 +118,10 @@ class Component extends LittleQStoreMixin(Element) {
     this.forceOpen = false;
   }
 
+  _changeTimeslot (time) {
+    return time.split(' - ').map(item => item.split(':').splice(0, 2).join(':')).join(' - ');
+  }
+
   _timeslotChange (timeslot) {
     // console.log(timeslot)
     if (!timeslot.sessions) return;

@@ -15,8 +15,8 @@
       <marked-element marked="[[publication.title]]"></marked-element>
     </a>
 
-    <template is="dom-if" if="[[publication.acmLink]]">
-      <a class="anchor anchor-icon" title="ACM Link" href="[[publication.acmLink]]" target="_blank" rel="noopener noreferrer">
+    <template is="dom-if" if="[[publication.doiFlag]]">
+      <a class="anchor anchor-icon" title="ACM Link" href="[[publication.doi]]" target="_blank" rel="noopener noreferrer">
         <img class="icon" src="[[_baseUrl]]assets/acm.svg">
       </a>
     </template>
@@ -82,8 +82,8 @@
         <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
       </svg>
     </button>
-    <template is="dom-if" if="[[publication.youtubeId]]">
-      <iframe class="publication-video-frame" src="https://www.youtube.com/embed/[[publication.youtubeId]]" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    <template is="dom-if" if="[[publication.previewVideo]]">
+      <iframe class="publication-video-frame" src="https://www.youtube.com/embed/[[publication.previewVideo]]" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </template>
   </template>
 </dialog-box>

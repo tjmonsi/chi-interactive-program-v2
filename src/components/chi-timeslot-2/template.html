@@ -3,7 +3,7 @@
   <header class="header" >
     <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot timeslot-time" on-tap="_toggleTimeslot">
         <h2 class="time" on-click="_toggleTimeslot">
-          [[timeslot.time]]
+          [[_changeTimeslot(timeslot.time)]]
         </h2>
       </div>
       <div class$="[[_timeslotColorClass(scheduleIndex)]]-timeslot timeslot timeslot-name">
